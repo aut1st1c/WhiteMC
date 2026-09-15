@@ -143,22 +143,10 @@ public static class VersionInstaller
             }
         }
 
-        var allJobs = libJobs.Concat(nativeJobs).Concat(clientJobs).Concat(assetJobs).ToList();
-        int totalFiles = allJobs.Count;
-        int counter = 0;
-        var lockObj = new object();
-
-        void Heavy(int _, int __, string msg)
-        {
-            int n;
-            lock (lockObj) { n = ++counter; }
-            onProgress?.Invoke(n, totalFiles, msg);
-            logger?.Invoke(msg);
-        }
-
-        await DownloadManyAsync(libJobs, Heavy, "Библиотека: ", ct);
-        await DownloadManyAsync(nativeJobs, Heavy, "Натив: ", ct);
-        await DownloadManyAsync(clientJobs, Heavy, "Клиент: ", ct);
+        // Скачивание по категориям. Каждая категория показывает свой счётчик n/total.
+        await DownloadManyAsync(libJobs,   onProgress, logger, "Установка библиотек", ct);
+        await DownloadManyAsync(nativeJobs,onProgress, logger, "Установка нативов",   ct);
+        await DownloadManyAsync(clientJobs,onProgress, logger, "Установка клиента",   ct);
 
         // Extract natives
         var nativesDir = Path.Combine(Constants.NativesDir, versionId);
@@ -173,7 +161,7 @@ public static class VersionInstaller
         }
 
         if (assetJobs.Count > 0)
-            await DownloadManyAsync(assetJobs, Heavy, "Ассет: ", ct);
+            await DownloadManyAsync(assetJobs, onProgress, logger, "Установка ассетов", ct);
 
         try { if (Directory.Exists(Constants.NativesTmpDir)) Directory.Delete(Constants.NativesTmpDir, true); }
         catch { }
@@ -269,23 +257,33 @@ public static class VersionInstaller
         }
     }
 
+    /// <summary>
+    /// Параллельно скачивает список файлов. В onProgress уходит только агрегат
+    /// вида "{label} {done}/{total}". Отдельные имена файлов — в logger.
+    /// </summary>
     private static async Task DownloadManyAsync(
         List<(string url, string dest)> jobs,
-        Action<int, int, string>? progress,
+        Action<int, int, string>? onProgress,
+        Action<string>? logger,
         string label,
         CancellationToken ct)
     {
         if (jobs.Count == 0) return;
 
+        int total = jobs.Count;
+
+        // Отсеиваем уже существующие
         var pending = new List<(string url, string dest)>();
         foreach (var (url, dest) in jobs)
         {
             bool exists = File.Exists(dest) && new FileInfo(dest).Length > 0;
-            if (exists)
-                progress?.Invoke(0, jobs.Count, $"{label}{Path.GetFileName(dest)} (уже есть)");
-            else
+            if (!exists)
                 pending.Add((url, dest));
         }
+
+        int done = total - pending.Count;
+        onProgress?.Invoke(done, total, $"{label} {done}/{total}");
+
         if (pending.Count == 0) return;
 
         var sem = new SemaphoreSlim(Constants.MaxParallelDownloads);
@@ -294,10 +292,16 @@ public static class VersionInstaller
             await sem.WaitAsync(ct);
             try
             {
+                ct.ThrowIfCancellationRequested();
                 await Downloader.DownloadAsync(job.url, job.dest, ct: ct);
-                progress?.Invoke(0, jobs.Count, $"{label}{Path.GetFileName(job.dest)}");
+                logger?.Invoke($"[{label}] {Path.GetFileName(job.dest)}");
             }
-            finally { sem.Release(); }
+            finally
+            {
+                int n = Interlocked.Increment(ref done);
+                onProgress?.Invoke(n, total, $"{label} {n}/{total}");
+                sem.Release();
+            }
         }).ToList();
 
         try { await Task.WhenAll(tasks); }

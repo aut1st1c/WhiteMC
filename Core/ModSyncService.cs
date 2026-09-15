@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +13,7 @@ public static class ModSyncService
 {
     private const string LocalStateFile = ".whitemc_mods.json";
     private const string ModsDirName = "mods";
+    private const int MaxParallelModDownloads = 4;
 
     public static async Task SyncAsync(
         string profileName,
@@ -77,47 +77,63 @@ public static class ModSyncService
 
         foreach (var rm in remote.Mods)
         {
-            // хеш совпадает — файл на месте
             if (localHashes.TryGetValue(rm.Filename, out var localHash)
                 && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase))
             {
-                continue;
+                continue;   // хеш совпал — файл на месте
             }
 
-            if (rm.Source is "modrinth" or "curseforge")
+            // CurseForge временно отключён: всё, что не modrinth, уходит в unresolved.
+            if (rm.Source == "modrinth")
                 toDownload.Add(rm);
             else
                 unresolvedOnServer.Add(rm);
         }
 
-        // 5) Качаем по одному
-        int done = 0;
+        // 5) Качаем параллельно, до MaxParallelModDownloads одновременно
         int total = toDownload.Count;
+        int done = 0;
 
-        foreach (var rm in toDownload)
+        if (total > 0)
         {
-            ct.ThrowIfCancellationRequested();
-            done++;
-            P(done, total, $"({done}/{total}) {rm.Filename}");
+            P(0, total, $"Установка модов 0/{total}");
 
-            var dest = Path.Combine(modsDir, rm.Filename);
-            try
+            var sem = new SemaphoreSlim(MaxParallelModDownloads);
+            var tasks = toDownload.Select(async rm =>
             {
-                await DownloadModAsync(rm, dest, ct);
+                await sem.WaitAsync(ct);
+                try
+                {
+                    ct.ThrowIfCancellationRequested();
+                    var dest = Path.Combine(modsDir, rm.Filename);
 
-                var actual = await HashUtil.ComputeAsync(dest, "sha512", ct);
-                if (!string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase))
-                    throw new Exception("хеш не совпал после скачивания");
+                    try
+                    {
+                        await DownloadModAsync(rm, dest, ct);
 
-                localHashes[rm.Filename] = actual;
-                logger?.Invoke($"[Синхр] + {rm.Filename}");
-            }
-            catch (Exception ex)
-            {
-                logger?.Invoke($"[Синхр] ОШИБКА {rm.Filename}: {ex.Message}");
-                try { if (File.Exists(dest)) File.Delete(dest); } catch { }
-                throw;
-            }
+                        var actual = await HashUtil.ComputeAsync(dest, "sha512", ct);
+                        if (!string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase))
+                            throw new Exception("хеш не совпал после скачивания");
+
+                        lock (localHashes) { localHashes[rm.Filename] = actual; }
+                        logger?.Invoke($"[Синхр] + {rm.Filename}");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger?.Invoke($"[Синхр] ОШИБКА {rm.Filename}: {ex.Message}");
+                        try { if (File.Exists(dest)) File.Delete(dest); } catch { }
+                        throw;
+                    }
+                }
+                finally
+                {
+                    int n = Interlocked.Increment(ref done);
+                    P(n, total, $"Установка модов {n}/{total}");
+                    sem.Release();
+                }
+            }).ToList();
+
+            await Task.WhenAll(tasks);
         }
 
         // 6) Fallback: скачиваем архив для неопознанных
@@ -157,34 +173,42 @@ public static class ModSyncService
     private static async Task DownloadModAsync(
         RemoteMod rm, string dest, CancellationToken ct)
     {
-        string url = rm.Source switch
-        {
-            "modrinth" => rm.ModrinthUrl
-                ?? throw new Exception("В манифесте нет modrinth_url"),
-            "curseforge" => await ResolveCurseForgeUrlAsync(
-                rm.CurseforgeModId ?? throw new Exception("Нет curseforge_mod_id"),
-                rm.CurseforgeFileId ?? throw new Exception("Нет curseforge_file_id"),
-                ct),
-            _ => throw new Exception($"Неизвестный источник: {rm.Source}")
-        };
+        // CurseForge временно отключён — см. закомментированный switch ниже.
+        // string url = rm.Source switch
+        // {
+        //     "modrinth" => rm.ModrinthUrl
+        //         ?? throw new Exception("В манифесте нет modrinth_url"),
+        //     "curseforge" => await ResolveCurseForgeUrlAsync(
+        //         rm.CurseforgeModId ?? throw new Exception("Нет curseforge_mod_id"),
+        //         rm.CurseforgeFileId ?? throw new Exception("Нет curseforge_file_id"),
+        //         ct),
+        //     _ => throw new Exception($"Неизвестный источник: {rm.Source}")
+        // };
+
+        if (rm.Source != "modrinth")
+            throw new Exception($"Источник «{rm.Source}» пока не поддерживается");
+
+        var url = rm.ModrinthUrl
+            ?? throw new Exception("В манифесте нет modrinth_url");
 
         await Downloader.DownloadAsync(url, dest, ct: ct);
     }
 
-    private static async Task<string> ResolveCurseForgeUrlAsync(
-        long modId, long fileId, CancellationToken ct)
-    {
-        // Прокси на твоём сервере — API-ключ CF нельзя вшивать в клиент
-        var proxyUrl = $"{Constants.CurseForgeProxy}/download" +
-                       $"?modId={modId}&fileId={fileId}";
-
-        var json = await Http.GetStringAsync(proxyUrl, ct);
-        var node = JsonNode.Parse(json);
-        var url = node?["data"]?.GetValue<string>();
-        if (string.IsNullOrEmpty(url))
-            throw new Exception($"CF: не удалось получить URL для {modId}/{fileId}");
-        return url;
-    }
+    // CurseForge-резолвер временно отключён.
+    // private static async Task<string> ResolveCurseForgeUrlAsync(
+    //     long modId, long fileId, CancellationToken ct)
+    // {
+    //     // Прокси на твоём сервере — API-ключ CF нельзя вшивать в клиент
+    //     var proxyUrl = $"{Constants.CurseForgeProxy}/download" +
+    //                    $"?modId={modId}&fileId={fileId}";
+    //
+    //     var json = await Http.GetStringAsync(proxyUrl, ct);
+    //     var node = System.Text.Json.Nodes.JsonNode.Parse(json);
+    //     var url = node?["data"]?.GetValue<string>();
+    //     if (string.IsNullOrEmpty(url))
+    //         throw new Exception($"CF: не удалось получить URL для {modId}/{fileId}");
+    //     return url;
+    // }
 
     private static async Task DownloadArchiveFallbackAsync(
         string archiveUrl, string modsDir,
