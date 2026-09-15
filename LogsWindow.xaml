@@ -1,0 +1,71 @@
+<Window x:Class="WhiteMC.LogsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WhiteMC — логи" Width="980" Height="580"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{StaticResource Bg}" Foreground="{StaticResource Text}"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title bar -->
+        <Grid Grid.Row="0" Background="Transparent"
+              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <TextBlock Text="WhiteMC — логи"
+                       VerticalAlignment="Center" Margin="20,0,0,0"
+                       Foreground="{StaticResource Subtext}" FontSize="12"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Margin="0,0,10,0">
+                <Button Content="−" Style="{StaticResource TitleBarBtn}"
+                        Click="BtnMinimize_Click"/>
+                <Button Content="✕" Style="{StaticResource TitleBarCloseBtn}"
+                        Margin="4,0,0,0" Click="BtnClose_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="16,4,16,14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Журнал лаунчера" Style="{StaticResource H2}"/>
+                <TextBlock x:Name="LblPath" Style="{StaticResource SubtextStyle}"
+                           VerticalAlignment="Center" Margin="12,2,0,0"/>
+            </StackPanel>
+
+            <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,10,0,12"/>
+
+            <Border Grid.Row="2" Background="{StaticResource Mantle}" CornerRadius="6">
+                <TextBox x:Name="TxtLog" IsReadOnly="True"
+                         Background="Transparent" Foreground="{StaticResource Text}"
+                         BorderThickness="0" Padding="12,10"
+                         FontFamily="{StaticResource MonoFont}" FontSize="12"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto"
+                         TextWrapping="NoWrap"
+                         AcceptsReturn="True"/>
+            </Border>
+
+            <Grid Grid.Row="3" Margin="0,12,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="📂  Открыть папку с логами" Style="{StaticResource GhostBtn}"
+                            Click="BtnOpenFolder_Click"/>
+                    <Button Content="Очистить вид" Style="{StaticResource GhostBtn}" Margin="6,0,0,0"
+                            Click="BtnClear_Click"/>
+                </StackPanel>
+                <Button Content="Закрыть" Style="{StaticResource BaseBtn}"
+                        HorizontalAlignment="Right" Click="BtnClose_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
