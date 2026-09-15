@@ -7,7 +7,7 @@
     "modpack": {
       "manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest.json",
       "components": {
-        "mods": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/config.zip"
+        "mods": "https://github.com/aut1st1c/WhiteMC/releases/download/0.1.1/mods.zip"
       }
     }
   },
