@@ -1,3 +1,5 @@
 {
-  "profiles_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/profiles.json"
+  "profiles_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/profiles.json",
+  "launcher_version": "0.1.0",
+  "launcher_download_url": "https://github.com/aut1st1c/WhiteMC/releases/latest"
 }
