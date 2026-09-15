@@ -6,96 +6,90 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Background="{StaticResource Bg}"
-        Foreground="{StaticResource Text}">
+        Background="{DynamicResource Bg}"
+        Foreground="{DynamicResource Text}">
     <Grid Margin="24,20,24,14">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>  <!-- 0: header -->
-            <RowDefinition Height="Auto"/>  <!-- 1: separator -->
-            <RowDefinition Height="Auto"/>  <!-- 2: profile -->
-            <RowDefinition Height="Auto"/>  <!-- 3: card -->
-            <RowDefinition Height="Auto"/>  <!-- 4: actions -->
-            <RowDefinition Height="*"/>     <!-- 5: распорка -->
-            <RowDefinition Height="Auto"/>  <!-- 6: status + progress -->
-            <RowDefinition Height="Auto"/>  <!-- 7: footer -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header / Title bar -->
         <Grid Grid.Row="0" Background="Transparent"
               MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="WhiteMC" Style="{StaticResource H1}"/>
-                <TextBlock Text="лаунчер Minecraft" Style="{StaticResource SubtextStyle}"
+                <TextBlock Text="WhiteMC" Style="{DynamicResource H1}"/>
+                <TextBlock Text="лаунчер Minecraft" Style="{DynamicResource SubtextStyle}"
                            VerticalAlignment="Bottom" Margin="10,0,0,4"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                         VerticalAlignment="Top">
                 <Button x:Name="BtnSettings" Content="⚙  Настройки"
-                        Style="{StaticResource GhostBtn}" Click="BtnSettings_Click"/>
+                        Style="{DynamicResource GhostBtn}" Click="BtnSettings_Click"/>
                 <Button x:Name="BtnLogs" Content="📜  Логи"
-                        Style="{StaticResource GhostBtn}" Margin="6,0,0,0"
+                        Style="{DynamicResource GhostBtn}" Margin="6,0,0,0"
                         Click="BtnLogs_Click"/>
                 <Button x:Name="BtnMinimize" Content="−"
-                        Style="{StaticResource TitleBarBtn}" Margin="14,0,0,0"
+                        Style="{DynamicResource TitleBarBtn}" Margin="14,0,0,0"
                         Click="BtnMinimize_Click"/>
                 <Button x:Name="BtnClose" Content="✕"
-                        Style="{StaticResource TitleBarCloseBtn}" Margin="4,0,0,0"
+                        Style="{DynamicResource TitleBarCloseBtn}" Margin="4,0,0,0"
                         Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,16,0,0"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Border}" Margin="0,16,0,0"/>
 
-        <!-- Profile row -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,18,0,16">
-            <TextBlock Text="Профиль" Style="{StaticResource H2}" VerticalAlignment="Center"/>
+            <TextBlock Text="Профиль" Style="{DynamicResource H2}" VerticalAlignment="Center"/>
             <ComboBox x:Name="CmbProfile" Width="260" Margin="14,0,12,0"
                       SelectionChanged="CmbProfile_SelectionChanged"/>
-            <TextBlock x:Name="LblVersion" Foreground="{StaticResource Accent}"
+            <TextBlock x:Name="LblVersion" Foreground="{DynamicResource Accent}"
                        FontWeight="Bold" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <!-- Card -->
-        <Border Grid.Row="3" Background="{StaticResource Card}" CornerRadius="8" Padding="20,16"
+        <Border Grid.Row="3" Background="{DynamicResource Card}" CornerRadius="8" Padding="20,16"
                 Margin="0,0,0,18">
             <StackPanel>
                 <TextBlock x:Name="LblJava"/>
                 <TextBlock x:Name="LblNeoForge" Margin="0,6,0,0"/>
                 <TextBlock x:Name="LblModpack"   Margin="0,6,0,0" TextWrapping="Wrap"/>
                 <TextBlock x:Name="LblMods"      Margin="0,6,0,0" TextWrapping="Wrap"/>
-                <TextBlock x:Name="LblInstance"  Style="{StaticResource SubtextStyle}"
+                <TextBlock x:Name="LblInstance"  Style="{DynamicResource SubtextStyle}"
                            Margin="0,6,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
-        <!-- Actions -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,18">
-            <Button x:Name="BtnInstall" Content="⬇  Установить" Style="{StaticResource PrimaryBtn}"/>
-            <Button x:Name="BtnUpdate"  Content="🔄  Проверить обновления" Style="{StaticResource BaseBtn}"
+            <Button x:Name="BtnInstall" Content="⬇  Установить" Style="{DynamicResource PrimaryBtn}"/>
+            <Button x:Name="BtnUpdate"  Content="🔄  Проверить обновления" Style="{DynamicResource BaseBtn}"
                     Margin="8,0,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnRepair"  Content="🛠  Починить установку" Style="{StaticResource BaseBtn}"
+            <Button x:Name="BtnRepair"  Content="🛠  Починить установку" Style="{DynamicResource BaseBtn}"
                     Margin="8,0,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnLaunch"  Content="▶  Запустить" Style="{StaticResource SuccessBtn}"
+            <Button x:Name="BtnLaunch"  Content="▶  Запустить" Style="{DynamicResource SuccessBtn}"
                     Margin="8,0,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnKill"    Content="⛔  Завершить" Style="{StaticResource DangerBtn}"
+            <Button x:Name="BtnKill"    Content="⛔  Завершить" Style="{DynamicResource DangerBtn}"
                     Margin="8,0,0,0" Visibility="Collapsed"/>
         </StackPanel>
 
-        <!-- Status + Progress -->
         <StackPanel Grid.Row="6" Margin="0,0,0,10">
-            <TextBlock x:Name="LblStatus" Style="{StaticResource SubtextStyle}"
+            <TextBlock x:Name="LblStatus" Style="{DynamicResource SubtextStyle}"
                        TextWrapping="Wrap" Margin="0,0,0,8"/>
             <ProgressBar x:Name="Prog" VerticalAlignment="Top"
                          Minimum="0" Maximum="100" Value="0" Visibility="Collapsed"/>
         </StackPanel>
 
-        <!-- Footer: слева — лог, справа — версия лаунчера -->
         <Grid Grid.Row="7">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="📄" Style="{StaticResource SubtextStyle}"/>
-                <TextBlock x:Name="LblLogFile" Style="{StaticResource SubtextStyle}" Margin="6,0,0,0"/>
+                <TextBlock Text="📄" Style="{DynamicResource SubtextStyle}"/>
+                <TextBlock x:Name="LblLogFile" Style="{DynamicResource SubtextStyle}" Margin="6,0,0,0"/>
             </StackPanel>
-            <TextBlock x:Name="LblAppVersion" Style="{StaticResource SubtextStyle}"
+            <TextBlock x:Name="LblAppVersion" Style="{DynamicResource SubtextStyle}"
                        HorizontalAlignment="Right"/>
         </Grid>
     </Grid>

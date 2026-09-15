@@ -5,7 +5,8 @@
         WindowStartupLocation="CenterOwner"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Background="{StaticResource Bg}" Foreground="{StaticResource Text}"
+        Background="{DynamicResource Bg}"
+        Foreground="{DynamicResource Text}"
         ShowInTaskbar="False">
     <Grid>
         <Grid.RowDefinitions>
@@ -13,22 +14,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Title bar -->
         <Grid Grid.Row="0" Background="Transparent"
               MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <TextBlock Text="WhiteMC — логи"
                        VerticalAlignment="Center" Margin="20,0,0,0"
-                       Foreground="{StaticResource Subtext}" FontSize="12"/>
+                       Foreground="{DynamicResource Subtext}" FontSize="12"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                         VerticalAlignment="Center" Margin="0,0,10,0">
-                <Button Content="−" Style="{StaticResource TitleBarBtn}"
+                <Button Content="−" Style="{DynamicResource TitleBarBtn}"
                         Click="BtnMinimize_Click"/>
-                <Button Content="✕" Style="{StaticResource TitleBarCloseBtn}"
+                <Button Content="✕" Style="{DynamicResource TitleBarCloseBtn}"
                         Margin="4,0,0,0" Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
 
-        <!-- Content -->
         <Grid Grid.Row="1" Margin="16,4,16,14">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -38,18 +37,19 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Журнал лаунчера" Style="{StaticResource H2}"/>
-                <TextBlock x:Name="LblPath" Style="{StaticResource SubtextStyle}"
+                <TextBlock Text="Журнал лаунчера" Style="{DynamicResource H2}"/>
+                <TextBlock x:Name="LblPath" Style="{DynamicResource SubtextStyle}"
                            VerticalAlignment="Center" Margin="12,2,0,0"/>
             </StackPanel>
 
-            <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,10,0,12"/>
+            <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Border}"
+                       Margin="0,10,0,12"/>
 
-            <Border Grid.Row="2" Background="{StaticResource Mantle}" CornerRadius="6">
+            <Border Grid.Row="2" Background="{DynamicResource Mantle}" CornerRadius="6">
                 <TextBox x:Name="TxtLog" IsReadOnly="True"
-                         Background="Transparent" Foreground="{StaticResource Text}"
+                         Background="Transparent" Foreground="{DynamicResource Text}"
                          BorderThickness="0" Padding="12,10"
-                         FontFamily="{StaticResource MonoFont}" FontSize="12"
+                         FontFamily="{DynamicResource MonoFont}" FontSize="12"
                          VerticalScrollBarVisibility="Auto"
                          HorizontalScrollBarVisibility="Auto"
                          TextWrapping="NoWrap"
@@ -58,12 +58,12 @@
 
             <Grid Grid.Row="3" Margin="0,12,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Content="📂  Открыть папку с логами" Style="{StaticResource GhostBtn}"
+                    <Button Content="📂  Открыть папку с логами" Style="{DynamicResource GhostBtn}"
                             Click="BtnOpenFolder_Click"/>
-                    <Button Content="Очистить вид" Style="{StaticResource GhostBtn}" Margin="6,0,0,0"
+                    <Button Content="Очистить вид" Style="{DynamicResource GhostBtn}" Margin="6,0,0,0"
                             Click="BtnClear_Click"/>
                 </StackPanel>
-                <Button Content="Закрыть" Style="{StaticResource BaseBtn}"
+                <Button Content="Закрыть" Style="{DynamicResource BaseBtn}"
                         HorizontalAlignment="Right" Click="BtnClose_Click"/>
             </Grid>
         </Grid>

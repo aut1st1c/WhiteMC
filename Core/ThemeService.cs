@@ -8,15 +8,16 @@ public static class ThemeService
 {
     public static readonly IReadOnlyList<(string Id, string Name)> Available = new[]
     {
-        ("Mocha",      "Catppuccin Mocha"),
-        ("Latte",      "Catppuccin Latte"),
-        ("Nord",       "Nord"),
-        ("Dracula",    "Dracula"),
-        ("TokyoNight", "Tokyo Night"),
-        ("Gruvbox",    "Gruvbox Dark"),
+        ("Mocha",    "Mocha — синяя тёмная"),
+        ("Latte",    "Latte — светлая"),
+        ("Obsidian", "Obsidian — OLED + циан"),
+        ("Ember",    "Ember — тёплая, янтарь"),
+        ("Neon",     "Neon — киберпанк"),
     };
 
     public const string DefaultTheme = "Mocha";
+
+    public static string CurrentId { get; private set; } = DefaultTheme;
 
     public static string Normalize(string? id)
     {
@@ -33,13 +34,17 @@ public static class ThemeService
         var app = Application.Current;
         if (app == null) return;
 
-        // 1) Пробуем запрошенную тему, при провале — Mocha.
-        if (TryApply(requested, app)) return;
+        if (!TryApply(requested, app))
+        {
+            if (requested == DefaultTheme) return;
+            LogService.Log($"[WARN] Тема '{requested}' не загрузилась, откат на {DefaultTheme}");
+            if (!TryApply(DefaultTheme, app)) return;
+            requested = DefaultTheme;
+        }
 
-        LogService.Log($"[WARN] Тема '{requested}' не загрузилась, откат на {DefaultTheme}");
-        if (requested != DefaultTheme && TryApply(DefaultTheme, app)) return;
-
-        LogService.Log("[FATAL] Не удалось загрузить ни одну тему — окна будут без стилей");
+        CurrentId = requested;
+        LogService.Log($"[WhiteMC] Применена тема: {requested}");
+        KickWindows(app);
     }
 
     private static bool TryApply(string themeId, Application app)
@@ -48,33 +53,45 @@ public static class ThemeService
         {
             var merged = app.Resources.MergedDictionaries;
 
-            // Убираем предыдущие темы (актуально при повторном вызове).
             for (int i = merged.Count - 1; i >= 0; i--)
             {
                 var src = merged[i].Source?.OriginalString ?? "";
-                if (src.Contains("/Themes/", StringComparison.OrdinalIgnoreCase) ||
-                    src.StartsWith("Themes/", StringComparison.OrdinalIgnoreCase))
-                {
+                if (src.StartsWith("Themes/", StringComparison.OrdinalIgnoreCase))
                     merged.RemoveAt(i);
-                }
             }
 
             merged.Add(new ResourceDictionary
             {
-                Source = new Uri($"Themes/Colors/{themeId}.xaml", UriKind.Relative)
-            });
-            merged.Add(new ResourceDictionary
-            {
-                Source = new Uri("Themes/Base.xaml", UriKind.Relative)
+                Source = new Uri($"Themes/{themeId}.xaml", UriKind.Relative)
             });
 
-            LogService.Log($"[WhiteMC] Применена тема: {themeId}");
             return true;
         }
         catch (Exception ex)
         {
             LogService.Log($"[WARN] TryApply('{themeId}') упал: {ex.Message}");
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Заставляет WPF переприменить implicit-стили к уже открытым окнам.
+    /// Нужно, потому что при подмене MergedDictionaries стили без x:Key
+    /// не всегда триггерят обновление визуального дерева.
+    /// </summary>
+    private static void KickWindows(Application app)
+    {
+        foreach (Window w in app.Windows)
+        {
+            try
+            {
+                var s = w.Style;
+                w.Style = null;
+                w.Style = s;
+                w.InvalidateVisual();
+                w.UpdateLayout();
+            }
+            catch { }
         }
     }
 }

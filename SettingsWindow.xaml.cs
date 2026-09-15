@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using WhiteMC.Core;
 
 namespace WhiteMC;
@@ -11,6 +12,7 @@ public partial class SettingsWindow : Window
     private readonly LauncherSettings _settings;
     private readonly string? _currentProfile;
     private readonly string _originalTheme;
+    private bool _suppressThemeChange;
 
     public SettingsWindow(LauncherSettings settings, string? currentProfile)
     {
@@ -24,7 +26,7 @@ public partial class SettingsWindow : Window
         TxtXmx.Text  = settings.Xmx;
         TxtJvm.Text  = settings.ExtraJvmArgs;
 
-        // Заполняем ComboBox темами.
+        _suppressThemeChange = true;
         foreach (var (id, name) in ThemeService.Available)
             CmbTheme.Items.Add(new ThemeEntry(id, name));
 
@@ -38,6 +40,7 @@ public partial class SettingsWindow : Window
         }
         if (CmbTheme.SelectedIndex < 0 && CmbTheme.Items.Count > 0)
             CmbTheme.SelectedIndex = 0;
+        _suppressThemeChange = false;
 
         LblLogPath.Text = $"Лог:  {Constants.LogFile}";
         LblCache.Text   = $"Кэш модпаков:  {Constants.ModpackCacheDir}";
@@ -76,63 +79,40 @@ public partial class SettingsWindow : Window
 
     private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();
 
+    private void CmbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_suppressThemeChange) return;
+        if (CmbTheme.SelectedItem is not ThemeEntry te) return;
+
+        // Закрываем дропдаун: Popup может не перекраситься во время смены темы.
+        CmbTheme.IsDropDownOpen = false;
+
+        ThemeService.Apply(te.Id);
+    }
+
     private void BtnSave_Click(object sender, RoutedEventArgs e)
     {
         _settings.Username     = string.IsNullOrWhiteSpace(TxtUser.Text) ? "Player" : TxtUser.Text.Trim();
         _settings.Xms          = string.IsNullOrWhiteSpace(TxtXms.Text)  ? "512M"   : TxtXms.Text.Trim();
         _settings.Xmx          = string.IsNullOrWhiteSpace(TxtXmx.Text)  ? "2G"     : TxtXmx.Text.Trim();
         _settings.ExtraJvmArgs = TxtJvm.Text.Trim();
-
-        var newTheme = (CmbTheme.SelectedItem as ThemeEntry)?.Id ?? ThemeService.DefaultTheme;
-        _settings.Theme = newTheme;
+        _settings.Theme        = (CmbTheme.SelectedItem as ThemeEntry)?.Id ?? ThemeService.DefaultTheme;
 
         SettingsService.Save(_settings);
         LogService.Log($"[WhiteMC] Настройки сохранены: Xms={_settings.Xms}, Xmx={_settings.Xmx}, " +
                        $"JVM='{_settings.ExtraJvmArgs}', Theme={_settings.Theme}");
 
-        bool themeChanged = !string.Equals(newTheme, _originalTheme, StringComparison.Ordinal);
+        Close();
+    }
 
-        if (themeChanged)
-        {
-            var r = MessageBox.Show(this,
-                "Тема изменится после перезапуска лаунчера.\n\nПерезапустить сейчас?",
-                "WhiteMC", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (r == MessageBoxResult.Yes)
-            {
-                RestartApp();
-                return;
-            }
-        }
+    private void BtnCancel_Click(object sender, RoutedEventArgs e)
+    {
+        if (!string.Equals(ThemeService.CurrentId, _originalTheme, StringComparison.Ordinal))
+            ThemeService.Apply(_originalTheme);
 
         Close();
     }
 
-    private static void RestartApp()
-    {
-        try
-        {
-            var exe = Environment.ProcessPath
-                   ?? Process.GetCurrentProcess().MainModule?.FileName;
-            if (string.IsNullOrEmpty(exe))
-                throw new Exception("Не удалось определить путь к исполняемому файлу");
-
-            Process.Start(new ProcessStartInfo { FileName = exe, UseShellExecute = true });
-            Application.Current.Shutdown();
-        }
-        catch (Exception ex)
-        {
-            LogService.Log($"[WhiteMC] Не удалось перезапустить: {ex}");
-            MessageBox.Show(
-                $"Не удалось перезапустить лаунчер:\n{ex.Message}\n\n" +
-                "Перезапустите вручную.",
-                "WhiteMC", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
-    }
-
-    private void BtnCancel_Click(object sender, RoutedEventArgs e) => Close();
-
-    /// <summary>Обёртка для ComboBox.Item.</summary>
     private sealed class ThemeEntry
     {
         public string Id   { get; }
