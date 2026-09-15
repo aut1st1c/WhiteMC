@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 
 namespace WhiteMC.Core;
 
@@ -28,7 +27,7 @@ public class LinksConfig
     [JsonPropertyName("profiles_url")]
     public string? ProfilesUrl { get; set; }
 
-    /// <summary>Последняя версия лаунчера на сервере (semver-подобная).</summary>
+    /// <summary>Последняя версия лаунчера на сервере.</summary>
     [JsonPropertyName("launcher_version")]
     public string? LauncherVersion { get; set; }
 
@@ -38,25 +37,40 @@ public class LinksConfig
 }
 
 // ---------------------------------------------------------------------- //
-//  profiles.json (без изменений)
+//  profiles.json
 // ---------------------------------------------------------------------- //
 
 public class ModpackProfile
 {
-    public string? VersionUrl  { get; set; }
+    [JsonPropertyName("version_url")]
+    public string? VersionUrl { get; set; }
+
+    [JsonPropertyName("manifest_url")]
     public string? ManifestUrl { get; set; }
+
+    [JsonPropertyName("components")]
     public Dictionary<string, string> Components { get; set; } = new();
 }
 
 public class GameProfile
 {
+    [JsonPropertyName("mc")]
     public string Mc { get; set; } = "";
-    public bool   NeoForge { get; set; }
+
+    [JsonPropertyName("neoforge")]
+    public bool NeoForge { get; set; }
+
+    [JsonPropertyName("display_name")]
     public string? DisplayName { get; set; }
+
+    [JsonPropertyName("description")]
     public string? Description { get; set; }
+
+    [JsonPropertyName("modpack")]
     public ModpackProfile? Modpack { get; set; }
 }
 
+/// <summary>Элемент ComboBox: хранит ключ профиля и его отображаемое имя.</summary>
 public sealed class ProfileEntry
 {
     public string Key     { get; }
@@ -146,7 +160,7 @@ public static class Profiles
 }
 
 // ---------------------------------------------------------------------- //
-//  Mojang version manifest (без изменений)
+//  Mojang version manifest
 // ---------------------------------------------------------------------- //
 
 public class VersionManifest
@@ -161,7 +175,7 @@ public class VersionInfo
 }
 
 // ---------------------------------------------------------------------- //
-//  Mod sync (Modrinth, без изменений)
+//  Mod sync (Modrinth)
 // ---------------------------------------------------------------------- //
 
 public class RemoteManifest
@@ -172,39 +186,66 @@ public class RemoteManifest
     [JsonPropertyName("mods")]
     public List<RemoteMod> Mods { get; set; } = new();
 
+    /// <summary>URL архива mods.zip — fallback для source=unresolved.</summary>
     [JsonPropertyName("archive_url")]
     public string? ArchiveUrl { get; set; }
 }
 
 public class RemoteMod
 {
-    [JsonPropertyName("filename")] public string Filename { get; set; } = "";
-    [JsonPropertyName("sha512")]   public string Sha512   { get; set; } = "";
-    [JsonPropertyName("sha1")]     public string? Sha1    { get; set; }
-    [JsonPropertyName("size")]     public long   Size     { get; set; }
-    [JsonPropertyName("source")]   public string Source   { get; set; } = "";
+    [JsonPropertyName("filename")]
+    public string Filename { get; set; } = "";
 
-    [JsonPropertyName("modrinth_version_id")] public string? ModrinthVersionId { get; set; }
-    [JsonPropertyName("modrinth_project_id")] public string? ModrinthProjectId { get; set; }
-    [JsonPropertyName("modrinth_url")]        public string? ModrinthUrl       { get; set; }
+    [JsonPropertyName("sha512")]
+    public string Sha512 { get; set; } = "";
+
+    [JsonPropertyName("sha1")]
+    public string? Sha1 { get; set; }
+
+    [JsonPropertyName("size")]
+    public long Size { get; set; }
+
+    /// <summary>"modrinth" или "unresolved".</summary>
+    [JsonPropertyName("source")]
+    public string Source { get; set; } = "";
+
+    [JsonPropertyName("modrinth_version_id")]
+    public string? ModrinthVersionId { get; set; }
+
+    [JsonPropertyName("modrinth_project_id")]
+    public string? ModrinthProjectId { get; set; }
+
+    [JsonPropertyName("modrinth_url")]
+    public string? ModrinthUrl { get; set; }
 }
 
 public class LocalModsState
 {
-    [JsonPropertyName("manifest_version")] public string ManifestVersion { get; set; } = "";
-    [JsonPropertyName("mods")]             public Dictionary<string, string> Mods { get; set; } = new();
+    [JsonPropertyName("manifest_version")]
+    public string ManifestVersion { get; set; } = "";
+
+    [JsonPropertyName("mods")]
+    public Dictionary<string, string> Mods { get; set; } = new();
 }
 
+/// <summary>Результат проверки локальных модов против серверного манифеста.</summary>
 public class ModCheckResult
 {
     public string ManifestVersion { get; set; } = "";
     public int    TotalRemote { get; set; }
     public int    TotalLocal  { get; set; }
 
+    /// <summary>Есть на сервере, нет локально (можно скачать с Modrinth).</summary>
     public List<RemoteMod> Missing    { get; set; } = new();
+
+    /// <summary>Есть локально, но хэш не совпал (можно перекачать с Modrinth).</summary>
     public List<RemoteMod> Mismatched { get; set; } = new();
+
+    /// <summary>Есть на сервере, но без прямого URL — тянуть из archive_url.</summary>
     public List<RemoteMod> Unresolved { get; set; } = new();
-    public List<string>    Extra      { get; set; } = new();
+
+    /// <summary>Есть локально, но нет в манифесте — на удаление.</summary>
+    public List<string> Extra { get; set; } = new();
 
     public int  Issues     => Missing.Count + Mismatched.Count + Unresolved.Count + Extra.Count;
     public bool IsUpToDate => Issues == 0;
