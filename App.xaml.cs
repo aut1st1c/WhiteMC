@@ -10,25 +10,15 @@ public partial class App : Application
 {
     public App()
     {
-        // Исключения в UI-потоке
         DispatcherUnhandledException += OnDispatcherUnhandledException;
-
-        // Исключения в фоновых потоках (Task.Run, Thread, ...)
         AppDomain.CurrentDomain.UnhandledException += OnDomainUnhandledException;
-
-        // Исключения в Task без await
         TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        // ВАЖНО: инициализируем логгер ДО создания MainWindow,
-        // иначе ранние сообщения уйдут в никуда, а повторное открытие
-        // файла перезатрёт уже созданный latest.log.
-        try
-        {
-            LogService.RotateOnStartup();
-        }
+        // 1) Логгер.
+        try { LogService.RotateOnStartup(); }
         catch (Exception ex)
         {
             MessageBox.Show(
@@ -37,7 +27,41 @@ public partial class App : Application
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        // 2) Настройки (нужны для темы).
+        LauncherSettings settings;
+        try { settings = SettingsService.Load(); }
+        catch { settings = new LauncherSettings(); }
+
+        // 3) Тема — до создания окон.
+        try { ThemeService.Apply(settings.Theme); }
+        catch (Exception ex)
+        {
+            try { LogService.Log($"[FATAL] Не удалось применить тему: {ex}"); } catch { }
+        }
+
+        // 4) Bootstrap: links.json → profiles.json.
+        try
+        {
+            LinksService.Initialize();
+            Profiles.Initialize();
+        }
+        catch (Exception ex)
+        {
+            try { LogService.Log($"[FATAL] Конфигурация не загружена: {ex}"); } catch { }
+            MessageBox.Show(
+                $"Не удалось загрузить конфигурацию лаунчера:\n{ex.Message}",
+                "WhiteMC — ошибка запуска",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+            Shutdown(1);
+            return;
+        }
+
         base.OnStartup(e);
+
+        // 5) Главное окно.
+        var win = new MainWindow();
+        MainWindow = win;
+        win.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -51,13 +75,9 @@ public partial class App : Application
     private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         try { LogService.Log($"[FATAL][UI] {e.Exception}"); } catch { }
-
-        MessageBox.Show(
-            e.Exception.ToString(),
+        MessageBox.Show(e.Exception.ToString(),
             "WhiteMC — необработанное исключение",
             MessageBoxButton.OK, MessageBoxImage.Error);
-
-        // Не даём приложению упасть — продолжаем работу.
         e.Handled = true;
     }
 
@@ -65,10 +85,7 @@ public partial class App : Application
     {
         var ex = e.ExceptionObject as Exception;
         try { LogService.Log($"[FATAL][Domain] {ex}"); } catch { }
-
-        // Здесь уже нельзя "спасти" процесс — CLR завершит его.
-        MessageBox.Show(
-            ex?.ToString() ?? "Неизвестная ошибка",
+        MessageBox.Show(ex?.ToString() ?? "Неизвестная ошибка",
             "WhiteMC — критическая ошибка",
             MessageBoxButton.OK, MessageBoxImage.Error);
     }

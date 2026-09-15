@@ -11,5 +11,8 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <PublishReadyToRun>false</PublishReadyToRun>
     <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
+    <Version>0.1.0</Version>
+    <FileVersion>$(Version)</FileVersion>
+    <InformationalVersion>$(Version)</InformationalVersion>
   </PropertyGroup>
 </Project>

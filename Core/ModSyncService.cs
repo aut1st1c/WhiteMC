@@ -12,12 +12,95 @@ namespace WhiteMC.Core;
 public static class ModSyncService
 {
     private const string LocalStateFile = ".whitemc_mods.json";
-    private const string ModsDirName = "mods";
-    private const int MaxParallelModDownloads = 4;
+    private const string ModsDirName    = "mods";
+    private const int    MaxParallelModDownloads = 4;
+
+    // ------------------------------------------------------------------- //
+    //  CHECK (только хэши, ничего не качает и не удаляет)
+    // ------------------------------------------------------------------- //
+
+    public static async Task<ModCheckResult> CheckAsync(
+        string profileName, string manifestUrl,
+        Action<string>? logger = null, CancellationToken ct = default)
+    {
+        var instDir = InstanceManager.GetDir(profileName, create: false);
+        if (!Directory.Exists(instDir))
+            instDir = InstanceManager.GetDir(profileName);
+
+        var modsDir = Path.Combine(instDir, ModsDirName);
+        Directory.CreateDirectory(modsDir);
+
+        logger?.Invoke($"[Проверка] Получение манифеста: {manifestUrl}");
+        var remote = await FetchManifestAsync(manifestUrl, ct);
+
+        logger?.Invoke($"[Проверка] Хеширование локальных модов в {modsDir}…");
+        var result = await CheckInternalAsync(modsDir, remote, ct);
+
+        logger?.Invoke(
+            $"[Проверка] Итого: {result.TotalLocal} локальных / {result.TotalRemote} серверных. " +
+            $"Нет: {result.Missing.Count}, повреждено: {result.Mismatched.Count}, " +
+            $"unresolved: {result.Unresolved.Count}, лишних: {result.Extra.Count}");
+
+        return result;
+    }
+
+    private static async Task<RemoteManifest> FetchManifestAsync(string manifestUrl, CancellationToken ct)
+    {
+        var json = await Http.GetStringAsync(manifestUrl, ct);
+        return JsonSerializer.Deserialize<RemoteManifest>(json, Json.CaseInsensitive)
+            ?? throw new Exception("Пустой манифест");
+    }
+
+    private static async Task<ModCheckResult> CheckInternalAsync(
+        string modsDir, RemoteManifest remote, CancellationToken ct)
+    {
+        var remoteByName = remote.Mods.ToDictionary(m => m.Filename, StringComparer.OrdinalIgnoreCase);
+
+        var result = new ModCheckResult
+        {
+            ManifestVersion = remote.ManifestVersion,
+            TotalRemote     = remote.Mods.Count
+        };
+
+        var localHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar", SearchOption.TopDirectoryOnly))
+        {
+            ct.ThrowIfCancellationRequested();
+            var hash = await HashUtil.ComputeAsync(path, "sha512", ct);
+            localHashes[Path.GetFileName(path)] = hash;
+        }
+        result.TotalLocal = localHashes.Count;
+
+        foreach (var name in localHashes.Keys)
+            if (!remoteByName.ContainsKey(name))
+                result.Extra.Add(name);
+
+        foreach (var rm in remote.Mods)
+        {
+            bool have  = localHashes.TryGetValue(rm.Filename, out var localHash);
+            bool match = have && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase);
+            if (match) continue;
+
+            if (rm.Source == "modrinth" && !string.IsNullOrEmpty(rm.ModrinthUrl))
+            {
+                if (have) result.Mismatched.Add(rm);
+                else      result.Missing.Add(rm);
+            }
+            else
+            {
+                result.Unresolved.Add(rm);
+            }
+        }
+
+        return result;
+    }
+
+    // ------------------------------------------------------------------- //
+    //  SYNC (применяет изменения)
+    // ------------------------------------------------------------------- //
 
     public static async Task SyncAsync(
-        string profileName,
-        string manifestUrl,
+        string profileName, string manifestUrl,
         Action<int, int, string>? onProgress = null,
         Action<string>? logger = null,
         CancellationToken ct = default)
@@ -32,33 +115,23 @@ public static class ModSyncService
         var modsDir = Path.Combine(instDir, ModsDirName);
         Directory.CreateDirectory(modsDir);
 
-        // 1) Тянем серверный манифест
         P(0, 1, "Синхронизация: получение манифеста…");
-        var remoteJson = await Http.GetStringAsync(manifestUrl, ct);
-        var remote = JsonSerializer.Deserialize<RemoteManifest>(
-            remoteJson, Json.CaseInsensitive)
-            ?? throw new Exception("Пустой манифест");
+        var remote = await FetchManifestAsync(manifestUrl, ct);
+        var remoteByName = remote.Mods.ToDictionary(m => m.Filename, StringComparer.OrdinalIgnoreCase);
 
-        var remoteByName = remote.Mods.ToDictionary(
-            m => m.Filename, StringComparer.OrdinalIgnoreCase);
-
-        // 2) Сканируем локальные моды и считаем SHA-512
         P(0, 1, "Синхронизация: хеширование локальных модов…");
         var localHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar",
-                                                       SearchOption.TopDirectoryOnly))
+        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar", SearchOption.TopDirectoryOnly))
         {
             ct.ThrowIfCancellationRequested();
             var hash = await HashUtil.ComputeAsync(path, "sha512", ct);
             localHashes[Path.GetFileName(path)] = hash;
         }
 
-        // 3) Удаляем локальные моды, которых нет на сервере
+        // Лишние — удалить
         foreach (var name in localHashes.Keys.ToList())
         {
             if (remoteByName.ContainsKey(name)) continue;
-
             try
             {
                 File.Delete(Path.Combine(modsDir, name));
@@ -71,28 +144,25 @@ public static class ModSyncService
             }
         }
 
-        // 4) Определяем, что скачать отдельно
-        var toDownload = new List<RemoteMod>();
+        // Разложить по источникам
+        var toDownload        = new List<RemoteMod>();
         var unresolvedOnServer = new List<RemoteMod>();
 
         foreach (var rm in remote.Mods)
         {
             if (localHashes.TryGetValue(rm.Filename, out var localHash)
                 && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase))
-            {
-                continue;   // хеш совпал — файл на месте
-            }
+                continue;
 
-            // CurseForge временно отключён: всё, что не modrinth, уходит в unresolved.
-            if (rm.Source == "modrinth")
+            if (rm.Source == "modrinth" && !string.IsNullOrEmpty(rm.ModrinthUrl))
                 toDownload.Add(rm);
             else
                 unresolvedOnServer.Add(rm);
         }
 
-        // 5) Качаем параллельно, до MaxParallelModDownloads одновременно
+        // Скачивание с Modrinth
         int total = toDownload.Count;
-        int done = 0;
+        int done  = 0;
 
         if (total > 0)
         {
@@ -106,10 +176,9 @@ public static class ModSyncService
                 {
                     ct.ThrowIfCancellationRequested();
                     var dest = Path.Combine(modsDir, rm.Filename);
-
                     try
                     {
-                        await DownloadModAsync(rm, dest, ct);
+                        await Downloader.DownloadAsync(rm.ModrinthUrl!, dest, ct: ct);
 
                         var actual = await HashUtil.ComputeAsync(dest, "sha512", ct);
                         if (!string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase))
@@ -136,13 +205,12 @@ public static class ModSyncService
             await Task.WhenAll(tasks);
         }
 
-        // 6) Fallback: скачиваем архив для неопознанных
+        // Fallback-архив для unresolved
         if (unresolvedOnServer.Count > 0)
         {
             if (!string.IsNullOrEmpty(remote.ArchiveUrl))
             {
-                logger?.Invoke($"[Синхр] Неопознанных: {unresolvedOnServer.Count}. " +
-                               $"Качаю архив mods.zip…");
+                logger?.Invoke($"[Синхр] Неопознанных: {unresolvedOnServer.Count}. Качаю архив mods.zip…");
                 await DownloadArchiveFallbackAsync(
                     remote.ArchiveUrl, modsDir, unresolvedOnServer, localHashes, logger, ct);
             }
@@ -155,60 +223,17 @@ public static class ModSyncService
             }
         }
 
-        // 7) Сохраняем локальное состояние
+        // Сохранить локальное состояние
         var statePath = Path.Combine(instDir, LocalStateFile);
         var state = new LocalModsState
         {
             ManifestVersion = remote.ManifestVersion,
             Mods = new Dictionary<string, string>(localHashes)
         };
-        await File.WriteAllTextAsync(statePath,
-            JsonSerializer.Serialize(state, Json.Indented), ct);
+        await File.WriteAllTextAsync(statePath, JsonSerializer.Serialize(state, Json.Indented), ct);
 
         P(1, 1, $"Синхронизация завершена: {localHashes.Count} мод(ов)");
     }
-
-    // ------------------------------------------------------------------ //
-
-    private static async Task DownloadModAsync(
-        RemoteMod rm, string dest, CancellationToken ct)
-    {
-        // CurseForge временно отключён — см. закомментированный switch ниже.
-        // string url = rm.Source switch
-        // {
-        //     "modrinth" => rm.ModrinthUrl
-        //         ?? throw new Exception("В манифесте нет modrinth_url"),
-        //     "curseforge" => await ResolveCurseForgeUrlAsync(
-        //         rm.CurseforgeModId ?? throw new Exception("Нет curseforge_mod_id"),
-        //         rm.CurseforgeFileId ?? throw new Exception("Нет curseforge_file_id"),
-        //         ct),
-        //     _ => throw new Exception($"Неизвестный источник: {rm.Source}")
-        // };
-
-        if (rm.Source != "modrinth")
-            throw new Exception($"Источник «{rm.Source}» пока не поддерживается");
-
-        var url = rm.ModrinthUrl
-            ?? throw new Exception("В манифесте нет modrinth_url");
-
-        await Downloader.DownloadAsync(url, dest, ct: ct);
-    }
-
-    // CurseForge-резолвер временно отключён.
-    // private static async Task<string> ResolveCurseForgeUrlAsync(
-    //     long modId, long fileId, CancellationToken ct)
-    // {
-    //     // Прокси на твоём сервере — API-ключ CF нельзя вшивать в клиент
-    //     var proxyUrl = $"{Constants.CurseForgeProxy}/download" +
-    //                    $"?modId={modId}&fileId={fileId}";
-    //
-    //     var json = await Http.GetStringAsync(proxyUrl, ct);
-    //     var node = System.Text.Json.Nodes.JsonNode.Parse(json);
-    //     var url = node?["data"]?.GetValue<string>();
-    //     if (string.IsNullOrEmpty(url))
-    //         throw new Exception($"CF: не удалось получить URL для {modId}/{fileId}");
-    //     return url;
-    // }
 
     private static async Task DownloadArchiveFallbackAsync(
         string archiveUrl, string modsDir,
@@ -230,7 +255,6 @@ public static class ModSyncService
             foreach (var entry in zip.Entries)
             {
                 if (string.IsNullOrEmpty(entry.Name)) continue;
-
                 var name = Path.GetFileName(entry.Name);
                 if (!wanted.TryGetValue(name, out var rm)) continue;
 
@@ -244,7 +268,6 @@ public static class ModSyncService
                     try { File.Delete(dest); } catch { }
                     continue;
                 }
-
                 localHashes[name] = actual;
                 logger?.Invoke($"[Синхр] + {name} (из архива)");
             }

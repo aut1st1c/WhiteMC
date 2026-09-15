@@ -1,26 +1,29 @@
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System;
 
 namespace WhiteMC.Core;
 
 public static class Constants
 {
-    public const string VersionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
-    public const string UserAgent = "WhiteMC/1.0 (github.com/aut1st1c/White)";
-    public const int MaxParallelDownloads = 8;
-    public const string AdoptiumApi = "https://api.adoptium.net/v3/assets/latest/{0}/hotspot";
-    public const string NeoForgeMaven = "https://maven.neoforged.net/releases/net/neoforged/neoforge";
-    public const string NeoForgeMetadataUrl = NeoForgeMaven + "/maven-metadata.xml";
-    public const int NeoForgeInstallerJava = 21;
-    public const string ModpackManifestFile = ".whitemc_modpack.json";
+    // --------------------------------------------------------------------- //
+    //  Единственная захардкоженная ссылка в лаунчере.
+    //  Всё остальное приходит из links.json.
+    // --------------------------------------------------------------------- //
+    public const string LinksManifestUrl =
+        "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/links.json";
 
-    /// <summary>
-    /// Прокси-эндпоинт для CurseForge. Клиент не может иметь CF API-ключ
-    /// (правила CF запрещают), поэтому запросы идут через свой сервер.
-    /// Ожидаемый контракт: GET {CurseForgeProxy}/download?modId=X&fileId=Y
-    /// возвращает JSON вида { "data": "https://edge.forgecdn.net/..." }.
-    /// </summary>
-    public const string CurseForgeProxy = "https://api.curseforge.com/v1/mods";
+    // Разрешено оставить в коде: Mojang / Adoptium / NeoForge / Modrinth.
+    public const string VersionManifestUrl  = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
+    public const string AdoptiumApi         = "https://api.adoptium.net/v3/assets/latest/{0}/hotspot";
+    public const string NeoForgeMaven       = "https://maven.neoforged.net/releases/net/neoforged/neoforge";
+    public const string NeoForgeMetadataUrl = NeoForgeMaven + "/maven-metadata.xml";
+
+    public const string UserAgent             = "WhiteMC/1.0 (github.com/aut1st1c/White)";
+    public const int    MaxParallelDownloads  = 8;
+    public const int    NeoForgeInstallerJava = 21;
+    public const string ModpackManifestFile   = ".whitemc_modpack.json";
 
     public static readonly string[] AllowedVersions = { "1.21.1", "26.2" };
 
@@ -56,20 +59,20 @@ public static class Constants
 
     // Paths ------------------------------------------------------------------
 
-    public static string LauncherDir { get; } = ResolveLauncherDir();
-    public static string SettingsFile => Path.Combine(LauncherDir, "settings.json");
-    public static string JavaDir => Path.Combine(LauncherDir, "java");
-    public static string NeoForgeDir => Path.Combine(LauncherDir, "neoforge");
-    public static string InstancesDir => Path.Combine(LauncherDir, "instances");
+    public static string LauncherDir     { get; } = ResolveLauncherDir();
+    public static string SettingsFile    => Path.Combine(LauncherDir, "settings.json");
+    public static string JavaDir         => Path.Combine(LauncherDir, "java");
+    public static string NeoForgeDir     => Path.Combine(LauncherDir, "neoforge");
+    public static string InstancesDir    => Path.Combine(LauncherDir, "instances");
     public static string ModpackCacheDir => Path.Combine(LauncherDir, "cache", "modpack");
-    public static string VersionsDir => Path.Combine(LauncherDir, "versions");
-    public static string LibrariesDir => Path.Combine(LauncherDir, "libraries");
-    public static string AssetsDir => Path.Combine(LauncherDir, "assets");
-    public static string NativesDir => Path.Combine(LauncherDir, "natives");
-    public static string NativesTmpDir => Path.Combine(LauncherDir, "natives_tmp");
-    public static string LogDir => Path.Combine(LauncherDir, "logs");
-    public static string LogFile => Path.Combine(LogDir, "latest.log");
-    public static string LogPrevFile => Path.Combine(LogDir, "latest.prev.log");
+    public static string VersionsDir     => Path.Combine(LauncherDir, "versions");
+    public static string LibrariesDir    => Path.Combine(LauncherDir, "libraries");
+    public static string AssetsDir       => Path.Combine(LauncherDir, "assets");
+    public static string NativesDir      => Path.Combine(LauncherDir, "natives");
+    public static string NativesTmpDir   => Path.Combine(LauncherDir, "natives_tmp");
+    public static string LogDir          => Path.Combine(LauncherDir, "logs");
+    public static string LogFile         => Path.Combine(LogDir, "latest.log");
+    public static string LogPrevFile     => Path.Combine(LogDir, "latest.prev.log");
 
     private static string ResolveLauncherDir()
     {
