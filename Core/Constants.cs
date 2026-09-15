@@ -6,13 +6,21 @@ namespace WhiteMC.Core;
 public static class Constants
 {
     public const string VersionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
-    public const string UserAgent = "WhiteMC/1.0";
+    public const string UserAgent = "WhiteMC/1.0 (github.com/aut1st1c/White)";
     public const int MaxParallelDownloads = 8;
     public const string AdoptiumApi = "https://api.adoptium.net/v3/assets/latest/{0}/hotspot";
     public const string NeoForgeMaven = "https://maven.neoforged.net/releases/net/neoforged/neoforge";
     public const string NeoForgeMetadataUrl = NeoForgeMaven + "/maven-metadata.xml";
     public const int NeoForgeInstallerJava = 21;
     public const string ModpackManifestFile = ".whitemc_modpack.json";
+
+    /// <summary>
+    /// Прокси-эндпоинт для CurseForge. Клиент не может иметь CF API-ключ
+    /// (правила CF запрещают), поэтому запросы идут через свой сервер.
+    /// Ожидаемый контракт: GET {CurseForgeProxy}/download?modId=X&fileId=Y
+    /// возвращает JSON вида { "data": "https://edge.forgecdn.net/..." }.
+    /// </summary>
+    public const string CurseForgeProxy = "https://api.curseforge.com/v1/mods";
 
     public static readonly string[] AllowedVersions = { "1.21.1", "26.2" };
 

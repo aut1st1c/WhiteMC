@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -31,4 +32,27 @@ public static class Http
 
     public static async Task<string> GetStringAsync(string url, CancellationToken ct = default)
         => Encoding.UTF8.GetString(await GetBytesAsync(url, ct));
+
+    public static async Task<string> PostJsonAsync(
+        string url, string jsonBody,
+        CancellationToken ct = default,
+        Dictionary<string, string>? headers = null)
+    {
+        using var req = new HttpRequestMessage(HttpMethod.Post, url)
+        {
+            Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
+        };
+
+        if (headers != null)
+        {
+            foreach (var (k, v) in headers)
+            {
+                req.Headers.TryAddWithoutValidation(k, v);
+            }
+        }
+
+        using var resp = await Client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadAsStringAsync(ct);
+    }
 }

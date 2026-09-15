@@ -62,7 +62,7 @@ public static partial class ModpackService
     {
         File.WriteAllText(
             Path.Combine(instDir, Constants.ModpackManifestFile),
-            data.ToJsonString(Json.Indented));   // <-- было new JsonSerializerOptions { WriteIndented = true }
+            data.ToJsonString(Json.Indented));
     }
 
     // ---------------------------------------------------------------------- //
@@ -151,7 +151,7 @@ public static partial class ModpackService
         return entries;
     }
 
-    private static List<string> ExtractTo(string archive, string dest, string? stripPrefix)
+    public static List<string> ExtractTo(string archive, string dest, string? stripPrefix)
     {
         dest = Path.GetFullPath(dest);
         var written = new List<string>();
@@ -421,7 +421,6 @@ public static partial class ModpackService
 
             logger?.Invoke($"[WhiteMC] Модпак [{compName}]: обновление ({reason})");
 
-            // Progress callback as local function (IDE0039)
             void OnBytes(long dl, long total)
             {
                 string msg;
@@ -465,7 +464,6 @@ public static partial class ModpackService
                 logger?.Invoke($"[WhiteMC] Модпак [{compName}]: в архиве обнаружена обёртка «{strip}/», она будет срезана");
             }
 
-            // Delete old files of this component
             int removed = 0;
             foreach (var rel in localFiles)
             {

@@ -5,6 +5,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using WhiteMC.Core;
 
@@ -286,24 +287,6 @@ public partial class MainWindow : Window
         RefreshState();
     }
 
-    private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-    {
-        if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-        {
-            try { DragMove(); } catch { /* игнорируем */ }
-        }
-    }
-
-    private void BtnMinimize_Click(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
-    private void BtnClose_Click(object sender, RoutedEventArgs e)
-    {
-        Close(); // пройдёт через OnClosing с проверкой запущенной игры
-    }
-
     private void BtnSettings_Click(object sender, RoutedEventArgs e)
     {
         var profile = CmbProfile.SelectedItem as string;
@@ -322,6 +305,28 @@ public partial class MainWindow : Window
         _logsWindow.Closed += (_, _) => _logsWindow = null;
         _logsWindow.Show();
     }
+
+    // --- Кастомный заголовок окна ---------------------------------------- //
+
+    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            try { DragMove(); } catch { /* игнорируем */ }
+        }
+    }
+
+    private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void BtnClose_Click(object sender, RoutedEventArgs e)
+    {
+        Close();   // пройдёт через OnClosing с проверкой запущенной игры
+    }
+
+    // -------------------------------------------------------------------- //
 
     private async Task DoInstallAsync(bool checkUpdates, bool thenLaunch)
     {
@@ -356,9 +361,21 @@ public partial class MainWindow : Window
             await Task.Run(async () =>
             {
                 await VersionInstaller.InstallAsync(v, Progress, LogService.Log, checkUpdates);
+
+                var cfg = Profiles.Modpack(profile);
+
+                // Новая система: синхронизация модов по манифесту с сервера
+                if (cfg != null && !string.IsNullOrEmpty(cfg.ManifestUrl))
+                {
+                    LogService.Log($"[WhiteMC] Синхронизация модов по манифесту для {profile}…");
+                    await ModSyncService.SyncAsync(profile, cfg.ManifestUrl,
+                        Progress, LogService.Log);
+                }
+
+                // Старая система: конфиги, kubejs и прочее из архивов
                 if (Profiles.HasModpack(profile))
                 {
-                    LogService.Log($"[WhiteMC] Модпак: обработка для {profile}…");
+                    LogService.Log($"[WhiteMC] Модпак: обработка компонентов для {profile}…");
                     await ModpackService.InstallAsync(profile, Progress, LogService.Log, checkUpdates);
                 }
             });

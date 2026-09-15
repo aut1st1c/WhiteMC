@@ -13,6 +13,7 @@ public class LauncherSettings
 public class ModpackProfile
 {
     public string? VersionUrl { get; set; }
+    public string? ManifestUrl { get; set; }
     public Dictionary<string, string> Components { get; set; } = new();
 }
 
@@ -33,12 +34,12 @@ public static class Profiles
             NeoForge = true,
             Modpack = new ModpackProfile
             {
-                VersionUrl = "https://raw.githubusercontent.com/aut1st1c/White/refs/heads/main/version.json",
-                Components = new Dictionary<string, string>
-                {
-                    ["config"] = "https://github.com/aut1st1c/White/releases/download/Server-instances/config.zip",
-                    ["mods"]   = "https://github.com/aut1st1c/White/releases/download/Server-instances/mods.zip",
-                }
+                VersionUrl = "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/version.json",
+                ManifestUrl = "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest.json",
+//                Components = new Dictionary<string, string>
+//               {
+//                    ["config"] = "://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest.json",
+//                }
             }
         },
         ["VanillaSMP"] = new GameProfile
@@ -71,4 +72,45 @@ public class VersionInfo
 {
     public string Id { get; set; } = "";
     public string Url { get; set; } = "";
+}
+
+// ---------------------------------------------------------------------- //
+//  Mod sync models
+// ---------------------------------------------------------------------- //
+
+public class RemoteManifest
+{
+    public string ManifestVersion { get; set; } = "";
+    public List<RemoteMod> Mods { get; set; } = new();
+
+    /// <summary>URL архива mods.zip на сервере — fallback для тех модов,
+    /// которые не опознали на Modrinth/CurseForge.</summary>
+    public string? ArchiveUrl { get; set; }
+}
+
+public class RemoteMod
+{
+    public string Filename { get; set; } = "";
+    public string Sha512 { get; set; } = "";
+    public string? Sha1 { get; set; }
+    public long Size { get; set; }
+
+    /// <summary>modrinth | curseforge | unresolved</summary>
+    public string Source { get; set; } = "";
+
+    // Modrinth
+    public string? ModrinthVersionId { get; set; }
+    public string? ModrinthProjectId { get; set; }
+    public string? ModrinthUrl { get; set; }
+
+    // CurseForge
+    public long? CurseforgeModId { get; set; }
+    public long? CurseforgeFileId { get; set; }
+}
+
+/// <summary>Локальное состояние: filename → sha512. Пишется после синхронизации.</summary>
+public class LocalModsState
+{
+    public string ManifestVersion { get; set; } = "";
+    public Dictionary<string, string> Mods { get; set; } = new();
 }
