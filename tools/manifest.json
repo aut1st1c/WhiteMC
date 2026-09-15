@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.15-1702",
+  "manifest_version": "2026.09.15-2206",
   "mods": [
     {
       "filename": "AI-Improvements-1.21-0.5.3.jar",
@@ -776,6 +776,46 @@
       "modrinth_url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/1sdJl7J1/bookshelf-neoforge-1.21.1-21.1.81.jar"
     },
     {
+      "filename": "cc-tweaked-1.21.1-forge-1.120.2.jar",
+      "sha512": "009fcf48b7d123018a61b2c55f0fede7dd1f6a6325226bf9cc926342185ca8a7e059e13662816d24595aac243abf622b682583631cfe42c3757505b2e864ff73",
+      "sha1": "f35d4f636c2eb1b30c5d3f5c08e110c6acb8e02f",
+      "size": 3126327,
+      "source": "modrinth",
+      "modrinth_version_id": "1ewzHZYg",
+      "modrinth_project_id": "gu7yAYhd",
+      "modrinth_url": "https://cdn.modrinth.com/data/gu7yAYhd/versions/1ewzHZYg/cc-tweaked-1.21.1-forge-1.120.2.jar"
+    },
+    {
+      "filename": "cc_sable-neoforge-1.3.4.jar",
+      "sha512": "70e7e09c8a4a566fe8bd67a8d53069083e8285a15cb680412b415f5104b5be3ad3b623c9ccd99f165996933ef5d81aa1966633796d7439f562b6e35ae59af717",
+      "sha1": "cdc65c3a991519fb96a72904a02a5a16145431fa",
+      "size": 43338,
+      "source": "modrinth",
+      "modrinth_version_id": "j0UWQoMG",
+      "modrinth_project_id": "OPNBxiZD",
+      "modrinth_url": "https://cdn.modrinth.com/data/OPNBxiZD/versions/j0UWQoMG/cc_sable-neoforge-1.3.4.jar"
+    },
+    {
+      "filename": "cc_wireless_peripheral_sable-0.1.0.jar",
+      "sha512": "0cb9c9154579488f84ced6f57e188431e38c830d4a484b0bc9ad77f00a515be6b862c1dfac7f937b1c52e5b2a2ca71b6eb4573ca3ad8920af0ceef1807e3e76e",
+      "sha1": "6fe5240cdd1a18e92848811e6241513fbe0ad14e",
+      "size": 231575,
+      "source": "modrinth",
+      "modrinth_version_id": "CoKoPiq4",
+      "modrinth_project_id": "sasKnwwX",
+      "modrinth_url": "https://cdn.modrinth.com/data/sasKnwwX/versions/CoKoPiq4/cc_wireless_peripheral_sable-0.1.0.jar"
+    },
+    {
+      "filename": "ccbr-1.2.1-neoforge-1.21.1.jar",
+      "sha512": "9aefd479946f3db61c366c803f768431c525cdd611158591862fd8d008c1355bd7972b74df2ea347c684f3081257bbe18b275894217feb00c1bded475512b3a4",
+      "sha1": "cbc64baf934c03eefc120315b1aefecbe8c3c322",
+      "size": 205407,
+      "source": "modrinth",
+      "modrinth_version_id": "zRhaiENu",
+      "modrinth_project_id": "WZfuGM1m",
+      "modrinth_url": "https://cdn.modrinth.com/data/WZfuGM1m/versions/zRhaiENu/ccbr-1.2.1-neoforge-1.21.1.jar"
+    },
+    {
       "filename": "chat_heads-0.15.7-neoforge-1.21.jar",
       "sha512": "97ec4a08ffe54917591e7e05ba5ed9359e591719e4f3246745de36923a8080e68332aff28be437997c40a215b7aebc3537df892c99db4de6a5348ac7b4995144",
       "sha1": "536b2af675229d2a33eb4cf5afbe7148a62d5f3f",
@@ -866,6 +906,16 @@
       "modrinth_url": "https://cdn.modrinth.com/data/1IjD5062/versions/eXGUs5sy/continuity-3.0.0%2B1.21.neoforge.jar"
     },
     {
+      "filename": "copycats-3.0.9+mc.1.21.1-neoforge.jar",
+      "sha512": "432b5cde473976476b0729172710d32805576d0c3a5fd66d21f882d96cef0c4eef1b85e4e3a1a316e2adc473784b11e156b0265b0f62bcfd5b035a6ff7dfcc6e",
+      "sha1": "74de17876c43f5f780bac478b9f9eb11e687b8d7",
+      "size": 1799381,
+      "source": "modrinth",
+      "modrinth_version_id": "bPYeUWZx",
+      "modrinth_project_id": "UT2M39wf",
+      "modrinth_url": "https://cdn.modrinth.com/data/UT2M39wf/versions/bPYeUWZx/copycats-3.0.9%2Bmc.1.21.1-neoforge.jar"
+    },
+    {
       "filename": "coroutil-neoforge-1.21.0-1.3.8.jar",
       "sha512": "daae9e37acddedccad05e3f8e565f8b4c237f25b2462e043428f88b32fc27e4bc3a00955ed7426a7d7f93f068b4e96b37e2e42d121d40fdf94a31b6c2b7440e0",
       "sha1": "b044c51d00d60b5645a0c0890812935cd933555f",
@@ -893,6 +943,26 @@
       "modrinth_url": "https://cdn.modrinth.com/data/oWaK0Q19/versions/44pLdPGg/create-aeronautics-bundled-1.21.1-1.3.2.jar"
     },
     {
+      "filename": "create_connected-1.3.3-mc1.21.1.jar",
+      "sha512": "485675693980a266611669857fa9cd348e2a29140b87bf0a8ab3e13c3591422cceaa36b7a2eb90084d35ec1868c8eec9f924383bb4dada2dddcb72e9f09361b0",
+      "sha1": "96ae45fa44cd7028a31b9613cb672009e811b145",
+      "size": 6786783,
+      "source": "modrinth",
+      "modrinth_version_id": "Xe7EqzfQ",
+      "modrinth_project_id": "Vg5TIO6d",
+      "modrinth_url": "https://cdn.modrinth.com/data/Vg5TIO6d/versions/Xe7EqzfQ/create_connected-1.3.3-mc1.21.1.jar"
+    },
+    {
+      "filename": "createaddition-1.7.0.jar",
+      "sha512": "267779bf2a215a0be39748e6a8e387322df697bc9de8e7e9558e6885aa790a2e73f334a55bfc5f97f4130d22262011433675fd0830ab1e3e3b10c9898d8a702c",
+      "sha1": "fd73ba9809ed6656a8c2aae81c9badb382085657",
+      "size": 1705668,
+      "source": "modrinth",
+      "modrinth_version_id": "zlC557Yg",
+      "modrinth_project_id": "kU1G12Nn",
+      "modrinth_url": "https://cdn.modrinth.com/data/kU1G12Nn/versions/zlC557Yg/createaddition-1.7.0.jar"
+    },
+    {
       "filename": "createbetterfps-1.21.1-1.1.4.jar",
       "sha512": "777cf4c533eba723baea1ef1fffcd2d47c8f4f8238ddc360973b41ae4946f7e733a24542a3691c4a1be2f41e55b07675f9ccfa633be186e72d11911ca67fa412",
       "sha1": "c594e20659b73a67bd0b0c2de45b29b78a2eb160",
@@ -901,6 +971,26 @@
       "modrinth_version_id": "QWqEdWHy",
       "modrinth_project_id": "lMYIHZNH",
       "modrinth_url": "https://cdn.modrinth.com/data/lMYIHZNH/versions/QWqEdWHy/createbetterfps-1.21.1-1.1.4.jar"
+    },
+    {
+      "filename": "createdeco-2.1.3.jar",
+      "sha512": "c536662f9d47ad57a37419165ded14835b23ad6c3e82a920298ecd7ee074244b0b6062ef9cc7ea4501ddd35919a840faccd7fc64e43eb8df31e12076681c3c0d",
+      "sha1": "93d9eff58b46c6953e907d071e6be4e3ce07be38",
+      "size": 3328498,
+      "source": "modrinth",
+      "modrinth_version_id": "qrcMVoBD",
+      "modrinth_project_id": "sMvUb4Rb",
+      "modrinth_url": "https://cdn.modrinth.com/data/sMvUb4Rb/versions/qrcMVoBD/createdeco-2.1.3.jar"
+    },
+    {
+      "filename": "createdieselgenerators-1.21.1-1.3.15.jar",
+      "sha512": "1507ebcd07d3185aac3ae6ce768b4d6bab16cb6f39776d25a850c8133a4dc5826b8ddbeca112d76afc64deaa37ec177cac4237c6c34621c4b65e73d83f8ab43f",
+      "sha1": "7f751dabfa83c141c1d13025cd16f06553ba459b",
+      "size": 3154746,
+      "source": "modrinth",
+      "modrinth_version_id": "UoPH8lO1",
+      "modrinth_project_id": "ZM3tt6p1",
+      "modrinth_url": "https://cdn.modrinth.com/data/ZM3tt6p1/versions/UoPH8lO1/createdieselgenerators-1.21.1-1.3.15.jar"
     },
     {
       "filename": "cupboard-1.21.1-4.1.jar",
@@ -1182,6 +1272,16 @@
       "sha1": "358a87c465628274b1f1cc5e069a08f34d8f0b54",
       "size": 52088,
       "source": "unresolved"
+    },
+    {
+      "filename": "interiors-1.21.1-neoforge-0.6.1.jar",
+      "sha512": "68b0d915e41fb0ce9d12a8c580d688a604770ded2b21e963058aa6d80cbc5661c481416d051a541395b5c79f461edcb658046e53cfcfb405179a450662ed01b5",
+      "sha1": "a558777ef4510da2f4d32ca3da6ac7384c9a9940",
+      "size": 486912,
+      "source": "modrinth",
+      "modrinth_version_id": "gBrfZy6S",
+      "modrinth_project_id": "r4Knci2k",
+      "modrinth_url": "https://cdn.modrinth.com/data/r4Knci2k/versions/gBrfZy6S/interiors-1.21.1-neoforge-0.6.1.jar"
     },
     {
       "filename": "inventoryhud.neoforged.1.21.1-3.4.28.jar",
@@ -1528,6 +1628,16 @@
       "modrinth_url": "https://cdn.modrinth.com/data/G1hIVOrD/versions/x99nCLTm/resourcefullib-neoforge-1.21-3.0.12.jar"
     },
     {
+      "filename": "rottencreatures-neoforge-1.21.1-1.1.2.jar",
+      "sha512": "67aa0473b06c2e43e5114f7275a0ee83d94ead60fc21d0d06afae68f7c97d03190462a8a0b8ec76e2422a072d51e9c453bc9eb17b02de49b9fe79ec780e946d1",
+      "sha1": "c44de2c17018ffb8141ee68caaa4a71d979b96b2",
+      "size": 2608616,
+      "source": "modrinth",
+      "modrinth_version_id": "EkvVbxeM",
+      "modrinth_project_id": "5Zusp48B",
+      "modrinth_url": "https://cdn.modrinth.com/data/5Zusp48B/versions/EkvVbxeM/rottencreatures-neoforge-1.21.1-1.1.2.jar"
+    },
+    {
       "filename": "sable-neoforge-1.21.1-2.0.5.jar",
       "sha512": "bf3d8c87bcc5efb99afffd50305fc978086ed48a63e106816e3a8a3901f8052f4480ea527dbd7d4003f7775ed4d020529098034f4e307aefac9cc42df2b4c19a",
       "sha1": "05f666e973d32baaaf405acb9bbed6615b909971",
@@ -1687,6 +1797,16 @@
       "modrinth_version_id": "dhKbgdIb",
       "modrinth_project_id": "rI0hvYcd",
       "modrinth_url": "https://cdn.modrinth.com/data/rI0hvYcd/versions/dhKbgdIb/visuality-0.7.7%2B1.21.jar"
+    },
+    {
+      "filename": "warvior cc_sable_wired_fix-0.7.3.jar",
+      "sha512": "306257dcfcf4f6f474526b516968f5c6ff2621d44df245dafe1c159d09fa277cf272bbc4456bd1033a12c2d536efc8b09fd3233e24f018ef60a7aeda8fe52ea8",
+      "sha1": "cf258f94648c402a323a0636e2eb26b3cce3b864",
+      "size": 33297,
+      "source": "modrinth",
+      "modrinth_version_id": "dyRKna4F",
+      "modrinth_project_id": "QN3qI4QK",
+      "modrinth_url": "https://cdn.modrinth.com/data/QN3qI4QK/versions/dyRKna4F/warvior%20cc_sable_wired_fix-0.7.3.jar"
     },
     {
       "filename": "waystones-neoforge-1.21.1-21.1.42.jar",

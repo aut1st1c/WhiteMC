@@ -8,6 +8,7 @@ project.lock.json
 *.user
 *.userosscache
 *.sln.docstates
+[Tt]ools
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

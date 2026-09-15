@@ -43,8 +43,7 @@ public partial class MainWindow : Window
         BtnLaunch.Click  += (_, _) => DoLaunch();
         BtnKill.Click    += (_, _) => DoKill();
 
-        // Проверка обновления лаунчера — после того, как окно показано
-        // (иначе MessageBox не сможет стать модальным к этому окну).
+        // Проверка обновления лаунчера — после того, как окно показано.
         Loaded += (_, _) => CheckLauncherUpdate();
 
         LogService.Log($"[WhiteMC] Старт лаунчера v{AppVersion.Current}. Логи: {Constants.LogFile}");
@@ -358,7 +357,7 @@ public partial class MainWindow : Window
     private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();
 
     // -------------------------------------------------------------------- //
-    //  Фоновая проверка модов
+    //  Фоновая проверка модов при старте / смене профиля
     // -------------------------------------------------------------------- //
 
     private async Task CheckModsInBackgroundAsync()
@@ -411,7 +410,7 @@ public partial class MainWindow : Window
     }
 
     // -------------------------------------------------------------------- //
-    //  Полная установка / починка
+    //  ПОЛНАЯ УСТАНОВКА / ПОЧИНКА
     // -------------------------------------------------------------------- //
 
     private async Task DoFullInstallAsync(bool force)
@@ -442,14 +441,17 @@ public partial class MainWindow : Window
         {
             await Task.Run(async () =>
             {
+                // Версия, библиотеки, ассеты, нативы, NeoForge
                 await VersionInstaller.InstallAsync(v, Progress, LogService.Log, checkUpdates: force);
 
+                // Старые архивы компонентов (если заданы)
                 if (Profiles.HasComponents(profile))
                 {
                     LogService.Log($"[WhiteMC] Модпак: обработка компонентов для {profile}…");
                     await ModpackService.InstallAsync(profile, Progress, LogService.Log, checkUpdates: force);
                 }
 
+                // Моды: Modrinth-дельта + архив, если среди unresolved есть missing/mismatch
                 if (Profiles.HasModsManifest(profile))
                 {
                     var url = Profiles.Modpack(profile)!.ManifestUrl!;
@@ -481,7 +483,7 @@ public partial class MainWindow : Window
     }
 
     // -------------------------------------------------------------------- //
-    //  Только обновление модов
+    //  ТОЛЬКО ОБНОВЛЕНИЕ МОДОВ
     // -------------------------------------------------------------------- //
 
     private async Task DoCheckUpdatesAsync()
@@ -541,7 +543,7 @@ public partial class MainWindow : Window
     }
 
     // -------------------------------------------------------------------- //
-    //  Запуск
+    //  ЗАПУСК
     // -------------------------------------------------------------------- //
 
     private async void DoLaunch()
@@ -569,6 +571,7 @@ public partial class MainWindow : Window
         LaunchProcess(profile);
     }
 
+    /// <summary>Проверяет хэши локальных модов. Ничего не качает без согласия пользователя.</summary>
     private async Task<bool> VerifyModsBeforeLaunchAsync(string profile)
     {
         if (!Profiles.HasModsManifest(profile)) return true;

@@ -8,7 +8,7 @@
 
 Использование:
     export CURSEFORGE_API_KEY="..."
-    python generate_manifest.py /home/aut1st1c/.whitemc/instances/IndustrialAdventure/mods/ \
+    python generate_manifest.py /home/aut1st1c/.local/share/PrismLauncher/instances/1.21.1/minecraft/mods/ \
         --output manifest.json \
         --unresolved unresolved.json \
         --archive-url https://github.com/.../mods.zip
