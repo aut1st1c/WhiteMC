@@ -81,8 +81,6 @@ public static class Profiles
         get { lock (_lock) return _all; }
     }
 
-    public static void Initialize() => InitializeAsync().GetAwaiter().GetResult();
-
     public static async Task InitializeAsync(CancellationToken ct = default)
     {
         var links = LinksService.Current;
@@ -94,15 +92,16 @@ public static class Profiles
         string json;
         try
         {
-            json = await Http.GetStringAsync(links.ProfilesUrl, ct);
+            json = await Http.GetStringAsync(links.ProfilesUrl, ct).ConfigureAwait(false);
             Directory.CreateDirectory(Constants.LauncherDir);
-            await File.WriteAllTextAsync(cachePath, json, ct);
+            await File.WriteAllTextAsync(cachePath, json, ct).ConfigureAwait(false);
+            LogService.Log($"[WhiteMC] profiles.json загружен с {links.ProfilesUrl}");
         }
         catch (Exception ex)
         {
             LogService.Log($"[WhiteMC] Не удалось получить profiles.json ({links.ProfilesUrl}): {ex.Message}");
             if (!File.Exists(cachePath)) throw;
-            json = await File.ReadAllTextAsync(cachePath, ct);
+            json = await File.ReadAllTextAsync(cachePath, ct).ConfigureAwait(false);
             LogService.Log("[WhiteMC] profiles.json взят из кэша");
         }
 

@@ -17,7 +17,9 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        // 1) Логгер — как можно раньше.
+        base.OnStartup(e);
+
+        // ─── Синхронная часть: быстрые операции, дедлока не будет ─────
         try { LogService.RotateOnStartup(); }
         catch (Exception ex)
         {
@@ -27,42 +29,56 @@ public partial class App : Application
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
-        // 2) Настройки (нужны для темы).
         LauncherSettings settings;
         try { settings = SettingsService.Load(); }
         catch { settings = new LauncherSettings(); }
 
-        // 3) Тема — строго ДО создания окна.
-        //    Если упадёт — ThemeService сам откатится на Mocha.
         try { ThemeService.Apply(settings.Theme); }
         catch (Exception ex)
         {
             try { LogService.Log($"[WARN] Не удалось применить тему: {ex}"); } catch { }
         }
 
-        // 4) Bootstrap: links.json → profiles.json. НЕ ФАТАЛЬНО.
+        // ─── Асинхронная часть: bootstrap + показ окна ───────────────
+        // Намеренно fire-and-forget: OnStartup не может быть async,
+        // а блокировать UI-поток через .GetResult() нельзя (дедлок).
+        _ = InitializeAndShowAsync();
+    }
+
+    private async Task InitializeAndShowAsync()
+    {
+        Exception? bootstrapError = null;
+
         try
         {
-            LinksService.Initialize();
-            Profiles.Initialize();
+            // ConfigureAwait(false) здесь не нужен: мы хотим вернуться
+            // на UI-поток, чтобы создать окно. Внутри LinksService/Profiles
+            // стоит .ConfigureAwait(false), так что UI-поток во время
+            // HTTP-запросов полностью свободен.
+            await LinksService.InitializeAsync();
+            await Profiles.InitializeAsync();
         }
         catch (Exception ex)
         {
+            bootstrapError = ex;
             try { LogService.Log($"[WARN] Bootstrap не удался: {ex}"); } catch { }
-
-            MessageBox.Show(
-                "Не удалось загрузить конфигурацию лаунчера:\n" +
-                $"  {ex.Message}\n\n" +
-                "Лаунчер запустится, но список профилей может быть пуст.\n" +
-                "Проверьте links.json на сервере и наличие сети.",
-                "WhiteMC — предупреждение",
-                MessageBoxButton.OK, MessageBoxImage.Warning);
-
-            // НЕ вызываем Shutdown — пусть окно всё равно откроется.
         }
 
-        // 5) Отдаём управление WPF: он создаст MainWindow из StartupUri.
-        base.OnStartup(e);
+        // Создаём окно на UI-потоке (после await мы снова на нём).
+        var win = new MainWindow();
+        MainWindow = win;
+        win.Show();
+
+        if (bootstrapError != null)
+        {
+            MessageBox.Show(win,
+                "Не удалось загрузить конфигурацию лаунчера:\n" +
+                $"  {bootstrapError.Message}\n\n" +
+                "Лаунчер запустится, но список профилей может быть пуст.\n" +
+                "Проверьте links.json и наличие сети.",
+                "WhiteMC — предупреждение",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)

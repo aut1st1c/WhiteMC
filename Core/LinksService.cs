@@ -18,16 +18,14 @@ public static class LinksService
             lock (_lock)
             {
                 return _config ?? throw new InvalidOperationException(
-                    "LinksService не инициализирован. Вызовите LinksService.Initialize() в App.OnStartup.");
+                    "LinksService не инициализирован. Вызовите LinksService.InitializeAsync().");
             }
         }
     }
 
-    public static void Initialize() => InitializeAsync().GetAwaiter().GetResult();
-
     public static async Task InitializeAsync(CancellationToken ct = default)
     {
-        var cfg = await LoadAsync(ct);
+        var cfg = await LoadAsync(ct).ConfigureAwait(false);
         lock (_lock) { _config = cfg; }
     }
 
@@ -44,11 +42,11 @@ public static class LinksService
         // 1) Сетевой links.json
         try
         {
-            var json = await Http.GetStringAsync(url, ct);
+            var json = await Http.GetStringAsync(url, ct).ConfigureAwait(false);
             var cfg = JsonSerializer.Deserialize<LinksConfig>(json, Json.CaseInsensitive);
             if (cfg != null)
             {
-                await File.WriteAllTextAsync(cachePath, json, ct);
+                await File.WriteAllTextAsync(cachePath, json, ct).ConfigureAwait(false);
                 LogService.Log($"[WhiteMC] links.json загружен с {url}");
                 return cfg;
             }
@@ -63,7 +61,7 @@ public static class LinksService
         {
             try
             {
-                var json = await File.ReadAllTextAsync(localOverride, ct);
+                var json = await File.ReadAllTextAsync(localOverride, ct).ConfigureAwait(false);
                 var cfg = JsonSerializer.Deserialize<LinksConfig>(json, Json.CaseInsensitive);
                 if (cfg != null)
                 {
@@ -82,7 +80,7 @@ public static class LinksService
         {
             try
             {
-                var json = await File.ReadAllTextAsync(cachePath, ct);
+                var json = await File.ReadAllTextAsync(cachePath, ct).ConfigureAwait(false);
                 var cfg = JsonSerializer.Deserialize<LinksConfig>(json, Json.CaseInsensitive);
                 if (cfg != null)
                 {
