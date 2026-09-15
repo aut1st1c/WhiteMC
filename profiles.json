@@ -1,0 +1,20 @@
+{
+  "IndustrialAdventure": {
+    "display_name": "Industrial Adventure",
+    "description": "Технологии, природа и исследование.",
+    "mc": "1.21.1",
+    "neoforge": true,
+    "modpack": {
+      "manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest.json",
+      "components": {
+        "mods": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/config.zip"
+      }
+    }
+  },
+  "VanillaSMP": {
+    "display_name": "Vanilla SMP",
+    "description": "Чистая ванильная игра.",
+    "mc": "1.21.1",
+    "neoforge": false
+  }
+}
