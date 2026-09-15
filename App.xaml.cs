@@ -17,14 +17,14 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        // 1) Логгер.
+        // 1) Логгер — как можно раньше.
         try { LogService.RotateOnStartup(); }
         catch (Exception ex)
         {
             MessageBox.Show(
                 $"Не удалось инициализировать логгер:\n{ex}",
-                "WhiteMC — ошибка запуска",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+                "WhiteMC — предупреждение",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         // 2) Настройки (нужны для темы).
@@ -32,14 +32,15 @@ public partial class App : Application
         try { settings = SettingsService.Load(); }
         catch { settings = new LauncherSettings(); }
 
-        // 3) Тема — до создания окон.
+        // 3) Тема — строго ДО создания окна.
+        //    Если упадёт — ThemeService сам откатится на Mocha.
         try { ThemeService.Apply(settings.Theme); }
         catch (Exception ex)
         {
-            try { LogService.Log($"[FATAL] Не удалось применить тему: {ex}"); } catch { }
+            try { LogService.Log($"[WARN] Не удалось применить тему: {ex}"); } catch { }
         }
 
-        // 4) Bootstrap: links.json → profiles.json.
+        // 4) Bootstrap: links.json → profiles.json. НЕ ФАТАЛЬНО.
         try
         {
             LinksService.Initialize();
@@ -47,21 +48,21 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            try { LogService.Log($"[FATAL] Конфигурация не загружена: {ex}"); } catch { }
+            try { LogService.Log($"[WARN] Bootstrap не удался: {ex}"); } catch { }
+
             MessageBox.Show(
-                $"Не удалось загрузить конфигурацию лаунчера:\n{ex.Message}",
-                "WhiteMC — ошибка запуска",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-            Shutdown(1);
-            return;
+                "Не удалось загрузить конфигурацию лаунчера:\n" +
+                $"  {ex.Message}\n\n" +
+                "Лаунчер запустится, но список профилей может быть пуст.\n" +
+                "Проверьте links.json на сервере и наличие сети.",
+                "WhiteMC — предупреждение",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            // НЕ вызываем Shutdown — пусть окно всё равно откроется.
         }
 
+        // 5) Отдаём управление WPF: он создаст MainWindow из StartupUri.
         base.OnStartup(e);
-
-        // 5) Главное окно.
-        var win = new MainWindow();
-        MainWindow = win;
-        win.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

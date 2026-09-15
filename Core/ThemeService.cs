@@ -6,7 +6,6 @@ namespace WhiteMC.Core;
 
 public static class ThemeService
 {
-    /// <summary>Список доступных тем: (id файла, человекочитаемое название).</summary>
     public static readonly IReadOnlyList<(string Id, string Name)> Available = new[]
     {
         ("Mocha",      "Catppuccin Mocha"),
@@ -28,43 +27,54 @@ public static class ThemeService
         return DefaultTheme;
     }
 
-    /// <summary>
-    /// Перестраивает Application.Resources: подмешивает Colors/{id}.xaml и Base.xaml.
-    /// Вызывать ДО создания окон.
-    /// </summary>
     public static void Apply(string? id)
     {
-        var themeId = Normalize(id);
-
+        var requested = Normalize(id);
         var app = Application.Current;
-        if (app == null)
-        {
-            // Консольный/юнит-тест — просто игнорируем.
-            return;
-        }
+        if (app == null) return;
 
-        var merged = app.Resources.MergedDictionaries;
+        // 1) Пробуем запрошенную тему, при провале — Mocha.
+        if (TryApply(requested, app)) return;
 
-        // Убираем предыдущие темы (на случай повторного вызова).
-        for (int i = merged.Count - 1; i >= 0; i--)
+        LogService.Log($"[WARN] Тема '{requested}' не загрузилась, откат на {DefaultTheme}");
+        if (requested != DefaultTheme && TryApply(DefaultTheme, app)) return;
+
+        LogService.Log("[FATAL] Не удалось загрузить ни одну тему — окна будут без стилей");
+    }
+
+    private static bool TryApply(string themeId, Application app)
+    {
+        try
         {
-            var src = merged[i].Source?.OriginalString ?? "";
-            if (src.Contains("/Themes/", StringComparison.OrdinalIgnoreCase) ||
-                src.StartsWith("Themes/", StringComparison.OrdinalIgnoreCase))
+            var merged = app.Resources.MergedDictionaries;
+
+            // Убираем предыдущие темы (актуально при повторном вызове).
+            for (int i = merged.Count - 1; i >= 0; i--)
             {
-                merged.RemoveAt(i);
+                var src = merged[i].Source?.OriginalString ?? "";
+                if (src.Contains("/Themes/", StringComparison.OrdinalIgnoreCase) ||
+                    src.StartsWith("Themes/", StringComparison.OrdinalIgnoreCase))
+                {
+                    merged.RemoveAt(i);
+                }
             }
+
+            merged.Add(new ResourceDictionary
+            {
+                Source = new Uri($"Themes/Colors/{themeId}.xaml", UriKind.Relative)
+            });
+            merged.Add(new ResourceDictionary
+            {
+                Source = new Uri("Themes/Base.xaml", UriKind.Relative)
+            });
+
+            LogService.Log($"[WhiteMC] Применена тема: {themeId}");
+            return true;
         }
-
-        merged.Add(new ResourceDictionary
+        catch (Exception ex)
         {
-            Source = new Uri($"Themes/Colors/{themeId}.xaml", UriKind.Relative)
-        });
-        merged.Add(new ResourceDictionary
-        {
-            Source = new Uri("Themes/Base.xaml", UriKind.Relative)
-        });
-
-        LogService.Log($"[WhiteMC] Применена тема: {themeId}");
+            LogService.Log($"[WARN] TryApply('{themeId}') упал: {ex.Message}");
+            return false;
+        }
     }
 }
