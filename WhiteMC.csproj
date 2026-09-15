@@ -10,7 +10,6 @@
     <AssemblyName>WhiteMC</AssemblyName>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <PublishReadyToRun>false</PublishReadyToRun>
-    <InvariantGlobalization>true</InvariantGlobalization>
     <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
   </PropertyGroup>
 </Project>

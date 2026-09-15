@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WhiteMC.Core;
 
@@ -80,37 +81,60 @@ public class VersionInfo
 
 public class RemoteManifest
 {
+    [JsonPropertyName("manifest_version")]
     public string ManifestVersion { get; set; } = "";
+
+    [JsonPropertyName("mods")]
     public List<RemoteMod> Mods { get; set; } = new();
 
     /// <summary>URL архива mods.zip на сервере — fallback для тех модов,
     /// которые не опознали на Modrinth/CurseForge.</summary>
+    [JsonPropertyName("archive_url")]
     public string? ArchiveUrl { get; set; }
 }
 
 public class RemoteMod
 {
+    [JsonPropertyName("filename")]
     public string Filename { get; set; } = "";
+
+    [JsonPropertyName("sha512")]
     public string Sha512 { get; set; } = "";
+
+    [JsonPropertyName("sha1")]
     public string? Sha1 { get; set; }
+
+    [JsonPropertyName("size")]
     public long Size { get; set; }
 
     /// <summary>modrinth | curseforge | unresolved</summary>
+    [JsonPropertyName("source")]
     public string Source { get; set; } = "";
 
     // Modrinth
+    [JsonPropertyName("modrinth_version_id")]
     public string? ModrinthVersionId { get; set; }
+
+    [JsonPropertyName("modrinth_project_id")]
     public string? ModrinthProjectId { get; set; }
+
+    [JsonPropertyName("modrinth_url")]
     public string? ModrinthUrl { get; set; }
 
     // CurseForge
+    [JsonPropertyName("curseforge_mod_id")]
     public long? CurseforgeModId { get; set; }
+
+    [JsonPropertyName("curseforge_file_id")]
     public long? CurseforgeFileId { get; set; }
 }
 
 /// <summary>Локальное состояние: filename → sha512. Пишется после синхронизации.</summary>
 public class LocalModsState
 {
+    [JsonPropertyName("manifest_version")]
     public string ManifestVersion { get; set; } = "";
+
+    [JsonPropertyName("mods")]
     public Dictionary<string, string> Mods { get; set; } = new();
 }

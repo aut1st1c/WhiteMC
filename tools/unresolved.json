@@ -1,0 +1,79 @@
+[
+  {
+    "filename": "betterfpsdist-1.21.1-6.1.jar",
+    "sha512": "10f8a202d3f8b4793153bb67113da52d9bb4ca757c62eaa7cafe9cf8e047ccae830392d6521eb81ebd4db581c6b6e9c7c2b81d517797f1d8833871a6aa0b8b10",
+    "sha1": "9c499f5133ebeed43da4ce42d48bf747cead6d24",
+    "size": 23505,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "blockui-1.0.211-1.21.1-snapshot.jar",
+    "sha512": "b31e68b526b30b1a5b58cbc624b4d586937e6ca5d4eff83cec4e48017a5b24171716c0ef146be329d5f1add738352c5ac794fb2245a9e3bf4b58326f71a0e381",
+    "sha1": "0ab4e0342b9f1e595d9a891f84747e4e5389c552",
+    "size": 468147,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "create-1.21.1-6.0.11.jar",
+    "sha512": "cfe674a2ee4f716ea2c6469eea824b8e4cac4194a283ef279bade81e62be08c9b214b913ad90b81a8ce3901338a5e4932a3b650e35c153a5cf0cf6d1ea372b3f",
+    "sha1": "c3283dae2238c2d656cd72ff51f009f3b5cc3910",
+    "size": 19122970,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "cupboard-1.21.1-4.1.jar",
+    "sha512": "d9946cf1a6b453237d1e6a4c1b577a5746a85ade88adcc20035e925159c64d756f7f6ae4b929f60a4e3b4d390de7ff088a82d2d94443d4f25ab21c8f97aa9f53",
+    "sha1": "13b3bc42d2514f53acea0c52c91e7800a297f408",
+    "size": 30206,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "domum-ornamentum-1.0.236-snapshot-main.jar",
+    "sha512": "0d00bcaf1d2dc234f8a166f8af30ec1bde3c4c1dd8c5e8a05d77368276d5b7115043cc0a14cf7a747e43490e71a82456ccaadb55b24f26171fd890c070d9c890",
+    "sha1": "31b16b65eb0cc26473bcd607b1c7f386aa99680f",
+    "size": 1151579,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "highseas-0.2.2.jar",
+    "sha512": "be0ff3d1ecb79385aab0348ddc7feddb7e07bc45c62e32490e3d1020e946247bb2e3be9376ad825b4c09efd7d52b245fbb4a0bb982f36d23cd6d903f0218f465",
+    "sha1": "358a87c465628274b1f1cc5e069a08f34d8f0b54",
+    "size": 52088,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "minecolonies-1.1.1376-1.21.1-snapshot.jar",
+    "sha512": "556391c278181ee4034b0afc3cda215bebfb3571cd639f1c604b61fd1a20cadcf882ab54593c22efa2f4f64bbea881e7d29a8e664c424f627eec6467fc35bc31",
+    "sha1": "68f32bb9db6d87017bb0b55dd8a326190526e929",
+    "size": 78069211,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "multipiston-1.2.58-1.21.1.jar",
+    "sha512": "60007e72516857228c45cbfee14ec18c9c4e89b626ecdd659fff3a146d5dc527d52563645e3348b79820f7eeb0b6d3aeab4394e7b6d6a065666ed04333c05a48",
+    "sha1": "2b63be739da24247328e4052ec91c928230d0390",
+    "size": 34139,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "sodium_betterfps_compat-1.0.0.jar",
+    "sha512": "325f947addb53480ad3873b0336bfd13d4a69787ddb25bdb40acd6797b0cfea3650ea9364de80f2eea65d2186a03412f62e3575bf44d5ae21bf3ffd8b4d2fd51",
+    "sha1": "18d1b803071ffea9a78e3ba07a68a50527bba835",
+    "size": 9083,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "structurize-1.0.832-1.21.1.jar",
+    "sha512": "0d535f32033d4e2369e35c061cfc4efa994836d5bacd2d503765b79857728ef69297a6997c30e44ecfd74c058b8e7e4624c85dfbc1993013e8c20110afaf7945",
+    "sha1": "be15d6924bcca76bf5ac107e2ce5ac4d948d82e2",
+    "size": 1063849,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  },
+  {
+    "filename": "towntalk-1.2.0.jar",
+    "sha512": "2414089d190045fea8ee80779a33f569827195ebbba41df712fa2feb7226f9d23b3b9be79d74515dd4207d8ac8d6549ccb22c2f9ea6ac6780da79cf7c4eb741d",
+    "sha1": "6866d898938bdde1a17fadee16983c0c6071eac6",
+    "size": 52301863,
+    "reason": "не найден ни в Modrinth, ни в CurseForge"
+  }
+]
