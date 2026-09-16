@@ -157,6 +157,19 @@ public static class Profiles
         var m = Modpack(name);
         return m != null && !string.IsNullOrEmpty(m.ManifestUrl);
     }
+
+    /// <summary>
+    /// Возвращает URL архива mods из profiles.json (modpack.components["mods"]).
+    /// null — если компонент "mods" не задан.
+    /// </summary>
+    public static string? ModsArchiveUrl(string name)
+    {
+        var m = Modpack(name);
+        if (m == null) return null;
+        if (m.Components.TryGetValue("mods", out var url) && !string.IsNullOrWhiteSpace(url))
+            return url;
+        return null;
+    }
 }
 
 // ---------------------------------------------------------------------- //
@@ -185,10 +198,6 @@ public class RemoteManifest
 
     [JsonPropertyName("mods")]
     public List<RemoteMod> Mods { get; set; } = new();
-
-    /// <summary>URL архива mods.zip — fallback для source=unresolved.</summary>
-    [JsonPropertyName("archive_url")]
-    public string? ArchiveUrl { get; set; }
 }
 
 public class RemoteMod
@@ -241,7 +250,7 @@ public class ModCheckResult
     /// <summary>Есть локально, но хэш не совпал (можно перекачать с Modrinth).</summary>
     public List<RemoteMod> Mismatched { get; set; } = new();
 
-    /// <summary>Есть на сервере, но без прямого URL — тянуть из archive_url.</summary>
+    /// <summary>Есть на сервере, но без прямого URL — тянуть из архива.</summary>
     public List<RemoteMod> Unresolved { get; set; } = new();
 
     /// <summary>Есть локально, но нет в манифесте — на удаление.</summary>

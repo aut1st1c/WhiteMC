@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
-using System.Windows.Threading;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using WhiteMC.Core;
 
 namespace WhiteMC;
@@ -28,18 +30,18 @@ public partial class LogsWindow : Window
 
     private void OnBufferChanged()
     {
-        try { Dispatcher.BeginInvoke(RefreshLog); } catch { }
+        try { Dispatcher.UIThread.Post(RefreshLog); } catch { }
     }
 
-    private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void TitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            try { DragMove(); } catch { }
+            try { BeginMoveDrag(e); } catch { }
         }
     }
 
-    private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+    private void BtnMinimize_Click(object? sender, RoutedEventArgs e)
     {
         WindowState = WindowState.Minimized;
     }
@@ -50,11 +52,12 @@ public partial class LogsWindow : Window
         if (TxtLog.Text != text)
         {
             TxtLog.Text = text;
-            TxtLog.ScrollToEnd();
+            // ScrollToEnd доступен только после лэйаута.
+            Dispatcher.UIThread.Post(() => TxtLog.CaretIndex = TxtLog.Text?.Length ?? 0);
         }
     }
 
-    private void BtnOpenFolder_Click(object sender, RoutedEventArgs e)
+    private void BtnOpenFolder_Click(object? sender, RoutedEventArgs e)
     {
         try
         {
@@ -64,7 +67,7 @@ public partial class LogsWindow : Window
         catch { }
     }
 
-    private void BtnClear_Click(object sender, RoutedEventArgs e) => TxtLog.Clear();
+    private void BtnClear_Click(object? sender, RoutedEventArgs e) => TxtLog.Text = "";
 
-    private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();
+    private void BtnClose_Click(object? sender, RoutedEventArgs e) => Close();
 }

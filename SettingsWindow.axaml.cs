@@ -1,8 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using WhiteMC.Core;
 
 namespace WhiteMC;
@@ -13,6 +14,10 @@ public partial class SettingsWindow : Window
     private readonly string? _currentProfile;
     private readonly string _originalTheme;
     private bool _suppressThemeChange;
+
+    // Конструктор без параметров — только для Avalonia XAML loader / дизайнера.
+    // В рантайме вызывается перегрузка с параметрами.
+    public SettingsWindow() : this(new LauncherSettings(), null) { }
 
     public SettingsWindow(LauncherSettings settings, string? currentProfile)
     {
@@ -30,7 +35,7 @@ public partial class SettingsWindow : Window
         foreach (var (id, name) in ThemeService.Available)
             CmbTheme.Items.Add(new ThemeEntry(id, name));
 
-        for (int i = 0; i < CmbTheme.Items.Count; i++)
+        for (int i = 0; i < CmbTheme.ItemCount; i++)
         {
             if (CmbTheme.Items[i] is ThemeEntry te && te.Id == _originalTheme)
             {
@@ -38,7 +43,7 @@ public partial class SettingsWindow : Window
                 break;
             }
         }
-        if (CmbTheme.SelectedIndex < 0 && CmbTheme.Items.Count > 0)
+        if (CmbTheme.SelectedIndex < 0 && CmbTheme.ItemCount > 0)
             CmbTheme.SelectedIndex = 0;
         _suppressThemeChange = false;
 
@@ -66,20 +71,20 @@ public partial class SettingsWindow : Window
         }
     }
 
-    private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void TitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            try { DragMove(); } catch { }
+            try { BeginMoveDrag(e); } catch { }
         }
     }
 
-    private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+    private void BtnMinimize_Click(object? sender, RoutedEventArgs e)
         => WindowState = WindowState.Minimized;
 
-    private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();
+    private void BtnClose_Click(object? sender, RoutedEventArgs e) => Close();
 
-    private void CmbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void CmbTheme_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (_suppressThemeChange) return;
         if (CmbTheme.SelectedItem is not ThemeEntry te) return;
@@ -90,12 +95,12 @@ public partial class SettingsWindow : Window
         ThemeService.Apply(te.Id);
     }
 
-    private void BtnSave_Click(object sender, RoutedEventArgs e)
+    private void BtnSave_Click(object? sender, RoutedEventArgs e)
     {
         _settings.Username     = string.IsNullOrWhiteSpace(TxtUser.Text) ? "Player" : TxtUser.Text.Trim();
         _settings.Xms          = string.IsNullOrWhiteSpace(TxtXms.Text)  ? "512M"   : TxtXms.Text.Trim();
         _settings.Xmx          = string.IsNullOrWhiteSpace(TxtXmx.Text)  ? "2G"     : TxtXmx.Text.Trim();
-        _settings.ExtraJvmArgs = TxtJvm.Text.Trim();
+        _settings.ExtraJvmArgs = TxtJvm.Text?.Trim() ?? "";
         _settings.Theme        = (CmbTheme.SelectedItem as ThemeEntry)?.Id ?? ThemeService.DefaultTheme;
 
         SettingsService.Save(_settings);
@@ -105,7 +110,7 @@ public partial class SettingsWindow : Window
         Close();
     }
 
-    private void BtnCancel_Click(object sender, RoutedEventArgs e)
+    private void BtnCancel_Click(object? sender, RoutedEventArgs e)
     {
         if (!string.Equals(ThemeService.CurrentId, _originalTheme, StringComparison.Ordinal))
             ThemeService.Apply(_originalTheme);

@@ -1,11 +1,11 @@
-<Window x:Class="WhiteMC.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="WhiteMC.MainWindow"
         Title="WhiteMC" Width="760" Height="500"
         MinWidth="760" MinHeight="500"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
-        ResizeMode="NoResize"
+        SystemDecorations="None"
+        CanResize="False"
         Background="{DynamicResource Bg}"
         Foreground="{DynamicResource Text}">
     <Grid Margin="24,20,24,14">
@@ -21,24 +21,24 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="Transparent"
-              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+              PointerPressed="TitleBar_PointerPressed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="WhiteMC" Style="{DynamicResource H1}"/>
-                <TextBlock Text="лаунчер Minecraft" Style="{DynamicResource SubtextStyle}"
+                <TextBlock Text="WhiteMC" Classes="h1"/>
+                <TextBlock Text="лаунчер Minecraft" Classes="subtext"
                            VerticalAlignment="Bottom" Margin="10,0,0,4"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                         VerticalAlignment="Top">
                 <Button x:Name="BtnSettings" Content="⚙  Настройки"
-                        Style="{DynamicResource GhostBtn}" Click="BtnSettings_Click"/>
+                        Classes="ghost" Click="BtnSettings_Click"/>
                 <Button x:Name="BtnLogs" Content="📜  Логи"
-                        Style="{DynamicResource GhostBtn}" Margin="6,0,0,0"
+                        Classes="ghost" Margin="6,0,0,0"
                         Click="BtnLogs_Click"/>
                 <Button x:Name="BtnMinimize" Content="−"
-                        Style="{DynamicResource TitleBarBtn}" Margin="14,0,0,0"
+                        Classes="titlebar" Margin="14,0,0,0"
                         Click="BtnMinimize_Click"/>
                 <Button x:Name="BtnClose" Content="✕"
-                        Style="{DynamicResource TitleBarCloseBtn}" Margin="4,0,0,0"
+                        Classes="titlebar-close" Margin="4,0,0,0"
                         Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
@@ -46,50 +46,51 @@
         <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Border}" Margin="0,16,0,0"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,18,0,16">
-            <TextBlock Text="Профиль" Style="{DynamicResource H2}" VerticalAlignment="Center"/>
+            <TextBlock Text="Профиль" Classes="h2" VerticalAlignment="Center"/>
             <ComboBox x:Name="CmbProfile" Width="260" Margin="14,0,12,0"
                       SelectionChanged="CmbProfile_SelectionChanged"/>
             <TextBlock x:Name="LblVersion" Foreground="{DynamicResource Accent}"
                        FontWeight="Bold" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Border Grid.Row="3" Background="{DynamicResource Card}" CornerRadius="8" Padding="20,16"
+        <Border Grid.Row="3" Background="{DynamicResource Card}"
+                CornerRadius="8" Padding="20,16"
                 Margin="0,0,0,18">
             <StackPanel>
                 <TextBlock x:Name="LblJava"/>
                 <TextBlock x:Name="LblNeoForge" Margin="0,6,0,0"/>
                 <TextBlock x:Name="LblModpack"   Margin="0,6,0,0" TextWrapping="Wrap"/>
                 <TextBlock x:Name="LblMods"      Margin="0,6,0,0" TextWrapping="Wrap"/>
-                <TextBlock x:Name="LblInstance"  Style="{DynamicResource SubtextStyle}"
+                <TextBlock x:Name="LblInstance"  Classes="subtext"
                            Margin="0,6,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,18">
-            <Button x:Name="BtnInstall" Content="⬇  Установить" Style="{DynamicResource PrimaryBtn}"/>
-            <Button x:Name="BtnUpdate"  Content="🔄  Проверить обновления" Style="{DynamicResource BaseBtn}"
-                    Margin="8,0,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnRepair"  Content="🛠  Починить установку" Style="{DynamicResource BaseBtn}"
-                    Margin="8,0,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnLaunch"  Content="▶  Запустить" Style="{DynamicResource SuccessBtn}"
-                    Margin="8,0,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnKill"    Content="⛔  Завершить" Style="{DynamicResource DangerBtn}"
-                    Margin="8,0,0,0" Visibility="Collapsed"/>
+            <Button x:Name="BtnInstall" Content="⬇  Установить" Classes="primary"/>
+            <Button x:Name="BtnUpdate"  Content="🔄  Проверить обновления"
+                    Classes="base" Margin="8,0,0,0" IsVisible="False"/>
+            <Button x:Name="BtnRepair"  Content="🛠  Починить установку"
+                    Classes="base" Margin="8,0,0,0" IsVisible="False"/>
+            <Button x:Name="BtnLaunch"  Content="▶  Запустить" Classes="success"
+                    Margin="8,0,0,0" IsVisible="False"/>
+            <Button x:Name="BtnKill"    Content="⛔  Завершить" Classes="danger"
+                    Margin="8,0,0,0" IsVisible="False"/>
         </StackPanel>
 
         <StackPanel Grid.Row="6" Margin="0,0,0,10">
-            <TextBlock x:Name="LblStatus" Style="{DynamicResource SubtextStyle}"
+            <TextBlock x:Name="LblStatus" Classes="subtext"
                        TextWrapping="Wrap" Margin="0,0,0,8"/>
             <ProgressBar x:Name="Prog" VerticalAlignment="Top"
-                         Minimum="0" Maximum="100" Value="0" Visibility="Collapsed"/>
+                         Minimum="0" Maximum="100" Value="0" IsVisible="False"/>
         </StackPanel>
 
         <Grid Grid.Row="7">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="📄" Style="{DynamicResource SubtextStyle}"/>
-                <TextBlock x:Name="LblLogFile" Style="{DynamicResource SubtextStyle}" Margin="6,0,0,0"/>
+                <TextBlock Text="📄" Classes="subtext"/>
+                <TextBlock x:Name="LblLogFile" Classes="subtext" Margin="6,0,0,0"/>
             </StackPanel>
-            <TextBlock x:Name="LblAppVersion" Style="{DynamicResource SubtextStyle}"
+            <TextBlock x:Name="LblAppVersion" Classes="subtext"
                        HorizontalAlignment="Right"/>
         </Grid>
     </Grid>

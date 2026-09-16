@@ -1,10 +1,10 @@
-<Window x:Class="WhiteMC.SettingsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="WhiteMC.SettingsWindow"
         Title="WhiteMC — настройки" Width="840" Height="460"
         WindowStartupLocation="CenterOwner"
-        WindowStyle="None"
-        ResizeMode="NoResize"
+        SystemDecorations="None"
+        CanResize="False"
         Background="{DynamicResource Bg}"
         Foreground="{DynamicResource Text}"
         ShowInTaskbar="False">
@@ -15,15 +15,14 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="Transparent"
-              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+              PointerPressed="TitleBar_PointerPressed">
             <TextBlock Text="WhiteMC — настройки"
                        VerticalAlignment="Center" Margin="20,0,0,0"
                        Foreground="{DynamicResource Subtext}" FontSize="12"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                         VerticalAlignment="Center" Margin="0,0,10,0">
-                <Button Content="−" Style="{DynamicResource TitleBarBtn}"
-                        Click="BtnMinimize_Click"/>
-                <Button Content="✕" Style="{DynamicResource TitleBarCloseBtn}"
+                <Button Content="−" Classes="titlebar" Click="BtnMinimize_Click"/>
+                <Button Content="✕" Classes="titlebar-close"
                         Margin="4,0,0,0" Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
@@ -36,7 +35,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Настройки" Style="{DynamicResource H2}"/>
+            <TextBlock Text="Настройки" Classes="h2"/>
             <Rectangle Grid.Row="1" Height="1"
                        Fill="{DynamicResource Border}" Margin="0,12,0,14"/>
 
@@ -64,11 +63,9 @@
                            Foreground="{DynamicResource Subtext}" VerticalAlignment="Center"/>
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal"
                             Margin="14,0,0,10">
-                    <TextBlock Text="Xms" Style="{DynamicResource SubtextStyle}"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Xms" Classes="subtext" VerticalAlignment="Center"/>
                     <TextBox x:Name="TxtXms" Width="80" Margin="6,0,16,0"/>
-                    <TextBlock Text="Xmx" Style="{DynamicResource SubtextStyle}"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Xmx" Classes="subtext" VerticalAlignment="Center"/>
                     <TextBox x:Name="TxtXmx" Width="80" Margin="6,0,0,0"/>
                 </StackPanel>
 
@@ -82,36 +79,36 @@
                             Margin="14,0,0,10">
                     <ComboBox x:Name="CmbTheme" Width="240"
                               SelectionChanged="CmbTheme_SelectionChanged"/>
-                    <TextBlock Style="{DynamicResource SubtextStyle}"
+                    <TextBlock Classes="subtext"
                                VerticalAlignment="Center" Margin="12,0,0,0"
                                Text="Применяется сразу"/>
                 </StackPanel>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                           x:Name="LblLogPath" Style="{DynamicResource SubtextStyle}"
+                           x:Name="LblLogPath" Classes="subtext"
                            Margin="0,14,0,0"/>
                 <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                            Text="Предыдущий: latest.prev.log"
-                           Style="{DynamicResource SubtextStyle}"
+                           Classes="subtext"
                            Margin="0,2,0,0"/>
                 <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
-                           x:Name="LblCache" Style="{DynamicResource SubtextStyle}"
+                           x:Name="LblCache" Classes="subtext"
                            Margin="0,2,0,0"/>
             </Grid>
 
             <Grid Grid.Row="3" Margin="0,18,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button x:Name="BtnOpenLauncher" Content="📂  Папка лаунчера"
-                            Style="{DynamicResource GhostBtn}"/>
+                            Classes="ghost"/>
                     <Button x:Name="BtnOpenInstance" Content="📂  Папка инстанса"
-                            Style="{DynamicResource GhostBtn}" Margin="6,0,0,0"/>
+                            Classes="ghost" Margin="6,0,0,0"/>
                     <Button x:Name="BtnOpenLogs" Content="📜  Логи"
-                            Style="{DynamicResource GhostBtn}" Margin="6,0,0,0"/>
+                            Classes="ghost" Margin="6,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Отмена" Style="{DynamicResource BaseBtn}"
+                    <Button Content="Отмена" Classes="base"
                             Margin="0,0,8,0" Click="BtnCancel_Click"/>
-                    <Button Content="Сохранить" Style="{DynamicResource PrimaryBtn}"
+                    <Button Content="Сохранить" Classes="primary"
                             Click="BtnSave_Click"/>
                 </StackPanel>
             </Grid>

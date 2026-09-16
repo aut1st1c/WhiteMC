@@ -1,10 +1,10 @@
-<Window x:Class="WhiteMC.LogsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="WhiteMC.LogsWindow"
         Title="WhiteMC — логи" Width="980" Height="580"
         WindowStartupLocation="CenterOwner"
-        WindowStyle="None"
-        ResizeMode="NoResize"
+        SystemDecorations="None"
+        CanResize="False"
         Background="{DynamicResource Bg}"
         Foreground="{DynamicResource Text}"
         ShowInTaskbar="False">
@@ -15,15 +15,14 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="Transparent"
-              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+              PointerPressed="TitleBar_PointerPressed">
             <TextBlock Text="WhiteMC — логи"
                        VerticalAlignment="Center" Margin="20,0,0,0"
                        Foreground="{DynamicResource Subtext}" FontSize="12"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                         VerticalAlignment="Center" Margin="0,0,10,0">
-                <Button Content="−" Style="{DynamicResource TitleBarBtn}"
-                        Click="BtnMinimize_Click"/>
-                <Button Content="✕" Style="{DynamicResource TitleBarCloseBtn}"
+                <Button Content="−" Classes="titlebar" Click="BtnMinimize_Click"/>
+                <Button Content="✕" Classes="titlebar-close"
                         Margin="4,0,0,0" Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
@@ -37,8 +36,8 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Журнал лаунчера" Style="{DynamicResource H2}"/>
-                <TextBlock x:Name="LblPath" Style="{DynamicResource SubtextStyle}"
+                <TextBlock Text="Журнал лаунчера" Classes="h2"/>
+                <TextBlock x:Name="LblPath" Classes="subtext"
                            VerticalAlignment="Center" Margin="12,2,0,0"/>
             </StackPanel>
 
@@ -50,20 +49,20 @@
                          Background="Transparent" Foreground="{DynamicResource Text}"
                          BorderThickness="0" Padding="12,10"
                          FontFamily="{DynamicResource MonoFont}" FontSize="12"
-                         VerticalScrollBarVisibility="Auto"
-                         HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          TextWrapping="NoWrap"
                          AcceptsReturn="True"/>
             </Border>
 
             <Grid Grid.Row="3" Margin="0,12,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Content="📂  Открыть папку с логами" Style="{DynamicResource GhostBtn}"
+                    <Button Content="📂  Открыть папку с логами" Classes="ghost"
                             Click="BtnOpenFolder_Click"/>
-                    <Button Content="Очистить вид" Style="{DynamicResource GhostBtn}" Margin="6,0,0,0"
+                    <Button Content="Очистить вид" Classes="ghost" Margin="6,0,0,0"
                             Click="BtnClear_Click"/>
                 </StackPanel>
-                <Button Content="Закрыть" Style="{DynamicResource BaseBtn}"
+                <Button Content="Закрыть" Classes="base"
                         HorizontalAlignment="Right" Click="BtnClose_Click"/>
             </Grid>
         </Grid>

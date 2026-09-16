@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Styling;
 
 namespace WhiteMC.Core;
 
@@ -23,8 +26,10 @@ public static class ThemeService
     {
         if (string.IsNullOrWhiteSpace(id)) return DefaultTheme;
         foreach (var (tid, _) in Available)
+        {
             if (string.Equals(tid, id, StringComparison.OrdinalIgnoreCase))
                 return tid;
+        }
         return DefaultTheme;
     }
 
@@ -44,26 +49,28 @@ public static class ThemeService
 
         CurrentId = requested;
         LogService.Log($"[WhiteMC] Применена тема: {requested}");
-        KickWindows(app);
     }
 
     private static bool TryApply(string themeId, Application app)
     {
         try
         {
-            var merged = app.Resources.MergedDictionaries;
-
-            for (int i = merged.Count - 1; i >= 0; i--)
+            // Удаляем ранее загруженные темы (по пути в URI).
+            for (int i = app.Styles.Count - 1; i >= 0; i--)
             {
-                var src = merged[i].Source?.OriginalString ?? "";
-                if (src.StartsWith("Themes/", StringComparison.OrdinalIgnoreCase))
-                    merged.RemoveAt(i);
+                if (app.Styles[i] is StyleInclude si
+                    && si.Source?.OriginalString.Contains("/Themes/", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    app.Styles.RemoveAt(i);
+                }
             }
 
-            merged.Add(new ResourceDictionary
+            // StyleInclude в Avalonia 11 заменяет ResourceInclude для стилей.
+            var include = new StyleInclude(new Uri("avares://WhiteMC/"))
             {
-                Source = new Uri($"Themes/{themeId}.xaml", UriKind.Relative)
-            });
+                Source = new Uri($"avares://WhiteMC/Themes/{themeId}.axaml")
+            };
+            app.Styles.Add(include);
 
             return true;
         }
@@ -71,27 +78,6 @@ public static class ThemeService
         {
             LogService.Log($"[WARN] TryApply('{themeId}') упал: {ex.Message}");
             return false;
-        }
-    }
-
-    /// <summary>
-    /// Заставляет WPF переприменить implicit-стили к уже открытым окнам.
-    /// Нужно, потому что при подмене MergedDictionaries стили без x:Key
-    /// не всегда триггерят обновление визуального дерева.
-    /// </summary>
-    private static void KickWindows(Application app)
-    {
-        foreach (Window w in app.Windows)
-        {
-            try
-            {
-                var s = w.Style;
-                w.Style = null;
-                w.Style = s;
-                w.InvalidateVisual();
-                w.UpdateLayout();
-            }
-            catch { }
         }
     }
 }

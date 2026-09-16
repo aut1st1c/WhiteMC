@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Threading;
 using WhiteMC.Core;
 
 namespace WhiteMC;
@@ -23,6 +24,7 @@ public partial class MainWindow : Window
     private int  _modCheckVersion;
 
     private LogsWindow? _logsWindow;
+    private bool _closeConfirmed;
 
     public MainWindow()
     {
@@ -31,7 +33,7 @@ public partial class MainWindow : Window
         foreach (var (key, prof) in Profiles.All)
             CmbProfile.Items.Add(new ProfileEntry(key, prof.DisplayName ?? key));
 
-        if (CmbProfile.Items.Count > 0)
+        if (CmbProfile.ItemCount > 0)
             CmbProfile.SelectedIndex = 0;
 
         LblLogFile.Text    = Constants.LogFile;
@@ -43,8 +45,7 @@ public partial class MainWindow : Window
         BtnLaunch.Click  += (_, _) => DoLaunch();
         BtnKill.Click    += (_, _) => DoKill();
 
-        // Проверка обновления лаунчера — после того, как окно показано.
-        Loaded += (_, _) => CheckLauncherUpdate();
+        Loaded += (_, _) => _ = CheckLauncherUpdateAsync();
 
         LogService.Log($"[WhiteMC] Старт лаунчера v{AppVersion.Current}. Логи: {Constants.LogFile}");
         LogService.Log($"[WhiteMC] Лаунчер-папка: {Constants.LauncherDir}");
@@ -54,11 +55,14 @@ public partial class MainWindow : Window
         RefreshState();
     }
 
+    private IBrush Brush(string key) =>
+        (IBrush)this.FindResource(key)!;
+
     // -------------------------------------------------------------------- //
     //  Проверка обновления лаунчера
     // -------------------------------------------------------------------- //
 
-    private void CheckLauncherUpdate()
+    private async Task CheckLauncherUpdateAsync()
     {
         var links = LinksService.Current;
 
@@ -84,11 +88,16 @@ public partial class MainWindow : Window
                   $"Доступна:      {links.LauncherVersion}\n\n" +
                   (hasUrl ? "Открыть страницу загрузки?" : "Скачать можно позже.");
 
-        var r = MessageBox.Show(this, msg, "WhiteMC — обновление",
-            hasUrl ? MessageBoxButton.YesNo : MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        bool open;
+        if (hasUrl)
+            open = await Dialogs.ConfirmAsync(this, "WhiteMC — обновление", msg);
+        else
+        {
+            await Dialogs.InfoAsync(this, "WhiteMC — обновление", msg);
+            open = false;
+        }
 
-        if (r != MessageBoxResult.Yes) return;
+        if (!open) return;
 
         try
         {
@@ -102,10 +111,9 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             LogService.Log($"[WhiteMC] Не удалось открыть URL обновления: {ex.Message}");
-            MessageBox.Show(this,
+            await Dialogs.WarnAsync(this, "WhiteMC",
                 $"Не удалось открыть браузер:\n{ex.Message}\n\n" +
-                $"Скачайте вручную:\n{links.LauncherDownloadUrl}",
-                "WhiteMC", MessageBoxButton.OK, MessageBoxImage.Warning);
+                $"Скачайте вручную:\n{links.LauncherDownloadUrl}");
         }
     }
 
@@ -133,7 +141,7 @@ public partial class MainWindow : Window
     private void SetBusy(bool b)
     {
         _busy = b;
-        Dispatcher.Invoke(RefreshState);
+        Dispatcher.UIThread.Post(RefreshState);
     }
 
     private void RefreshState()
@@ -142,29 +150,29 @@ public partial class MainWindow : Window
         bool ready   = profile.Length > 0 && ProfileReady(profile);
         bool running = GameRunning();
 
-        BtnInstall.Visibility = Visibility.Collapsed;
-        BtnUpdate.Visibility  = Visibility.Collapsed;
-        BtnRepair.Visibility  = Visibility.Collapsed;
-        BtnLaunch.Visibility  = Visibility.Collapsed;
-        BtnKill.Visibility    = Visibility.Collapsed;
+        BtnInstall.IsVisible = false;
+        BtnUpdate.IsVisible  = false;
+        BtnRepair.IsVisible  = false;
+        BtnLaunch.IsVisible  = false;
+        BtnKill.IsVisible    = false;
 
         if (_busy)
         {
-            if (ready) { BtnUpdate.Visibility = Visibility.Visible; BtnLaunch.Visibility = Visibility.Visible; }
-            else       { BtnInstall.Visibility = Visibility.Visible; }
+            if (ready) { BtnUpdate.IsVisible = true; BtnLaunch.IsVisible = true; }
+            else       { BtnInstall.IsVisible = true; }
         }
         else
         {
             if (!ready)
             {
-                BtnInstall.Visibility = Visibility.Visible;
+                BtnInstall.IsVisible = true;
             }
             else
             {
-                BtnUpdate.Visibility = Visibility.Visible;
-                BtnRepair.Visibility = Visibility.Visible;
-                if (running) BtnKill.Visibility = Visibility.Visible;
-                else         BtnLaunch.Visibility = Visibility.Visible;
+                BtnUpdate.IsVisible = true;
+                BtnRepair.IsVisible = true;
+                if (running) BtnKill.IsVisible = true;
+                else         BtnLaunch.IsVisible = true;
             }
         }
 
@@ -200,7 +208,7 @@ public partial class MainWindow : Window
         if (major == null)
         {
             LblJava.Text = "Java: требуется  (уточнится при установке)";
-            LblJava.Foreground = (Brush)FindResource("Subtext");
+            LblJava.Foreground = Brush("Subtext");
         }
         else
         {
@@ -208,17 +216,17 @@ public partial class MainWindow : Window
             if (local != null)
             {
                 LblJava.Text = $"Java {major}:  локальная сборка";
-                LblJava.Foreground = (Brush)FindResource("Green");
+                LblJava.Foreground = Brush("Green");
             }
             else if (HasJavaInPath())
             {
                 LblJava.Text = $"Java {major}:  системная (из PATH)";
-                LblJava.Foreground = (Brush)FindResource("Yellow");
+                LblJava.Foreground = Brush("Yellow");
             }
             else
             {
                 LblJava.Text = $"Java {major}:  будет скачана при установке";
-                LblJava.Foreground = (Brush)FindResource("Red");
+                LblJava.Foreground = Brush("Red");
             }
         }
 
@@ -228,18 +236,18 @@ public partial class MainWindow : Window
             if (nfId != null)
             {
                 LblNeoForge.Text = $"NeoForge:  установлен ({nfId})";
-                LblNeoForge.Foreground = (Brush)FindResource("Green");
+                LblNeoForge.Foreground = Brush("Green");
             }
             else
             {
                 LblNeoForge.Text = "NeoForge:  будет установлен автоматически";
-                LblNeoForge.Foreground = (Brush)FindResource("Yellow");
+                LblNeoForge.Foreground = Brush("Yellow");
             }
         }
         else
         {
             LblNeoForge.Text = "NeoForge:  не требуется";
-            LblNeoForge.Foreground = (Brush)FindResource("Subtext");
+            LblNeoForge.Foreground = Brush("Subtext");
         }
 
         bool modpackShown = false;
@@ -264,7 +272,7 @@ public partial class MainWindow : Window
                             .Where(kv => kv.Key != "__legacy")
                             .Sum(kv => (kv.Value?["files"] as JsonArray)?.Count ?? 0);
                         LblModpack.Text = $"Модпак:  {string.Join(", ", parts)}   ({totalFiles} файлов)";
-                        LblModpack.Foreground = (Brush)FindResource("Green");
+                        LblModpack.Foreground = Brush("Green");
                         modpackShown = true;
                     }
                 }
@@ -274,19 +282,19 @@ public partial class MainWindow : Window
             if (!modpackShown)
             {
                 LblModpack.Text = "Модпак:  будет установлен при нажатии «Установить»";
-                LblModpack.Foreground = (Brush)FindResource("Yellow");
+                LblModpack.Foreground = Brush("Yellow");
             }
         }
         else
         {
             LblModpack.Text = "Модпак:  не задан для этого профиля";
-            LblModpack.Foreground = (Brush)FindResource("Subtext");
+            LblModpack.Foreground = Brush("Subtext");
         }
 
         if (Profiles.HasModsManifest(profile))
         {
             LblMods.Text = "Моды: проверка…";
-            LblMods.Foreground = (Brush)FindResource("Subtext");
+            LblMods.Foreground = Brush("Subtext");
         }
         else
         {
@@ -317,44 +325,47 @@ public partial class MainWindow : Window
     //  Handlers
     // -------------------------------------------------------------------- //
 
-    private void CmbProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void CmbProfile_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         UpdateInfo();
         RefreshState();
         _ = CheckModsInBackgroundAsync();
     }
 
-    private void BtnSettings_Click(object sender, RoutedEventArgs e)
+    private void BtnSettings_Click(object? sender, RoutedEventArgs e)
     {
         var profile = CurrentProfileKey;
-        var w = new SettingsWindow(_settings, profile) { Owner = this };
-        w.ShowDialog();
+        var w = new SettingsWindow(_settings, profile);
+        // Владелец задаётся перегрузкой ShowDialog(owner),
+        // а не через { Owner = this }.
+        _ = w.ShowDialog(this);
     }
 
-    private void BtnLogs_Click(object sender, RoutedEventArgs e)
+    private void BtnLogs_Click(object? sender, RoutedEventArgs e)
     {
         if (_logsWindow != null && _logsWindow.IsVisible)
         {
             _logsWindow.Activate();
             return;
         }
-        _logsWindow = new LogsWindow { Owner = this };
+        _logsWindow = new LogsWindow();
         _logsWindow.Closed += (_, _) => _logsWindow = null;
-        _logsWindow.Show();
+        // Show(owner) — аналог WPF-овского owner-ownership.
+        _logsWindow.Show(this);
     }
 
-    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void TitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            try { DragMove(); } catch { }
+            try { BeginMoveDrag(e); } catch { }
         }
     }
 
-    private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+    private void BtnMinimize_Click(object? sender, RoutedEventArgs e)
         => WindowState = WindowState.Minimized;
 
-    private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();
+    private void BtnClose_Click(object? sender, RoutedEventArgs e) => Close();
 
     // -------------------------------------------------------------------- //
     //  Фоновая проверка модов при старте / смене профиля
@@ -376,7 +387,7 @@ public partial class MainWindow : Window
         var url = Profiles.Modpack(entry.Key)!.ManifestUrl!;
 
         LblMods.Text = "Моды: проверка…";
-        LblMods.Foreground = (Brush)FindResource("Subtext");
+        LblMods.Foreground = Brush("Subtext");
 
         try
         {
@@ -387,7 +398,7 @@ public partial class MainWindow : Window
             if (result.IsUpToDate)
             {
                 LblMods.Text = $"Моды: актуальны ({result.TotalLocal})";
-                LblMods.Foreground = (Brush)FindResource("Green");
+                LblMods.Foreground = Brush("Green");
             }
             else
             {
@@ -397,7 +408,7 @@ public partial class MainWindow : Window
                 if (result.Unresolved.Count > 0) parts.Add($"из архива {result.Unresolved.Count}");
                 if (result.Extra.Count      > 0) parts.Add($"лишних {result.Extra.Count}");
                 LblMods.Text = $"Моды: требуется синхронизация ({string.Join(", ", parts)})";
-                LblMods.Foreground = (Brush)FindResource("Yellow");
+                LblMods.Foreground = Brush("Yellow");
             }
         }
         catch (Exception ex)
@@ -405,7 +416,7 @@ public partial class MainWindow : Window
             LogService.Log($"[WhiteMC] Фоновая проверка модов: {ex.Message}");
             if (Volatile.Read(ref _modCheckVersion) != myVersion) return;
             LblMods.Text = "Моды: ошибка проверки (см. логи)";
-            LblMods.Foreground = (Brush)FindResource("Red");
+            LblMods.Foreground = Brush("Red");
         }
     }
 
@@ -422,18 +433,18 @@ public partial class MainWindow : Window
         SetBusy(true);
 
         Prog.Value = 0;
-        Prog.Visibility = Visibility.Visible;
+        Prog.IsVisible = true;
         LblStatus.Text = force ? "Починка установки…" : "Установка…";
-        LblStatus.Foreground = (Brush)FindResource("Accent");
+        LblStatus.Foreground = Brush("Accent");
 
         void Progress(int i, int total, string msg)
         {
             double pct = 100.0 * i / Math.Max(total, 1);
-            Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
                 Prog.Value = pct;
                 LblStatus.Text = msg;
-                LblStatus.Foreground = (Brush)FindResource("Subtext");
+                LblStatus.Foreground = Brush("Subtext");
             });
         }
 
@@ -441,17 +452,14 @@ public partial class MainWindow : Window
         {
             await Task.Run(async () =>
             {
-                // Версия, библиотеки, ассеты, нативы, NeoForge
                 await VersionInstaller.InstallAsync(v, Progress, LogService.Log, checkUpdates: force);
 
-                // Старые архивы компонентов (если заданы)
                 if (Profiles.HasComponents(profile))
                 {
                     LogService.Log($"[WhiteMC] Модпак: обработка компонентов для {profile}…");
                     await ModpackService.InstallAsync(profile, Progress, LogService.Log, checkUpdates: force);
                 }
 
-                // Моды: Modrinth-дельта + архив, если среди unresolved есть missing/mismatch
                 if (Profiles.HasModsManifest(profile))
                 {
                     var url = Profiles.Modpack(profile)!.ManifestUrl!;
@@ -462,20 +470,19 @@ public partial class MainWindow : Window
 
             LogService.Log($"[OK] {profile}: готово");
             LblStatus.Text = "Готово";
-            LblStatus.Foreground = (Brush)FindResource("Green");
+            LblStatus.Foreground = Brush("Green");
         }
         catch (Exception ex)
         {
             LogService.Log($"[ОШИБКА] {ex}");
             LblStatus.Text = "Ошибка";
-            LblStatus.Foreground = (Brush)FindResource("Red");
-            MessageBox.Show(this, ex.Message, "WhiteMC",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            LblStatus.Foreground = Brush("Red");
+            await Dialogs.ErrorAsync(this, "WhiteMC", ex.Message);
         }
         finally
         {
             SetBusy(false);
-            Prog.Visibility = Visibility.Collapsed;
+            Prog.IsVisible = false;
             UpdateInfo();
             RefreshState();
             _ = CheckModsInBackgroundAsync();
@@ -493,7 +500,7 @@ public partial class MainWindow : Window
 
         if (!Profiles.HasModsManifest(profile))
         {
-            MessageBox.Show(this, "Для этого профиля не задан манифест модов.", "WhiteMC");
+            await Dialogs.InfoAsync(this, "WhiteMC", "Для этого профиля не задан манифест модов.");
             return;
         }
 
@@ -501,18 +508,18 @@ public partial class MainWindow : Window
 
         SetBusy(true);
         Prog.Value = 0;
-        Prog.Visibility = Visibility.Visible;
+        Prog.IsVisible = true;
         LblStatus.Text = "Проверка обновлений модов…";
-        LblStatus.Foreground = (Brush)FindResource("Accent");
+        LblStatus.Foreground = Brush("Accent");
 
         void Progress(int i, int total, string msg)
         {
             double pct = 100.0 * i / Math.Max(total, 1);
-            Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
                 Prog.Value = pct;
                 LblStatus.Text = msg;
-                LblStatus.Foreground = (Brush)FindResource("Subtext");
+                LblStatus.Foreground = Brush("Subtext");
             });
         }
 
@@ -522,20 +529,19 @@ public partial class MainWindow : Window
 
             LogService.Log($"[OK] {profile}: моды синхронизированы");
             LblStatus.Text = "Моды обновлены";
-            LblStatus.Foreground = (Brush)FindResource("Green");
+            LblStatus.Foreground = Brush("Green");
         }
         catch (Exception ex)
         {
             LogService.Log($"[ОШИБКА] {ex}");
             LblStatus.Text = "Ошибка";
-            LblStatus.Foreground = (Brush)FindResource("Red");
-            MessageBox.Show(this, ex.Message, "WhiteMC",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            LblStatus.Foreground = Brush("Red");
+            await Dialogs.ErrorAsync(this, "WhiteMC", ex.Message);
         }
         finally
         {
             SetBusy(false);
-            Prog.Visibility = Visibility.Collapsed;
+            Prog.IsVisible = false;
             UpdateInfo();
             RefreshState();
             _ = CheckModsInBackgroundAsync();
@@ -553,15 +559,14 @@ public partial class MainWindow : Window
 
         if (GameRunning())
         {
-            MessageBox.Show(this, "Игра уже запущена.", "WhiteMC");
+            await Dialogs.InfoAsync(this, "WhiteMC", "Игра уже запущена.");
             return;
         }
 
         if (!ProfileReady(profile))
         {
-            MessageBox.Show(this,
-                $"Профиль «{profile}» не установлен. Сначала нажмите «Установить».",
-                "WhiteMC", MessageBoxButton.OK, MessageBoxImage.Warning);
+            await Dialogs.WarnAsync(this, "WhiteMC",
+                $"Профиль «{profile}» не установлен. Сначала нажмите «Установить».");
             return;
         }
 
@@ -571,7 +576,6 @@ public partial class MainWindow : Window
         LaunchProcess(profile);
     }
 
-    /// <summary>Проверяет хэши локальных модов. Ничего не качает без согласия пользователя.</summary>
     private async Task<bool> VerifyModsBeforeLaunchAsync(string profile)
     {
         if (!Profiles.HasModsManifest(profile)) return true;
@@ -580,7 +584,7 @@ public partial class MainWindow : Window
 
         SetBusy(true);
         LblStatus.Text = "Проверка модов…";
-        LblStatus.Foreground = (Brush)FindResource("Subtext");
+        LblStatus.Foreground = Brush("Subtext");
 
         try
         {
@@ -589,7 +593,7 @@ public partial class MainWindow : Window
             if (result.IsUpToDate)
             {
                 LblStatus.Text = $"Моды в порядке ({result.TotalLocal})";
-                LblStatus.Foreground = (Brush)FindResource("Green");
+                LblStatus.Foreground = Brush("Green");
                 return true;
             }
 
@@ -603,16 +607,14 @@ public partial class MainWindow : Window
                       string.Join("\n", parts) +
                       "\n\nСинхронизировать моды сейчас?";
 
-            var r = MessageBox.Show(this, msg, "WhiteMC",
-                MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-            if (r != MessageBoxResult.Yes) return false;
+            bool sync = await Dialogs.ConfirmAsync(this, "WhiteMC", msg);
+            if (!sync) return false;
 
             await Task.Run(() => ModSyncService.SyncAsync(profile, url,
-                (i, t, m) => Dispatcher.Invoke(() =>
+                (i, t, m) => Dispatcher.UIThread.Post(() =>
                 {
                     LblStatus.Text = m;
-                    LblStatus.Foreground = (Brush)FindResource("Subtext");
+                    LblStatus.Foreground = Brush("Subtext");
                 }),
                 LogService.Log));
 
@@ -621,10 +623,9 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             LogService.Log($"[WhiteMC] Ошибка проверки модов: {ex}");
-            var r = MessageBox.Show(this,
-                $"Не удалось проверить моды:\n{ex.Message}\n\nЗапустить игру всё равно?",
-                "WhiteMC", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            return r == MessageBoxResult.Yes;
+            bool cont = await Dialogs.ConfirmAsync(this, "WhiteMC",
+                $"Не удалось проверить моды:\n{ex.Message}\n\nЗапустить игру всё равно?");
+            return cont;
         }
         finally
         {
@@ -642,7 +643,7 @@ public partial class MainWindow : Window
 
             LogService.Log($"Игра запущена (pid {proc.Id})");
             LblStatus.Text = $"Игра запущена (pid {proc.Id})";
-            LblStatus.Foreground = (Brush)FindResource("Green");
+            LblStatus.Foreground = Brush("Green");
             RefreshState();
 
             _ = Task.Run(() =>
@@ -652,7 +653,7 @@ public partial class MainWindow : Window
                 int code = -1;
                 try { code = proc.ExitCode; } catch { }
 
-                Dispatcher.Invoke(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     lock (_procLock)
                     {
@@ -660,7 +661,7 @@ public partial class MainWindow : Window
                     }
                     LogService.Log($"[WhiteMC] Java завершилась с кодом {code}");
                     LblStatus.Text = $"Java завершилась с кодом {code}";
-                    LblStatus.Foreground = (Brush)FindResource(code == 0 ? "Green" : "Red");
+                    LblStatus.Foreground = Brush(code == 0 ? "Green" : "Red");
                     RefreshState();
                 });
             });
@@ -669,9 +670,8 @@ public partial class MainWindow : Window
         {
             LogService.Log($"[ОШИБКА] {ex}");
             LblStatus.Text = "Ошибка запуска";
-            LblStatus.Foreground = (Brush)FindResource("Red");
-            MessageBox.Show(this, ex.Message, "WhiteMC",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            LblStatus.Foreground = Brush("Red");
+            _ = Dialogs.ErrorAsync(this, "WhiteMC", ex.Message);
         }
     }
 
@@ -684,34 +684,42 @@ public partial class MainWindow : Window
 
         LogService.Log("[WhiteMC] Завершение процесса по запросу пользователя…");
         LblStatus.Text = "Завершение процесса…";
-        LblStatus.Foreground = (Brush)FindResource("Yellow");
+        LblStatus.Foreground = Brush("Yellow");
         BtnKill.IsEnabled = false;
 
         Task.Run(() =>
         {
             LauncherService.Kill(p, LogService.Log);
-            Dispatcher.Invoke(RefreshState);
+            Dispatcher.UIThread.Post(RefreshState);
         });
     }
 
-    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    protected override void OnClosing(WindowClosingEventArgs e)
     {
-        if (GameRunning())
+        if (GameRunning() && !_closeConfirmed)
         {
-            var r = MessageBox.Show(this,
-                "Игра запущена. Завершить Java-процесс и выйти?",
-                "WhiteMC", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (r != MessageBoxResult.Yes)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            System.Diagnostics.Process? p;
-            lock (_procLock) { p = _gameProc; }
-            LauncherService.Kill(p, LogService.Log);
+            e.Cancel = true;
+            _ = ConfirmCloseAsync();
+            return;
         }
+
         LogService.Shutdown();
         base.OnClosing(e);
+    }
+
+    private async Task ConfirmCloseAsync()
+    {
+        bool ok = await Dialogs.ConfirmAsync(this,
+            "WhiteMC",
+            "Игра запущена. Завершить Java-процесс и выйти?");
+
+        if (!ok) return;
+
+        System.Diagnostics.Process? p;
+        lock (_procLock) { p = _gameProc; }
+        LauncherService.Kill(p, LogService.Log);
+
+        _closeConfirmed = true;
+        Close();
     }
 }

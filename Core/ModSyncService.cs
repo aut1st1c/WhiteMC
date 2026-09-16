@@ -103,7 +103,8 @@ public static class ModSyncService
     /// Синхронизирует моды:
     ///  1. Докачивает Modrinth-моды (missing/mismatch).
     ///  2. Если среди unresolved-модов есть отсутствующие или с несовпавшим хэшем —
-    ///     дополнительно скачивает архив (archive_url) и распаковывает из него нужные файлы.
+    ///     дополнительно скачивает архив из profiles.json (modpack.components["mods"])
+    ///     и распаковывает из него нужные файлы.
     ///  3. Удаляет лишние jar'ы, которых нет в манифесте.
     /// </summary>
     public static async Task SyncAsync(
@@ -214,23 +215,27 @@ public static class ModSyncService
             await Task.WhenAll(tasks);
         }
 
-        // 6) Архив — если среди unresolved-модов есть отсутствующие или повреждённые
+        // 6) Архив — если среди unresolved-модов есть отсутствующие или повреждённые.
+        //    Источник архива — только profiles.json → modpack.components["mods"].
         if (unresolvedOnServer.Count > 0)
         {
-            if (string.IsNullOrEmpty(remote.ArchiveUrl))
+            var archiveUrl = Profiles.ModsArchiveUrl(profileName);
+
+            if (string.IsNullOrEmpty(archiveUrl))
             {
                 logger?.Invoke($"[Sync] ВНИМАНИЕ: {unresolvedOnServer.Count} unresolved мод(ов), " +
-                               $"но в манифесте нет archive_url. Файлы не восстановить:");
+                               $"но в profiles.json не задан компонент 'mods' " +
+                               $"(modpack.components[\"mods\"]). Файлы не восстановить:");
                 foreach (var u in unresolvedOnServer)
                     logger?.Invoke($"  - {u.Filename} ({Shorten(u.Sha512)}…)");
             }
             else
             {
                 logger?.Invoke($"[Sync] Unresolved мод(ов) для восстановления: {unresolvedOnServer.Count}. " +
-                               $"Качаю архив: {remote.ArchiveUrl}");
+                               $"Качаю архив из profiles.json: {archiveUrl}");
                 try
                 {
-                    await ApplyArchiveAsync(remote.ArchiveUrl, modsDir, unresolvedOnServer, localHashes, logger, ct);
+                    await ApplyArchiveAsync(archiveUrl, modsDir, unresolvedOnServer, localHashes, logger, ct);
                 }
                 catch (Exception ex)
                 {
