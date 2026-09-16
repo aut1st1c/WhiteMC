@@ -10,11 +10,18 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
-    <Version>0.1.3</Version>
-    <Nullable>enable</Nullable>
+    <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
+
+    <Product>WhiteMC</Product>
+    <AssemblyTitle>WhiteMC</AssemblyTitle>
+    <Company>aut1st1c</Company>
+    <Copyright>Unlicensed</Copyright>
+
+    <ApplicationIcon>Assets\whitemc.ico</ApplicationIcon>
+
+    <Version>0.1.4</Version>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
-    <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,5 +34,10 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Themes\**" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="installer.iss" />
   </ItemGroup>
 </Project>

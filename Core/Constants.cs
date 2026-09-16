@@ -1,7 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System;
 
 namespace WhiteMC.Core;
 
@@ -74,13 +74,49 @@ public static class Constants
     public static string LogFile         => Path.Combine(LogDir, "latest.log");
     public static string LogPrevFile     => Path.Combine(LogDir, "latest.prev.log");
 
+    /// <summary>
+    /// Определяет корневую папку лаунчера в порядке приоритета:
+    ///   1. WHITEMC_DIR (переменная окружения) — для явного переопределения.
+    ///   2. Портативный режим: папка рядом с .exe, если в неё можно писать.
+    ///   3. Fallback: %USERPROFILE%\.whitemc
+    /// </summary>
     private static string ResolveLauncherDir()
     {
+        // 1) Явное переопределение
         var env = Environment.GetEnvironmentVariable("WHITEMC_DIR");
         if (!string.IsNullOrWhiteSpace(env))
             return Path.GetFullPath(env);
+
+        // 2) Портативный режим — папка с .exe
+        var exeDir = (AppContext.BaseDirectory ?? "").TrimEnd(
+            Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+        if (!string.IsNullOrEmpty(exeDir) && IsWritable(exeDir))
+            return exeDir;
+
+        // 3) Fallback
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         return Path.Combine(home, ".whitemc");
+    }
+
+    /// <summary>Проверяет, можно ли писать в папку — создаёт и сразу удаляет пробный файл.</summary>
+    private static bool IsWritable(string dir)
+    {
+        try
+        {
+            var probe = Path.Combine(dir, $".whitemc_probe_{Environment.ProcessId}_{Guid.NewGuid():N}");
+            using (var fs = new FileStream(
+                probe, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1,
+                FileOptions.DeleteOnClose))
+            {
+                fs.WriteByte(0);
+            }
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     // OS ---------------------------------------------------------------------

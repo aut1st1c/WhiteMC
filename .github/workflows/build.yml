@@ -21,7 +21,7 @@ jobs:
             rid: win-x64
             artifact: WhiteMC-bin-win-x64
             archive: WhiteMC-bin-win-x64.zip
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             rid: linux-x64
             artifact: WhiteMC-bin-linux-x64
             archive: WhiteMC-bin-linux-x64.tar.gz
@@ -49,12 +49,50 @@ jobs:
           --self-contained true
           -o publish
 
-      - name: Package (Windows)
+      # ------------------------------------------------------------------ #
+      #  Windows: портативный zip
+      # ------------------------------------------------------------------ #
+      - name: Package (Windows, portable zip)
         if: matrix.rid == 'win-x64'
         shell: pwsh
         run: |
           Compress-Archive -Path publish/* -DestinationPath ${{ matrix.archive }}
 
+      # ------------------------------------------------------------------ #
+      #  Windows: офлайн-установщик через Inno Setup
+      # ------------------------------------------------------------------ #
+      - name: Install Inno Setup
+        if: matrix.rid == 'win-x64'
+        shell: pwsh
+        run: choco install innosetup --no-progress --yes
+
+      - name: Build Windows installer
+        if: matrix.rid == 'win-x64'
+        shell: pwsh
+        run: |
+          [xml]$csproj = Get-Content WhiteMC.csproj
+          $version = $csproj.Project.PropertyGroup |
+              ForEach-Object { $_.Version } |
+              Where-Object { $_ } |
+              Select-Object -First 1
+
+          if (-not $version) { throw "Не удалось извлечь <Version> из WhiteMC.csproj" }
+          Write-Host "Building installer for version $version"
+
+          $env:WHITEMC_VERSION = $version
+
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { throw "ISCC.exe не найден: $iscc" }
+
+          & $iscc installer.iss
+
+          if (-not (Test-Path "installer-out\WhiteMC-setup-win-x64.exe")) {
+              throw "Установщик не был создан"
+          }
+
+      # ------------------------------------------------------------------ #
+      #  Linux: tar.gz (сохраняет +x на бинаре)
+      # ------------------------------------------------------------------ #
       - name: Package (Linux)
         if: matrix.rid == 'linux-x64'
         shell: bash
@@ -62,13 +100,27 @@ jobs:
           chmod +x publish/WhiteMC
           tar -czvf ${{ matrix.archive }} -C publish .
 
-      - name: Upload artifact
+      # ------------------------------------------------------------------ #
+      #  Upload артефактов
+      # ------------------------------------------------------------------ #
+      - name: Upload portable artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
           path: ${{ matrix.archive }}
           if-no-files-found: error
 
+      - name: Upload Windows installer artifact
+        if: matrix.rid == 'win-x64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: WhiteMC-setup-win-x64
+          path: installer-out/WhiteMC-setup-win-x64.exe
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------- #
+  #  Release — только на тегах v*.
+  # ---------------------------------------------------------------------- #
   release:
     name: Release ${{ github.ref_name }}
     if: startsWith(github.ref, 'refs/tags/v')
@@ -100,5 +152,6 @@ jobs:
           files: |
             artifacts/WhiteMC-bin-win-x64.zip
             artifacts/WhiteMC-bin-linux-x64.tar.gz
+            artifacts/WhiteMC-setup-win-x64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
