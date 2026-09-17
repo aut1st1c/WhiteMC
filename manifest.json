@@ -1187,16 +1187,6 @@
       "modrinth_url": "https://cdn.modrinth.com/data/uXXizFIs/versions/x7kQWVju/ferritecore-7.0.3-neoforge.jar"
     },
     {
-      "filename": "flerovium-neoforge-1.21.1-1.1.3-all.jar",
-      "sha512": "037fe4e6f601cb6280c088a189ebaef83c1b9f28993d78a0b23ec525c91b212298da31305cb32173363daf537eacf33566c3b9e414c35cf8ec5ec7b24a6a1379",
-      "sha1": "e055a4755b4cf969d25dd2da1d688eea18c65c57",
-      "size": 184070,
-      "source": "modrinth",
-      "modrinth_version_id": "KmljALvq",
-      "modrinth_project_id": "4Rh1Mobu",
-      "modrinth_url": "https://cdn.modrinth.com/data/4Rh1Mobu/versions/KmljALvq/flerovium-neoforge-1.21.1-1.1.3-all.jar"
-    },
-    {
       "filename": "flowing_fluids-1.0.6-1.21-neoforge.jar",
       "sha512": "c903f5a9d67e860ef641869e54fe6d6a6ee0ae5285e754ac465160e63b15512453d374ead3d288fa9bb67c9050a6d6b8f2db7c1b7bc06e398a9a3969e9409c29",
       "sha1": "1453fbae5afe0d475e5149f60847a65e4d7185c9",
