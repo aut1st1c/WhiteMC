@@ -1725,16 +1725,6 @@
       "source": "unresolved"
     },
     {
-      "filename": "sound-physics-remastered-neoforge-1.21.1-1.5.1.jar",
-      "sha512": "ff7e9f0b968eeb2ba0e833328a122813cad0434cfe2d5c3d527c1c0d564504f13a737fc05f22d3fea562a2f86568d31b95212bf5347dd10da36cd49ad56143a6",
-      "sha1": "a5ac35ccb902231047709530a5708fb71dc3e3b5",
-      "size": 202454,
-      "source": "modrinth",
-      "modrinth_version_id": "Dd2tmpsk",
-      "modrinth_project_id": "qyVF9oeo",
-      "modrinth_url": "https://cdn.modrinth.com/data/qyVF9oeo/versions/Dd2tmpsk/sound-physics-remastered-neoforge-1.21.1-1.5.1.jar"
-    },
-    {
       "filename": "sounds-2.4.22+lts+1.21.1-neoforge.jar",
       "sha512": "0dbfe1cd74be45241c5e95354e6466af10cb50ce780d87672337bd4de03fa708dc56eb013040bb2a02a941cf19b2b282385c6a5305695a4de3534627c645f053",
       "sha1": "cbfa42a31515e1bac4bafcdd974fbba29b7d106a",
