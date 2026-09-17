@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.17-2052",
+  "manifest_version": "2026.09.17-2116",
   "mods": [
     {
       "filename": "AI-Improvements-1.21-0.5.3.jar",
@@ -1362,6 +1362,16 @@
       "modrinth_version_id": "ksaGCvSu",
       "modrinth_project_id": "yBW8D80W",
       "modrinth_url": "https://cdn.modrinth.com/data/yBW8D80W/versions/ksaGCvSu/lambdynamiclights-4.8.11%2B1.21.1.jar"
+    },
+    {
+      "filename": "lanserverproperties-1.13.2-neoforge.jar",
+      "sha512": "da78b99c43be3e1d5c6864dda74424d5cb575fc9d0b3378165979e76ad360ae8086f01fc7b7ba60c2a8bb11e3c3b90c3f2a89e19b70d1146a8a6c8f7dd97b573",
+      "sha1": "96fa378bcfb822f753366fded4991f1eeba78e21",
+      "size": 44799,
+      "source": "modrinth",
+      "modrinth_version_id": "C1Wg17Qf",
+      "modrinth_project_id": "SqnBX2qd",
+      "modrinth_url": "https://cdn.modrinth.com/data/SqnBX2qd/versions/C1Wg17Qf/lanserverproperties-1.13.2-neoforge.jar"
     },
     {
       "filename": "legendary_monsters-2.2.3 MC 1.21.1.jar",
