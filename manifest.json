@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.15-2206",
+  "manifest_version": "2026.09.17-2027",
   "mods": [
     {
       "filename": "AI-Improvements-1.21-0.5.3.jar",
@@ -82,6 +82,16 @@
       "modrinth_url": "https://cdn.modrinth.com/data/m5T5xmUy/versions/Rt96zVC1/BetterGrassify-1.7.0%2Bneoforge.1.21.1.jar"
     },
     {
+      "filename": "BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar",
+      "sha512": "1569d9ed5b619f99d61a7cf1b2d886b278df2905b3ce9324f8e7a17c5c960312ec681cc06f1ad96644bde2cdc60440d8be9952f0ee0f84f7937210f46fbb21d7",
+      "sha1": "294ae397c011980623bf155f9dfce82bb81865a0",
+      "size": 22338156,
+      "source": "modrinth",
+      "modrinth_version_id": "BtZKRp69",
+      "modrinth_project_id": "HXF82T3G",
+      "modrinth_url": "https://cdn.modrinth.com/data/HXF82T3G/versions/BtZKRp69/BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar"
+    },
+    {
       "filename": "Chunky-NeoForge-1.4.23.jar",
       "sha512": "2db769dd723f243a21e1881e7c9f825e9c193da6f2bed454b70cb6fa9e51c57f63fdcf017c0657bbd26f7bba30815413e27c74d3c7be0783390a96ee9baa4bf7",
       "sha1": "ab0c74743a653020fe2dfc4986b43e893947f3e9",
@@ -102,6 +112,23 @@
       "modrinth_url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/jo7lDoK4/Clumps-neoforge-1.21.1-19.0.0.1.jar"
     },
     {
+      "filename": "Colony4ComputerCraft-1.21.1-2.8.2.jar",
+      "sha512": "90f7368d3466d2de260a858233f9b173d03de1f961df54bc61122f9a906b8e3aa1b35d436b81e9ee55304e816e3ca2ae0ca88170efb7c466d18d8418565eab82",
+      "sha1": "b839bc764206dba5cbd9c807b8d188028e7aa429",
+      "size": 173286,
+      "source": "unresolved"
+    },
+    {
+      "filename": "ColonyRank-1.21.1-2.0.1.jar",
+      "sha512": "0cd3aaf98e0656293426c2b667df3858829acb030df7c5c86af15018abf3a79805e8b174d50033e25cf3624b4898a40c539b7795c3a8d02cad627d1a3b424434",
+      "sha1": "367584e4c786130ba87b1920388fdaf75214fe19",
+      "size": 75601,
+      "source": "modrinth",
+      "modrinth_version_id": "tFsGDjxI",
+      "modrinth_project_id": "aAk52ELi",
+      "modrinth_url": "https://cdn.modrinth.com/data/aAk52ELi/versions/tFsGDjxI/ColonyRank-1.21.1-2.0.1.jar"
+    },
+    {
       "filename": "ConnectorExtras-1.12.1+1.21.1.jar",
       "sha512": "ff9fc5d48a81e820c8c26b8a045e0ab7a3b0e9b5eaee7369b2eadb3f93d7eb423255073dfc327d131cb667df93be066560f3704b4cc8a12b07486b98a12bad1d",
       "sha1": "8ea07df55b26c8343d06df77936505a23e0d2140",
@@ -112,14 +139,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/FYpiwiBR/versions/dgLCqZyo/ConnectorExtras-1.12.1%2B1.21.1.jar"
     },
     {
-      "filename": "CreativeCore_NEOFORGE_v2.13.44_mc1.21.1.jar",
-      "sha512": "bf09773b202158d6ceb81ccfad3a8dd5b2e422d5cd0a7b9affca821af163c381bf839117765e7ca10b32ace0f477141e57f0ae9ea5c4fee38f06e1af6accef2b",
-      "sha1": "ed55360f72cd6666a1b191506a6270e05ef1ef49",
-      "size": 1232783,
+      "filename": "Corgilib-NeoForge-1.21.1-5.0.0.9.jar",
+      "sha512": "d5461d5fab247fe2d30ba5578c7768cf3c4c8758b155acb5c901913c22c43ddd6af6e7dbd5ae4cca8b106f7e2953b4427c0a97e53869861d64b0266c825d178b",
+      "sha1": "6699f876f9e10f936910055f7fe1a283d8bb9e0f",
+      "size": 309763,
       "source": "modrinth",
-      "modrinth_version_id": "JX9o5pJD",
+      "modrinth_version_id": "nqrTa84r",
+      "modrinth_project_id": "ziOp6EO8",
+      "modrinth_url": "https://cdn.modrinth.com/data/ziOp6EO8/versions/nqrTa84r/Corgilib-NeoForge-1.21.1-5.0.0.9.jar"
+    },
+    {
+      "filename": "CreativeCore_NEOFORGE_v2.13.46_mc1.21.1.jar",
+      "sha512": "cae19e90001272f3d9be35b279e1c5eed6f1079740380532b5055af19fb378f32a74754beb3c9ca7d2e49f75259f6e1b44c5d602db6362bd6017b3a95d3fee75",
+      "sha1": "180613074e3f8df9b1e052a3abe19a1c4ac38b48",
+      "size": 1235813,
+      "source": "modrinth",
+      "modrinth_version_id": "fdEYikBb",
       "modrinth_project_id": "OsZiaDHq",
-      "modrinth_url": "https://cdn.modrinth.com/data/OsZiaDHq/versions/JX9o5pJD/CreativeCore_NEOFORGE_v2.13.44_mc1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/OsZiaDHq/versions/fdEYikBb/CreativeCore_NEOFORGE_v2.13.46_mc1.21.1.jar"
     },
     {
       "filename": "CreeperOverhaul-neoforge-1.21.1-4.0.6.jar",
@@ -150,16 +187,6 @@
       "modrinth_version_id": "bgR1e0O5",
       "modrinth_project_id": "IKARgflD",
       "modrinth_url": "https://cdn.modrinth.com/data/IKARgflD/versions/bgR1e0O5/DiagonalFences-v21.1.1-1.21.1-NeoForge.jar"
-    },
-    {
-      "filename": "DynamicTreesPlus-neoforge-1.21.1-1.3.2.jar",
-      "sha512": "e5ccd43fb43c6d1417fcc070f87a15a606ed062415bd00e72a8fb8ea30b195f5a23f5629e17844e232368653f0cd2bfd48d77b71aedd46fe64a92e7e7c731a76",
-      "sha1": "9f261be4cb8f83ffbc126f7198cdbe297f2b2166",
-      "size": 530533,
-      "source": "modrinth",
-      "modrinth_version_id": "LX5fWOvU",
-      "modrinth_project_id": "qaO9Dqpu",
-      "modrinth_url": "https://cdn.modrinth.com/data/qaO9Dqpu/versions/LX5fWOvU/DynamicTreesPlus-neoforge-1.21.1-1.3.2.jar"
     },
     {
       "filename": "EMIProfessions-neoforge-1.21.1-1.0.3.jar",
@@ -202,6 +229,16 @@
       "modrinth_url": "https://cdn.modrinth.com/data/hl5OLM95/versions/jDzSPLta/Geophilic%20v3.6.mod.jar"
     },
     {
+      "filename": "GlitchCore-neoforge-1.21.1-2.1.0.2.jar",
+      "sha512": "7a009ed163d03536fdfaee7b37cb1ec3073204dffcb06a683369aa88da8dbc3780b0ac69d466bb32a3ad9394c97b698d0fda676e1b4dd4edfc50ac5aa2283c32",
+      "sha1": "e3d4bb80a06f619be989ab529d0cd4e33e076943",
+      "size": 90717,
+      "source": "modrinth",
+      "modrinth_version_id": "S2TfWrZR",
+      "modrinth_project_id": "s3dmwKy5",
+      "modrinth_url": "https://cdn.modrinth.com/data/s3dmwKy5/versions/S2TfWrZR/GlitchCore-neoforge-1.21.1-2.1.0.2.jar"
+    },
+    {
       "filename": "Highlighter-1.21-neoforge-1.1.11.jar",
       "sha512": "41e1d2b3f73cf81b94563f04877528d0076672f95a456e959ca8f72162c8803bb9cf5ad540d1fbd15642a1d974bf11362a6b161003cd0853de050a443458a13b",
       "sha1": "22d29eba774530b40a540fdf5ce2d14d89bbe036",
@@ -222,14 +259,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/5faXoLqX/versions/IMssx9du/Iceberg-1.21.1-neoforge-1.3.2.jar"
     },
     {
-      "filename": "ImmediatelyFast-NeoForge-1.6.13+1.21.1.jar",
-      "sha512": "3ae569036780a0a1637c236a1370cee20055707d05ca93a3700eb729d2ef7267b765fb31d56707d0211fd5a12cbcdf004746ca319d2a7547a69a10ee9d6a4316",
-      "sha1": "cfc87deced26f78e46143fe5f0a33597d06845a8",
-      "size": 362740,
+      "filename": "ImmediatelyFast-NeoForge-1.6.14+1.21.1.jar",
+      "sha512": "7d1c2e6ce306f4bb9aa155f64ba87732dc2443d57fde249467a99e0ed90fec89a706252888b97f882efbc55d6044971519db704125f27ae53cd9ae40424f9b2c",
+      "sha1": "fee59af2f39c66d09c4c09f441c799e76af70f97",
+      "size": 365195,
       "source": "modrinth",
-      "modrinth_version_id": "xcQYt0Uy",
+      "modrinth_version_id": "OUpXxw4n",
       "modrinth_project_id": "5ZwdcRci",
-      "modrinth_url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/xcQYt0Uy/ImmediatelyFast-NeoForge-1.6.13%2B1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/OUpXxw4n/ImmediatelyFast-NeoForge-1.6.14%2B1.21.1.jar"
     },
     {
       "filename": "InvMove-0.9.3+1.21.1-NeoForge.jar",
@@ -282,24 +319,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/xuDOzCLy/versions/ZHjXkd1n/JadeAddons-1.21.1-NeoForge-6.1.1.jar"
     },
     {
-      "filename": "KotlinLangForge-2.13.0-k2.4.10-3.0+neoforge.jar",
-      "sha512": "1dec600b87b1d6a350bbfb3c7ad45136929e77851dac66efc70d217cde2af2115b822560f404355cfaa0f45453b32c9045cdcfa57b5840dec9a88f9302cb42be",
-      "sha1": "4873810ed9ccfd31dd7c1071e642c745a2804d6e",
-      "size": 7989922,
+      "filename": "KotlinLangForge-2.14.1-k2.4.20-3.0+neoforge.jar",
+      "sha512": "8d6faf1fa623529e794fb0429b96f71965843ea1876262c26cecf4fe17dd6e64334498f984cca487e3083881f0e917a26af3862b72e85a2d0d5a7225104355da",
+      "sha1": "1a68ab7829e03b2f9ef59d4d2d58ac4c5be74ffc",
+      "size": 8214901,
       "source": "modrinth",
-      "modrinth_version_id": "XsDHyDlZ",
+      "modrinth_version_id": "SRMod41B",
       "modrinth_project_id": "1vrSzlao",
-      "modrinth_url": "https://cdn.modrinth.com/data/1vrSzlao/versions/XsDHyDlZ/KotlinLangForge-2.13.0-k2.4.10-3.0%2Bneoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/1vrSzlao/versions/SRMod41B/KotlinLangForge-2.14.1-k2.4.20-3.0%2Bneoforge.jar"
     },
     {
-      "filename": "Ksyxis-1.4.3.jar",
-      "sha512": "55b1ec940910a6c36fa40595b0d7b8617e3a817c55ecb2d5c1ee54c026936d6f1a4bbe63228c60ebf75195bb14f3c9128c913ba949df2c5877b9b99d21bab9a4",
-      "sha1": "6f4b2ea7827da8136bdf436457a2ba3fcdb2120e",
-      "size": 26968,
+      "filename": "Ksyxis-1.4.4.jar",
+      "sha512": "d16984f287cba04bb6a6a6bebfa9c7ffc974263b1032522a5b3811142b4a240cf0e78d65a4b4f27309e8a1b007a9c3a6de8456de0be6859102a462545c160b62",
+      "sha1": "c4e4282d80322d5d41f1f1cdb4811ded6ab97b11",
+      "size": 22730,
       "source": "modrinth",
-      "modrinth_version_id": "kL32PN9Q",
+      "modrinth_version_id": "sML1jQ1B",
       "modrinth_project_id": "2ecVyZ49",
-      "modrinth_url": "https://cdn.modrinth.com/data/2ecVyZ49/versions/kL32PN9Q/Ksyxis-1.4.3.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/2ecVyZ49/versions/sML1jQ1B/Ksyxis-1.4.4.jar"
     },
     {
       "filename": "LegendaryTooltips-1.21.1-neoforge-1.5.5.jar",
@@ -352,6 +389,26 @@
       "modrinth_url": "https://cdn.modrinth.com/data/qQyHxfxd/versions/ZV8eL55E/NoChatReports-NEOFORGE-1.21.1-v2.9.1.jar"
     },
     {
+      "filename": "Oh-The-Biomes-Weve-Gone-NeoForge-2.6.0.jar",
+      "sha512": "76ceb60d1058bca79e13c7059dc42f8b230cb480986e1d88b505f958fc3922a00bef463eb267c9b676be053bec1e71806fbc27fb2a41df6dcd9881a0f0711f77",
+      "sha1": "4611dc5bb4240333178e14e81f76168f78167448",
+      "size": 20484967,
+      "source": "modrinth",
+      "modrinth_version_id": "aPEcdSHb",
+      "modrinth_project_id": "NTi7d3Xc",
+      "modrinth_url": "https://cdn.modrinth.com/data/NTi7d3Xc/versions/aPEcdSHb/Oh-The-Biomes-Weve-Gone-NeoForge-2.6.0.jar"
+    },
+    {
+      "filename": "Oh-The-Trees-Youll-Grow-neoforge-1.21.1-5.3.2.jar",
+      "sha512": "1a1bf395c5ec7366b938f1891a6b6666ab0cac9da8f5e7fbc8c07a3518b568759772a7ce6a4326b448773a75a7b5aacb032f580baf447029f329dff3aa115789",
+      "sha1": "1867792e4e3d9fc6bb7acabb31cbec7a3d49ecad",
+      "size": 167431,
+      "source": "modrinth",
+      "modrinth_version_id": "ozzakIcu",
+      "modrinth_project_id": "g8NOG5OR",
+      "modrinth_url": "https://cdn.modrinth.com/data/g8NOG5OR/versions/ozzakIcu/Oh-The-Trees-Youll-Grow-neoforge-1.21.1-5.3.2.jar"
+    },
+    {
       "filename": "OverflowingBars-v21.1.1-1.21.1-NeoForge.jar",
       "sha512": "2962a12664e24711096d9be98bfda2ae0b86c5050d0860a36b3567870d794767d308328060c6fbe4f4854b569d97ce465b8b250775f3ae7a5d0a563f342a4136",
       "sha1": "a9dea4b9ef893fc955512ff2dee75c9c82e09a52",
@@ -392,24 +449,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/1OE8wbN0/versions/kMcz2lDj/Prism-1.21.1-neoforge-1.0.11.jar"
     },
     {
-      "filename": "PuzzlesLib-v21.1.56-mc1.21.1-NeoForge.jar",
-      "sha512": "7a0f6e58728684c5099d9fa157a4a9a078019cfc263844506aa43ba87ee1c8f556e01f0b24cf96f9b6dd373bc5da714773f394442a6ad045b157d9a8a36ba5b4",
-      "sha1": "a5bfa91390084a88e9c7f355f833e76e5cdc3f4c",
-      "size": 1402525,
+      "filename": "PuzzlesLib-v21.1.60-mc1.21.1-NeoForge.jar",
+      "sha512": "630bea2bfeed34074d82bc75a4e3f94bb8235d5ae4b13d59c3ee8832bd493eb34584e81d183c5447bd1754e1845d8397eb910d16678243f64e7df8389ce147ac",
+      "sha1": "319fc1ea1498920b39a318ea324f6112a7318d67",
+      "size": 1442182,
       "source": "modrinth",
-      "modrinth_version_id": "qbF2d7Ma",
+      "modrinth_version_id": "lh44g7RC",
       "modrinth_project_id": "QAGBst4M",
-      "modrinth_url": "https://cdn.modrinth.com/data/QAGBst4M/versions/qbF2d7Ma/PuzzlesLib-v21.1.56-mc1.21.1-NeoForge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/QAGBst4M/versions/lh44g7RC/PuzzlesLib-v21.1.60-mc1.21.1-NeoForge.jar"
     },
     {
-      "filename": "Resourcify (1.21.1-neoforge)-1.8.5.jar",
-      "sha512": "29d66b0fe0f896b71e34cd2a9266e39364cf8c03a457b853f4fd4db273e9813aa27d7a22992d0716f981b5299568dfb31211fbb11faa0f221302e970d4db1cc4",
-      "sha1": "a25dae7afbd3b5d9ff52159fefbc3ef65baca1aa",
-      "size": 2625951,
+      "filename": "Resourcify (1.21.1-neoforge)-1.8.6.jar",
+      "sha512": "ca8eca6ab89acdbd88d4c5b59a5595d98e00f3f8361c7b337aa2bf8e8cc102d9ef97792f4898170309b866013156238ae74c16df9fe3214722e86bcd14addf2f",
+      "sha1": "32dd9e379132230569519cf1ed8e1f94f7de73c5",
+      "size": 2940307,
       "source": "modrinth",
-      "modrinth_version_id": "aXRe8UMO",
+      "modrinth_version_id": "pifjvHYS",
       "modrinth_project_id": "RLzHAoZe",
-      "modrinth_url": "https://cdn.modrinth.com/data/RLzHAoZe/versions/aXRe8UMO/Resourcify%20%281.21.1-neoforge%29-1.8.5.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/RLzHAoZe/versions/pifjvHYS/Resourcify%20%281.21.1-neoforge%29-1.8.6.jar"
     },
     {
       "filename": "ShoulderSurfing-NeoForge-1.21.1-5.0.11.jar",
@@ -442,46 +499,6 @@
       "modrinth_url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/6e8GCrLb/TerraBlender-neoforge-1.21.1-4.1.0.8.jar"
     },
     {
-      "filename": "Terralith_1.21.1_v2.6.2_Neoforge.jar",
-      "sha512": "35298f1682567f63dc16658b04cee5498b30819f1c05f9712b4480d7f5eb17059db3b13ab14f81a05fe257149d11ced2cce2030d3727c1747edd8657c53e2a85",
-      "sha1": "d4a9fe71b841f70edfb4b280f9bf5c58e4a28224",
-      "size": 2814865,
-      "source": "modrinth",
-      "modrinth_version_id": "IY93YaEe",
-      "modrinth_project_id": "8oi3bsk5",
-      "modrinth_url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/IY93YaEe/Terralith_1.21.1_v2.6.2_Neoforge.jar"
-    },
-    {
-      "filename": "Terralith_No_Structures_v1.1.jar",
-      "sha512": "82bcebf0aefbf9e307cfaecbfd012cdda5d28e32d9c0d320ea37e00eb8f348af1132453a1cd0b0ca46cbfc785455cc9e67794d27b91217e779cb903be1cf6dd4",
-      "sha1": "ae416694cb9ccec09bf18d00f1d7cc135f0490ff",
-      "size": 11353,
-      "source": "modrinth",
-      "modrinth_version_id": "gHEBqjS9",
-      "modrinth_project_id": "AVxrmCCE",
-      "modrinth_url": "https://cdn.modrinth.com/data/AVxrmCCE/versions/gHEBqjS9/Terralith_No_Structures_v1.1.jar"
-    },
-    {
-      "filename": "Terralith_ReStoned_v1.3.1.jar",
-      "sha512": "64b6499aa08a174be45c080ed5d7e688195601708e7aa9ed443c4f7bd6e7777951002fa135023b6b85a9e2cde704e1fda9a6a81dc306dffbbca829b85653f542",
-      "sha1": "66ba79dd83e459c1a47b77d041d56424b6978e7c",
-      "size": 9492,
-      "source": "modrinth",
-      "modrinth_version_id": "9wwdRqkT",
-      "modrinth_project_id": "oTQsXi8U",
-      "modrinth_url": "https://cdn.modrinth.com/data/oTQsXi8U/versions/9wwdRqkT/Terralith_ReStoned_v1.3.1.jar"
-    },
-    {
-      "filename": "Terraphilic v1.2.0.jar",
-      "sha512": "39e1e3f6e0d754fa788f378cc76db5cc2852335b6b12d90d285ee3fbf6ee4b544df8bcba5710e37882f5ba7aea443eeccde25686f03160aa58e17c6b938a14e0",
-      "sha1": "9be06d4c307ac473c8786558e70ccc488ac23720",
-      "size": 284148,
-      "source": "modrinth",
-      "modrinth_version_id": "bdiZl5tW",
-      "modrinth_project_id": "8T4mO5eV",
-      "modrinth_url": "https://cdn.modrinth.com/data/8T4mO5eV/versions/bdiZl5tW/Terraphilic%20v1.2.0.jar"
-    },
-    {
       "filename": "TravelersTitles-1.21.1-NeoForge-5.1.3.jar",
       "sha512": "eed7ed02277e32f374da0999bbb24410c04543ca39e6e349ca9e441c468e218cf0cad59173f8b98c3f45140b24552efa3672ff48feb311ec01b19ab2f02b2e64",
       "sha1": "166cba4d367c6dd103d1d5dcab7a31174bec799e",
@@ -512,24 +529,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/kfqD1JRw/versions/3646RfLS/VisualWorkbench-v21.1.2-1.21.1-NeoForge.jar"
     },
     {
-      "filename": "YungsApi-1.21.1-NeoForge-5.1.8.jar",
-      "sha512": "83520e057a949ed6e8dcee33984ae0eef83c2e57d001ffbbba0b51090176608f7378327ece773312543cd8cbb802f951b7c24b57f3ab6cf19d2be10b47af30d0",
-      "sha1": "eb5757e5cb387553ed4d342e7aecf5b7dcb384a0",
-      "size": 389834,
+      "filename": "YungsApi-1.21.1-NeoForge-5.1.9.jar",
+      "sha512": "7e3cf0b429e8a1c51dca094c2d8eabf12245bb42cbcd8b6e3e54959f931bef93201b81a08d200b417059aaa438e8eb445c3978a09568597bfb588199b7775967",
+      "sha1": "2c4b740c8ad27bbcb2a21b85b64f011b809aed91",
+      "size": 413763,
       "source": "modrinth",
-      "modrinth_version_id": "K3Dp2T0P",
+      "modrinth_version_id": "2prKITKh",
       "modrinth_project_id": "Ua7DFN59",
-      "modrinth_url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/K3Dp2T0P/YungsApi-1.21.1-NeoForge-5.1.8.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/2prKITKh/YungsApi-1.21.1-NeoForge-5.1.9.jar"
     },
     {
-      "filename": "YungsBetterCaves-1.21.1-NeoForge-3.1.5.jar",
-      "sha512": "7546c24f299fbb094ead014467eb646252463c9e320a14e1faf63e06dac603cbab173da847b2850aa530f71658a8681f4756bfdb8a263b842bbbf56699a976c8",
-      "sha1": "a5407929ce40be25cfa1c4e3dcdf208bf954f9b7",
-      "size": 399061,
+      "filename": "YungsBetterCaves-1.21.1-NeoForge-3.1.6.jar",
+      "sha512": "a5fa3881a32a96c25c8012aac347221363792d68491ae1f6e26d345264f7acff7c7562d6c96e0ee2f00c63ad50351742763a740f0965cc9ca0b97808f8847bba",
+      "sha1": "6420fdb345b5e33b3a51254799dc281c9c53d3c5",
+      "size": 400316,
       "source": "modrinth",
-      "modrinth_version_id": "GtxWLCtj",
+      "modrinth_version_id": "Feo6YOjN",
       "modrinth_project_id": "Dfu00ggU",
-      "modrinth_url": "https://cdn.modrinth.com/data/Dfu00ggU/versions/GtxWLCtj/YungsBetterCaves-1.21.1-NeoForge-3.1.5.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/Dfu00ggU/versions/Feo6YOjN/YungsBetterCaves-1.21.1-NeoForge-3.1.6.jar"
     },
     {
       "filename": "YungsBetterDesertTemples-1.21.1-NeoForge-4.1.5.jar",
@@ -672,14 +689,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/BwPeriwJ/versions/vERjAa36/a_good_place-1.21-1.2.6-neoforge.jar"
     },
     {
-      "filename": "alexsmobs-2.1.13-neoforge+1.21.1.jar",
-      "sha512": "a277db4fd90c3da5715e8383e7fcd089a9b20673c426149509abcf1c8bad47967c506b0fe58ddcd85029068b855bc8abfdb8c5d8ef5ca6fad29f57e1edb3910f",
-      "sha1": "50ddafdf3d12b33331e4eecb4ab514ae451baadd",
-      "size": 27452738,
+      "filename": "alexsmobs-2.2.0-neoforge+1.21.1.jar",
+      "sha512": "be3d019dee2a9e6289e443886cb1cc22c04dac70729077a6f7c43336533af158ed125f8a8de90339fa34ba8dccfe1373f41759804ff858283d779426ba2b3178",
+      "sha1": "ba6619c6fe367d417489698291d29e9ca5d770f2",
+      "size": 27459751,
       "source": "modrinth",
-      "modrinth_version_id": "Ok0b9L76",
+      "modrinth_version_id": "kJOuHWyg",
       "modrinth_project_id": "kYIaHHfw",
-      "modrinth_url": "https://cdn.modrinth.com/data/kYIaHHfw/versions/Ok0b9L76/alexsmobs-2.1.13-neoforge%2B1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/kYIaHHfw/versions/kJOuHWyg/alexsmobs-2.2.0-neoforge%2B1.21.1.jar"
     },
     {
       "filename": "appleskin-neoforge-mc1.21-3.0.9.jar",
@@ -749,10 +766,10 @@
       "source": "unresolved"
     },
     {
-      "filename": "blockui-1.0.211-1.21.1-snapshot.jar",
-      "sha512": "b31e68b526b30b1a5b58cbc624b4d586937e6ca5d4eff83cec4e48017a5b24171716c0ef146be329d5f1add738352c5ac794fb2245a9e3bf4b58326f71a0e381",
-      "sha1": "0ab4e0342b9f1e595d9a891f84747e4e5389c552",
-      "size": 468147,
+      "filename": "blockui-1.0.212-1.21.1-snapshot.jar",
+      "sha512": "589b0687d5ef6cdf4aa536224b1451195c1fc4060d7536fce68d1cec720dcc0b450e815f1650d688da07e1826aae8b937922db62c3ec1a5c68933ba5c1829188",
+      "sha1": "b2ab39fc854baaf8eba3b95305b05e2aa2ca6e33",
+      "size": 468142,
       "source": "unresolved"
     },
     {
@@ -826,14 +843,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/ZPylso9i/chat_heads-0.15.7-neoforge-1.21.jar"
     },
     {
-      "filename": "chatanimation-neoforge-1.3.1+mc1.21.jar",
-      "sha512": "8f9d9d9800bb028897333754b7eacb49d64fb41ccb85e308cc38de5c74bbd9572fe12ce2f5751e85432a5d219c88e057ae87d7b2301a6435fc84bbb1921e125a",
-      "sha1": "52a07c701aa877a1b158cc235ec5aed93e5819a9",
-      "size": 1031865,
+      "filename": "chatanimation-neoforge-1.3.3+mc1.21.jar",
+      "sha512": "905f040f1ec492c1f2a41dd43badb5de4df7c5c3d75913661025a86032c0820dc1b17aca17ac533b2403928536cbc268140d9281f09768a23f95c26127107bcd",
+      "sha1": "a01d93d8effc5f00aae6802e549f5a595eac02f7",
+      "size": 1066941,
       "source": "modrinth",
-      "modrinth_version_id": "wC0uTsko",
+      "modrinth_version_id": "ktSRZkTk",
       "modrinth_project_id": "DnNYdJsx",
-      "modrinth_url": "https://cdn.modrinth.com/data/DnNYdJsx/versions/wC0uTsko/chatanimation-neoforge-1.3.1%2Bmc1.21.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/DnNYdJsx/versions/ktSRZkTk/chatanimation-neoforge-1.3.3%2Bmc1.21.jar"
     },
     {
       "filename": "chloride-NEOFORGE-mc1.21.1-v1.8.1.jar",
@@ -866,14 +883,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/9s6osm5g/versions/izKINKFg/cloth-config-15.0.140-neoforge.jar"
     },
     {
-      "filename": "codxlib-1.6.0-neoforge+1.21.1.jar",
-      "sha512": "cdcf0f6637075a282888e4141114fc958f1b2842e24047f82ae4335f54dee7df0a23e2ed09bac9e169b7de68ec63a3d7ee0b09da712ff47fcab8eeb931b6c011",
-      "sha1": "5934c440dd8b4633ca2465dfe94ecfdbe5ad8e89",
-      "size": 193046,
+      "filename": "codxlib-1.6.1-neoforge+1.21.1.jar",
+      "sha512": "11e1404f14eefd5483fcc17e681c619a1f5c7e45f11f2ea5bb53b672917511add06cfdf5ad97869769d3db3124a3fdc88e7883fa30bfe88304e56d75f2fabcbd",
+      "sha1": "d11c51c10d86420c4ba9a18ce42b5b7bbc1fd3ca",
+      "size": 193045,
       "source": "modrinth",
-      "modrinth_version_id": "AVHJYkf1",
+      "modrinth_version_id": "MMcDASmX",
       "modrinth_project_id": "6oyMM4yX",
-      "modrinth_url": "https://cdn.modrinth.com/data/6oyMM4yX/versions/AVHJYkf1/codxlib-1.6.0-neoforge%2B1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/6oyMM4yX/versions/MMcDASmX/codxlib-1.6.1-neoforge%2B1.21.1.jar"
     },
     {
       "filename": "collective-1.21.1-8.39.jar",
@@ -953,14 +970,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/Vg5TIO6d/versions/Xe7EqzfQ/create_connected-1.3.3-mc1.21.1.jar"
     },
     {
-      "filename": "createaddition-1.7.0.jar",
-      "sha512": "267779bf2a215a0be39748e6a8e387322df697bc9de8e7e9558e6885aa790a2e73f334a55bfc5f97f4130d22262011433675fd0830ab1e3e3b10c9898d8a702c",
-      "sha1": "fd73ba9809ed6656a8c2aae81c9badb382085657",
-      "size": 1705668,
+      "filename": "createaddition-1.7.1.jar",
+      "sha512": "2f839213f43b311378659ee1d643b444b3ce2b2cc2c3fa6239c176c17ee3cf53b9f471e1d13442813e5683d40e0da8ca3609498ee1690cb87efb21bdeeae9598",
+      "sha1": "779c49416643a6c5f176d5d500bf1bcbe75a5d18",
+      "size": 1726257,
       "source": "modrinth",
-      "modrinth_version_id": "zlC557Yg",
+      "modrinth_version_id": "vD7sHwsm",
       "modrinth_project_id": "kU1G12Nn",
-      "modrinth_url": "https://cdn.modrinth.com/data/kU1G12Nn/versions/zlC557Yg/createaddition-1.7.0.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/kU1G12Nn/versions/vD7sHwsm/createaddition-1.7.1.jar"
     },
     {
       "filename": "createbetterfps-1.21.1-1.1.4.jar",
@@ -993,11 +1010,21 @@
       "modrinth_url": "https://cdn.modrinth.com/data/ZM3tt6p1/versions/UoPH8lO1/createdieselgenerators-1.21.1-1.3.15.jar"
     },
     {
-      "filename": "cupboard-1.21.1-4.1.jar",
-      "sha512": "d9946cf1a6b453237d1e6a4c1b577a5746a85ade88adcc20035e925159c64d756f7f6ae4b929f60a4e3b4d390de7ff088a82d2d94443d4f25ab21c8f97aa9f53",
-      "sha1": "13b3bc42d2514f53acea0c52c91e7800a297f408",
-      "size": 30206,
+      "filename": "cupboard-1.21.1-4.2.jar",
+      "sha512": "c8e929b64464529c8d1dbbc90459926ddcd1b23cf65899fa076da2eb2e27c0dcef40b95bd266fc7328abf7bea83ddf5efd81b428459db35f2423453393abb304",
+      "sha1": "6c2d786a161f49470dad92b2edaefdac38a1e79b",
+      "size": 30517,
       "source": "unresolved"
+    },
+    {
+      "filename": "deeperdarker-neoforge-1.21.1-1.4.1.jar",
+      "sha512": "38d8d87878f39a063feb029db17702bedadf7554233ae56db6018c21225b6dff4d4cc31f4b0995254fd488e2a687f3b15bf9647c59dd42b9032791d34316ed0c",
+      "sha1": "b6094adde68bd4b909bc75c64901e1f3fb99ad8f",
+      "size": 3906057,
+      "source": "modrinth",
+      "modrinth_version_id": "TuD0Zvi3",
+      "modrinth_project_id": "fnAffV0n",
+      "modrinth_url": "https://cdn.modrinth.com/data/fnAffV0n/versions/TuD0Zvi3/deeperdarker-neoforge-1.21.1-1.4.1.jar"
     },
     {
       "filename": "do_a_barrel_roll-neoforge-3.7.3+1.21.jar",
@@ -1027,34 +1054,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/JrvR9OHr/versions/KgGapm4H/doubledoors-1.21.1-7.2.jar"
     },
     {
-      "filename": "dtterralith-1.3.0.jar",
-      "sha512": "216d3e65aff5f9b51fe78a81cd34e1c43dc786905dc95d715d7a5698172933e5abc3b337e4c6757349e83cd74f3ee53dabcc3ddddd189799b255908c1a2a32e2",
-      "sha1": "0fb34ea2c594d6180eae9fd4cd6b416d662cf8a9",
-      "size": 502351,
+      "filename": "durabilitytooltip-1.2.0-neoforge-mc1.21.jar",
+      "sha512": "ef1bad72b1e089bada8af1c7d7d3aba89419deb74046499378e1e99c96dcf0523f14e6a0c963634ae241418713f8b7bb7a1199792344faf5f5c5a63a5236f35e",
+      "sha1": "27015a66698570f06e5fa164433e4d80e7506ac7",
+      "size": 20821,
       "source": "modrinth",
-      "modrinth_version_id": "L7qfjzNn",
-      "modrinth_project_id": "o8eM9Cnp",
-      "modrinth_url": "https://cdn.modrinth.com/data/o8eM9Cnp/versions/L7qfjzNn/dtterralith-1.3.0.jar"
-    },
-    {
-      "filename": "durabilitytooltip-1.1.6-neoforge-mc1.21.jar",
-      "sha512": "006f06ddab40fdfddd7fdbf0ef5bef9f20d9a288e6e75e5efb97a31ec481d50f705b8a063b0433ff9270a94ec72f62803539d5200a42db43b37a598988b43e36",
-      "sha1": "59a567402d894b46d6abe45831f39dcad5c93342",
-      "size": 20015,
-      "source": "modrinth",
-      "modrinth_version_id": "mmYe9e5V",
+      "modrinth_version_id": "lVrBx0o4",
       "modrinth_project_id": "smUP7V3r",
-      "modrinth_url": "https://cdn.modrinth.com/data/smUP7V3r/versions/mmYe9e5V/durabilitytooltip-1.1.6-neoforge-mc1.21.jar"
-    },
-    {
-      "filename": "dynamictrees-neoforge-1.21.1-1.7.2.jar",
-      "sha512": "1faa5f292078fbae45fd8ee9873d22e13522a883f6650e71d1f4755ccfe5c363f606e0d4dc422384553483043883002136921ce5efb544c70d412affb2da076f",
-      "sha1": "c16fae939c0f305af46ad585150a33565a06129e",
-      "size": 3399913,
-      "source": "modrinth",
-      "modrinth_version_id": "G4uJ0UA0",
-      "modrinth_project_id": "vdjF5PL5",
-      "modrinth_url": "https://cdn.modrinth.com/data/vdjF5PL5/versions/G4uJ0UA0/dynamictrees-neoforge-1.21.1-1.7.2.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/smUP7V3r/versions/lVrBx0o4/durabilitytooltip-1.2.0-neoforge-mc1.21.jar"
     },
     {
       "filename": "emi-1.1.24+1.21.1+neoforge.jar",
@@ -1127,24 +1134,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/Lq6ojcWv/versions/TH9YXp9r/endermanoverhaul-neoforge-1.21.1-2.0.3.jar"
     },
     {
-      "filename": "entity_model_features-3.3.5-1.21-neoforge.jar",
-      "sha512": "68761183a2dffee099800d3769eaa3f2c8f156b2c30102f20422b48914be914d9a929ca95837cf01c2d076679b291e338318938ae4fc927927925061aace2480",
-      "sha1": "e78060b9a01bf41b5628bd45ce5ac741f68f092c",
-      "size": 630286,
+      "filename": "entity_model_features-3.3.7-1.21-neoforge.jar",
+      "sha512": "c7aa81383773090aa9852702e374a36d057e1e9989c3dc35775a12907301851c9eb6fe1f1f996197b1d373a7444c7ed6b2dfb9848fe5e4f0501498cc57c8dc5e",
+      "sha1": "0fe32b8a8a6eb70e4508d076cd69fe4772307d21",
+      "size": 636503,
       "source": "modrinth",
-      "modrinth_version_id": "szv0UmJn",
+      "modrinth_version_id": "5AMSii6O",
       "modrinth_project_id": "4I1XuqiY",
-      "modrinth_url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/szv0UmJn/entity_model_features-3.3.5-1.21-neoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/5AMSii6O/entity_model_features-3.3.7-1.21-neoforge.jar"
     },
     {
-      "filename": "entity_texture_features-7.2.1-1.21-neoforge.jar",
-      "sha512": "8158242ce79b38a613de7696221eae24c9a451040143fbe43f8d8a37329d7debcb6164c0d42177d2f7db306e54f2d7bbd99eee74add39ad3871c70754edd8cb7",
-      "sha1": "908d09263709193b918fdc9ca0d79c9d90c4a531",
-      "size": 783217,
+      "filename": "entity_texture_features-7.2.3-1.21-neoforge.jar",
+      "sha512": "f7866cb38159131ce8555a058f966b230ba53dc538c5240e37949f8a7ce9aadca65d069a97b14f60481d671f4b67504c4a7092175267738c8d51a0d1d57e19ab",
+      "sha1": "de9f37303e4dd8714eb6dc83cdee658752868eb0",
+      "size": 784617,
       "source": "modrinth",
-      "modrinth_version_id": "XEJeKpgJ",
+      "modrinth_version_id": "Y1KtOkZf",
       "modrinth_project_id": "BVzZfTc1",
-      "modrinth_url": "https://cdn.modrinth.com/data/BVzZfTc1/versions/XEJeKpgJ/entity_texture_features-7.2.1-1.21-neoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/BVzZfTc1/versions/Y1KtOkZf/entity_texture_features-7.2.3-1.21-neoforge.jar"
     },
     {
       "filename": "entityculling-neoforge-1.10.5-mc1.21.1.jar",
@@ -1187,14 +1194,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/uXXizFIs/versions/x7kQWVju/ferritecore-7.0.3-neoforge.jar"
     },
     {
-      "filename": "flerovium-neoforge-1.21.1-1.1.2-all.jar",
-      "sha512": "6301ea6991768832fa983f61e1b0574336aea4920e027632a3df93c8a10f5d87041876fad516d16827d9cd13a84b5a8c334c1a0076ca04121e321939d5d6ea52",
-      "sha1": "31491e08947da57d4af6c48e8d3237cc6d4009c1",
-      "size": 182579,
+      "filename": "flerovium-neoforge-1.21.1-1.1.3-all.jar",
+      "sha512": "037fe4e6f601cb6280c088a189ebaef83c1b9f28993d78a0b23ec525c91b212298da31305cb32173363daf537eacf33566c3b9e414c35cf8ec5ec7b24a6a1379",
+      "sha1": "e055a4755b4cf969d25dd2da1d688eea18c65c57",
+      "size": 184070,
       "source": "modrinth",
-      "modrinth_version_id": "oU1q3eIj",
+      "modrinth_version_id": "KmljALvq",
       "modrinth_project_id": "4Rh1Mobu",
-      "modrinth_url": "https://cdn.modrinth.com/data/4Rh1Mobu/versions/oU1q3eIj/flerovium-neoforge-1.21.1-1.1.2-all.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/4Rh1Mobu/versions/KmljALvq/flerovium-neoforge-1.21.1-1.1.3-all.jar"
     },
     {
       "filename": "flowing_fluids-1.0.6-1.21-neoforge.jar",
@@ -1207,24 +1214,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/s1I3BT95/versions/k37oVEnG/flowing_fluids-1.0.6-1.21-neoforge.jar"
     },
     {
-      "filename": "forgified-fabric-api-0.116.7+2.2.0+1.21.1.jar",
-      "sha512": "59aa2599fde40dcaaf210ce7d9d7f9e665c9173370708d7337c7230f2f0eb894a4f130bfbfb78b612d4faad25353d03ceab42691b1b3bcacd924dd72434732ef",
-      "sha1": "47b05580454707ac1f701c40bdbfbf86b15cbe9f",
-      "size": 5551314,
+      "filename": "forgified-fabric-api-0.116.15+2.3.5+1.21.1.jar",
+      "sha512": "2b44ecd839544e3668a02f8de86433d507417d068dcafeee7f698744fc2b12fd888a1bba509da57c8e2884d01dbaf344f49bbac0f22cdae599507356ed0cbe30",
+      "sha1": "1a2c41d2efbe1c60159b90a165557e7c06d03a5c",
+      "size": 5613159,
       "source": "modrinth",
-      "modrinth_version_id": "tIUhtT2C",
+      "modrinth_version_id": "V9WdDUTx",
       "modrinth_project_id": "Aqlf1Shp",
-      "modrinth_url": "https://cdn.modrinth.com/data/Aqlf1Shp/versions/tIUhtT2C/forgified-fabric-api-0.116.7%2B2.2.0%2B1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/Aqlf1Shp/versions/V9WdDUTx/forgified-fabric-api-0.116.15%2B2.3.5%2B1.21.1.jar"
     },
     {
-      "filename": "fzzy_config-0.7.6+1.21+neoforge.jar",
-      "sha512": "6071890aba7f2273c9fd508914acc7850de9d986423760f9ce416875ffa04eea2ad71a7a6f4d5f90f0625a672f6f54606778d11151b155f3fd98c223c61a4a6d",
-      "sha1": "c0910f9b975aaab8545ce950539748fb33d704d1",
-      "size": 2369895,
+      "filename": "fzzy_config-0.7.7+1.21+neoforge.jar",
+      "sha512": "ef03b411b0e1b241a9952e1a8fdac61979665953eb5f28116aac06530964e7378eb20a78594a47ba4d942c74dfa20d550c292014b5de8e63c42b882a33aef5a5",
+      "sha1": "518eadc53c065a74a49207769209c116e77d1849",
+      "size": 2392693,
       "source": "modrinth",
-      "modrinth_version_id": "MAPG6cXE",
+      "modrinth_version_id": "uG7oHgw6",
       "modrinth_project_id": "hYykXjDp",
-      "modrinth_url": "https://cdn.modrinth.com/data/hYykXjDp/versions/MAPG6cXE/fzzy_config-0.7.6%2B1.21%2Bneoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/hYykXjDp/versions/uG7oHgw6/fzzy_config-0.7.7%2B1.21%2Bneoforge.jar"
     },
     {
       "filename": "gardens-of-the-dead-neoforge-5.0.2.jar",
@@ -1247,14 +1254,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/CZyWdBUo/versions/cqGqtGak/gbf-1.21.1-1.0.2.jar"
     },
     {
-      "filename": "geckolib-neoforge-1.21.1-4.9.2.jar",
-      "sha512": "c91012b16cc40c8f48f69b78cb8e2e5c006486ae2431fbd289dfc01be7a4217294becea22d83a155d6b32b3969450df871352a3695e1452168b84f41355f7b9e",
-      "sha1": "14c64013cadee7d28f3685f94350f9a4d2ec6d86",
-      "size": 630584,
+      "filename": "geckolib-neoforge-1.21.1-4.9.3.jar",
+      "sha512": "8dfa5f8c57224a5e34e5098367ea9819ca6dc9c11357cd3062c16da3455c8bd1a483098af7383debc4b9ce8e4d7ab3fdc799b415644eb829da83eb72a7335dfd",
+      "sha1": "5cfe835472a5c5457ae9ac192d9d7b317454d5ac",
+      "size": 634531,
       "source": "modrinth",
-      "modrinth_version_id": "tPkJmim6",
+      "modrinth_version_id": "Grwn5rUB",
       "modrinth_project_id": "8BmcQJ2H",
-      "modrinth_url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/tPkJmim6/geckolib-neoforge-1.21.1-4.9.2.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Grwn5rUB/geckolib-neoforge-1.21.1-4.9.3.jar"
     },
     {
       "filename": "highlight-neoforge-1.21-3.0.0.jar",
@@ -1364,14 +1371,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/yBW8D80W/versions/ksaGCvSu/lambdynamiclights-4.8.11%2B1.21.1.jar"
     },
     {
-      "filename": "legendary_monsters-2.2.2 MC 1.21.1.jar",
-      "sha512": "b7c4a811dba7aa0fdd813605277fd9a6bfcc4b971c4b592dfed13e99b96f0dc5fb9c13290080b4a7660e920003d3070861348aef5853a208d0e91521ee943a6d",
-      "sha1": "8910859ba94190dd8cbc8c2c1e2f07562db729b4",
-      "size": 44757560,
+      "filename": "legendary_monsters-2.2.3 MC 1.21.1.jar",
+      "sha512": "b82d2dbbf28bc9c657948b14e0a65e4d10e38793e41822fe6979f22f1f533ee6a604aea933d6b55afd3ab00ede18892efdfc50e0d6e17848547b7e6cbd58be6c",
+      "sha1": "0fbe7bfd238e64c6c54e8b9c2c8af44b4b1ce475",
+      "size": 44748618,
       "source": "modrinth",
-      "modrinth_version_id": "sHmtzdVi",
+      "modrinth_version_id": "Dfoikvr0",
       "modrinth_project_id": "9d9Bkqva",
-      "modrinth_url": "https://cdn.modrinth.com/data/9d9Bkqva/versions/sHmtzdVi/legendary_monsters-2.2.2%20MC%201.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/9d9Bkqva/versions/Dfoikvr0/legendary_monsters-2.2.3%20MC%201.21.1.jar"
     },
     {
       "filename": "letmedespawn-1.21.x-neoforge-1.5.0.jar",
@@ -1444,14 +1451,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/DDUrRVCA/lithium-neoforge-0.15.4%2Bmc1.21.1.jar"
     },
     {
-      "filename": "lithostitched-1.8.0+beta4-neoforge-21.1.jar",
-      "sha512": "f2bdbdd662d02d4357616a744f80edc14ae6ef866920ad6c177eba676a6591026d3bcf2241a05424f084c4bdad3a2bd00055daede58c5d06265d03add72769b3",
-      "sha1": "0edda78ec8500143cca898881c476b2b04dac75a",
-      "size": 954028,
+      "filename": "lithostitched-1.8.0+beta6-neoforge-21.1.jar",
+      "sha512": "d3654fdab95ca5b929778a21fb30c2124f6f66e3c6067af23595301800d797f584dd099ce046f8ae288a6084e92c46a161a8238d19ac793bd3bface2b3b2eef8",
+      "sha1": "b8526bb7fcfb844ce91513ab349c408dd1a8279e",
+      "size": 978169,
       "source": "modrinth",
-      "modrinth_version_id": "81DDKTGJ",
+      "modrinth_version_id": "xDAotknu",
       "modrinth_project_id": "XaDC71GB",
-      "modrinth_url": "https://cdn.modrinth.com/data/XaDC71GB/versions/81DDKTGJ/lithostitched-1.8.0%2Bbeta4-neoforge-21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/XaDC71GB/versions/xDAotknu/lithostitched-1.8.0%2Bbeta6-neoforge-21.1.jar"
     },
     {
       "filename": "map_atlases-1.21-6.7.3-neoforge.jar",
@@ -1484,10 +1491,10 @@
       "modrinth_url": "https://cdn.modrinth.com/data/codAaoxh/versions/6Gv5jvTB/midnightlib-neoforge-1.9.3%2B1.21.1.jar"
     },
     {
-      "filename": "minecolonies-1.1.1376-1.21.1-snapshot.jar",
-      "sha512": "556391c278181ee4034b0afc3cda215bebfb3571cd639f1c604b61fd1a20cadcf882ab54593c22efa2f4f64bbea881e7d29a8e664c424f627eec6467fc35bc31",
-      "sha1": "68f32bb9db6d87017bb0b55dd8a326190526e929",
-      "size": 78069211,
+      "filename": "minecolonies-1.1.1392-1.21.1-snapshot.jar",
+      "sha512": "af06d531d2c4484db4b31fd5ac8d842c87aa839a31b8e7ee23b4856d8b2a6ec9aa1907528b1753e30c9166d612f74347ff1b9c70bb50ea4fe525e422180616b9",
+      "sha1": "3e2b7b5845016520f893563b2dcfb8a7c57f7355",
+      "size": 78283836,
       "source": "unresolved"
     },
     {
@@ -1501,24 +1508,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/nmDcB62a/versions/5HLHxQ2F/modernfix-neoforge-5.27.24%2Bmc1.21.1.jar"
     },
     {
-      "filename": "moonlight-1.21.1-3.6.1-neoforge.jar",
-      "sha512": "fabf0c99cb55255bca5251fdf90b994815bfab25697a8edca0e8d3663db5df0d761288ba5144179d3f87f6edfd4edec71bd867f07d7ed48117d8993db52cb9e0",
-      "sha1": "4affb761c6d2d3df32b64b65d40a6e3769787a8f",
-      "size": 2222232,
+      "filename": "moonlight-1.21.1-3.6.4-neoforge.jar",
+      "sha512": "8b5695b9f892a6ade3054ead703c763e568164f781cf32d2c76a1daf6e0b28ab336ed13441d4c71d1605cc95f58bb1f2d87f7674f7f33a93c0a1592a6c4a447a",
+      "sha1": "04a9656a7085dcc751ac58ff0e7faadee5c2def9",
+      "size": 2228649,
       "source": "modrinth",
-      "modrinth_version_id": "o9IoOg6k",
+      "modrinth_version_id": "BnjVBHVl",
       "modrinth_project_id": "twkfQtEc",
-      "modrinth_url": "https://cdn.modrinth.com/data/twkfQtEc/versions/o9IoOg6k/moonlight-1.21.1-3.6.1-neoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/twkfQtEc/versions/BnjVBHVl/moonlight-1.21.1-3.6.4-neoforge.jar"
     },
     {
-      "filename": "mru-1.0.19+LTS+1.21.1+neoforge.jar",
-      "sha512": "c0b39727c6d4e312cc6a6e6e5137149ecf907f3c9a518313e4188a05c8301b80c088fb62f7096831e9aa1026fc95a09d79b99fc43456f8da2a1ee36e9a86154d",
-      "sha1": "903f41bce1ff0b4bd13b66d46bfbd21423663bbc",
-      "size": 243953,
+      "filename": "mru-1.0.40+1.21.1-neoforge.jar",
+      "sha512": "974d50c216360f41c6ba840c8774c51f5bd3ceecf991fd9b543543c49fd2f630e95c1042a91cb2f9c46caa92534f191d4ac785d3ace1d489d975cda81f4f81fd",
+      "sha1": "0991e3c589f14c73da9d3ed592c43e3ed5745fbd",
+      "size": 151039,
       "source": "modrinth",
-      "modrinth_version_id": "qYqVf5jP",
+      "modrinth_version_id": "r8GfwQTK",
       "modrinth_project_id": "SNVQ2c0g",
-      "modrinth_url": "https://cdn.modrinth.com/data/SNVQ2c0g/versions/qYqVf5jP/mru-1.0.19%2BLTS%2B1.21.1%2Bneoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/SNVQ2c0g/versions/r8GfwQTK/mru-1.0.40%2B1.21.1-neoforge.jar"
     },
     {
       "filename": "multipiston-1.2.58-1.21.1.jar",
@@ -1558,14 +1565,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/nrikgvxm/versions/k32OBTlL/particlerain-4.0.0-beta.11%2B1.21.1-neoforge.jar"
     },
     {
-      "filename": "polymorph-neoforge-1.1.0+1.21.1.jar",
-      "sha512": "37358e19d8f251b7d435ea5198eded7b1361e90d5728e11fcb15aeb55786f4ee10fd8fecd14b11f34a99bd92aea01a9977c0dbc46ab6bb07af61a6c89455b6ff",
-      "sha1": "84f8c539fa326dc723ae62b7a6916d6b01982d07",
-      "size": 174972,
+      "filename": "polymorph-neoforge-1.2.0+1.21.1.jar",
+      "sha512": "dce77fffebae80532fec39d35c9c8b5817ba756bb03569022cc0854a8a6cf1868690f91451b587bd60d813e8403b5de91adbc324796bc423ef28deecfb13c775",
+      "sha1": "fa6c5fa8a21229c85d564b47c73df7160b3bd4df",
+      "size": 172671,
       "source": "modrinth",
-      "modrinth_version_id": "VEburL70",
+      "modrinth_version_id": "9yWvrF5o",
       "modrinth_project_id": "tagwiZkJ",
-      "modrinth_url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/VEburL70/polymorph-neoforge-1.1.0%2B1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/9yWvrF5o/polymorph-neoforge-1.2.0%2B1.21.1.jar"
     },
     {
       "filename": "prickle-neoforge-1.21.1-21.1.11.jar",
@@ -1578,14 +1585,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/aaRl8GiW/versions/EE1FHDyD/prickle-neoforge-1.21.1-21.1.11.jar"
     },
     {
-      "filename": "punchy-2.7e-neoforge-1.21.1.jar",
-      "sha512": "179d5539b617589b58efa22d8d9428c152a3044ad3dc64de234f423532368495d7392051ee7cdf3edbed436d460336a7f409dd80205093f3069b1f01ce74b5f8",
-      "sha1": "c5d512d0ce39257f47d8e31997c45018f022d571",
-      "size": 1803225,
+      "filename": "punchy-2.8a-neoforge-1.21.1.jar",
+      "sha512": "c474815ecff99258fe33270062620ff1bf0cd24b262c3877fa450ed20ad773c6711a0bc1c07a101582a14a191b523d6bc83aecd67d0be57bd29578385d86553d",
+      "sha1": "5cfb447b34721c21169c79bddb53e48446a72500",
+      "size": 1813689,
       "source": "modrinth",
-      "modrinth_version_id": "VLH9BG2z",
+      "modrinth_version_id": "ORyRPNUY",
       "modrinth_project_id": "8aoMKplv",
-      "modrinth_url": "https://cdn.modrinth.com/data/8aoMKplv/versions/VLH9BG2z/punchy-2.7e-neoforge-1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/8aoMKplv/versions/ORyRPNUY/punchy-2.8a-neoforge-1.21.1.jar"
     },
     {
       "filename": "realcamera-1.21.1-neoforge-0.7.8-beta.jar",
@@ -1598,14 +1605,24 @@
       "modrinth_url": "https://cdn.modrinth.com/data/fYYSAh4R/versions/j9j0EChP/realcamera-1.21.1-neoforge-0.7.8-beta.jar"
     },
     {
-      "filename": "reeses-sodium-options-neoforge-2.2.3+mc1.21.1.jar",
-      "sha512": "db858f48d74258ba460234219038d75eee660bb537711f0da89fd26383533d09b9ccc2e736c02c606a9dcfd7bba04a2e7febf87b89fcee45e0817e84f3827d98",
-      "sha1": "904f815b1f5c48703c354d432fcbc3531022337f",
-      "size": 260876,
+      "filename": "reeses-sodium-options-neoforge-2.2.4+mc1.21.1.jar",
+      "sha512": "a99d41a41ca83376c4fa29ed22a99e98288a7e9a4749fbf6d3724b9804b8e66648e267c6851a53d040069fdc2d889f8205cbb444bee10a35be840d13fc9ed477",
+      "sha1": "e9e6d101b31acb51539141937ad5b069ff2ccc4d",
+      "size": 258894,
       "source": "modrinth",
-      "modrinth_version_id": "KYgu9tXl",
+      "modrinth_version_id": "XjF2IkL8",
       "modrinth_project_id": "Bh37bMuy",
-      "modrinth_url": "https://cdn.modrinth.com/data/Bh37bMuy/versions/KYgu9tXl/reeses-sodium-options-neoforge-2.2.3%2Bmc1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/Bh37bMuy/versions/XjF2IkL8/reeses-sodium-options-neoforge-2.2.4%2Bmc1.21.1.jar"
+    },
+    {
+      "filename": "regions-unexplored-0.6.2-neoforge-21.1.jar",
+      "sha512": "b6475d26f22a5a3ed957b76b85f3d51d3422c0fbef16f777b74bfe9d70fd1673d75cb0c4e2a2a56121f0d0d6780a9e92fdcd7023b4f1d0d2d746d54c64c12f3c",
+      "sha1": "122586c147f0aa1efdc655792b6ef24aebbbba84",
+      "size": 6365953,
+      "source": "modrinth",
+      "modrinth_version_id": "5A8LFnXX",
+      "modrinth_project_id": "Tkikq67H",
+      "modrinth_url": "https://cdn.modrinth.com/data/Tkikq67H/versions/5A8LFnXX/regions-unexplored-0.6.2-neoforge-21.1.jar"
     },
     {
       "filename": "resourcefulconfig-neoforge-1.21-3.0.11.jar",
@@ -1648,6 +1665,16 @@
       "modrinth_url": "https://cdn.modrinth.com/data/T9PomCSv/versions/U678xqle/sable-neoforge-1.21.1-2.0.5.jar"
     },
     {
+      "filename": "safepaths-1.1.0.jar",
+      "sha512": "5e11f595f10dfdb5ef1a3cf12d221c48fd40944d35d8dc473682f49e4e422ce89ea505cd5857cbb2be4a6a7fa398c032828622a0ade29183996845c6bddbc063",
+      "sha1": "22c99b5b69ef40711bc88cbe91608b20898166a0",
+      "size": 63113,
+      "source": "modrinth",
+      "modrinth_version_id": "BgIUpvfd",
+      "modrinth_project_id": "ec6ewft2",
+      "modrinth_url": "https://cdn.modrinth.com/data/ec6ewft2/versions/BgIUpvfd/safepaths-1.1.0.jar"
+    },
+    {
       "filename": "servercore-neoforge-1.5.19+1.21.1.jar",
       "sha512": "55b97df4cc46f52db85b96487188d73c62d511229d98859991c115414c5f1ab37f2f40a0f2edb5692220aa94d6c48b392b0a2d8593b3c3381b1fcbde2a728c8f",
       "sha1": "62ce692654e09271b5c55cbb3a1ef7606d067132",
@@ -1668,14 +1695,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/zV5r3pPn/versions/xPYbAPfz/skinlayers3d-neoforge-1.11.2-mc1.21.1.jar"
     },
     {
-      "filename": "sodium-extra-neoforge-0.9.3+mc1.21.1.jar",
-      "sha512": "36a7c237519c35e35300deadbdcfd1a270c507d49b9de10eea2cad1075c67567935e95d49ca9db470bd946de8e2ef7634361f912866f84570f3c367bf96d2b79",
-      "sha1": "3aaac7712521b477acc73757459b3883c4e0bbda",
-      "size": 465013,
+      "filename": "sodium-extra-neoforge-0.9.4+mc1.21.1.jar",
+      "sha512": "b930a9c6364bdbac42da7175f9fa71360053cd046d2f1e9a99d712e5942299882bfb585e5b661490b791e219b5dd6b9f064fb94f169d7a32a9934c1dc2b85edf",
+      "sha1": "75f9c202e8384cb5de039cdcc47d5e1c8fde8fe5",
+      "size": 472060,
       "source": "modrinth",
-      "modrinth_version_id": "iJsZtWpc",
+      "modrinth_version_id": "ufpcXU9c",
       "modrinth_project_id": "PtjYWJkn",
-      "modrinth_url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/iJsZtWpc/sodium-extra-neoforge-0.9.3%2Bmc1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/ufpcXU9c/sodium-extra-neoforge-0.9.4%2Bmc1.21.1.jar"
     },
     {
       "filename": "sodium-neoforge-0.8.13+mc1.21.1.jar",
@@ -1715,20 +1742,27 @@
       "modrinth_url": "https://cdn.modrinth.com/data/ZouiUX7t/versions/kti7i9SG/sounds-2.4.22%2Blts%2B1.21.1-neoforge.jar"
     },
     {
-      "filename": "spawn-4.0.7-1.21.1.jar",
-      "sha512": "dd5b43c613e44e1e387e665e75e505439c082dcf959bc7b0ad3ce45818a9e8597bcbb86d6d0fbdc481f2614a935ef04d2144841c983e1ab17dec1bac12f7f529",
-      "sha1": "2deea6d639e5d197414f0903b4beb89c56466ae0",
-      "size": 73638060,
+      "filename": "spawn-4.0.8-1.21.1.jar",
+      "sha512": "f6db8f8a11d90d973ad4e7041816793a70e298949c4d378cb08a2b78937327c8f2d5c75d1f938a0493adad1a5a1c6fda67949867b7c7b1c56c5d58eda8ae8204",
+      "sha1": "3af0c476f36a3888f4686c181036a0a179a8b7b5",
+      "size": 73681436,
       "source": "modrinth",
-      "modrinth_version_id": "gMPsUePI",
+      "modrinth_version_id": "OgmUYgeL",
       "modrinth_project_id": "rex9wwpz",
-      "modrinth_url": "https://cdn.modrinth.com/data/rex9wwpz/versions/gMPsUePI/spawn-4.0.7-1.21.1.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/rex9wwpz/versions/OgmUYgeL/spawn-4.0.8-1.21.1.jar"
     },
     {
-      "filename": "structurize-1.0.832-1.21.1.jar",
-      "sha512": "0d535f32033d4e2369e35c061cfc4efa994836d5bacd2d503765b79857728ef69297a6997c30e44ecfd74c058b8e7e4624c85dfbc1993013e8c20110afaf7945",
-      "sha1": "be15d6924bcca76bf5ac107e2ce5ac4d948d82e2",
-      "size": 1063849,
+      "filename": "structurize-1.0.833-1.21.1-snapshot.jar",
+      "sha512": "93a0b723c5a90da8b6ab45e9773836c92132d63db1eefa516c731ddd3cf8b98ec2ea98e5d3fc3d1c40ca649cdf20134334a37038d8cf51792ef164c28165cab4",
+      "sha1": "e81934809824cb1435b8221313a143480379893a",
+      "size": 1064029,
+      "source": "unresolved"
+    },
+    {
+      "filename": "stylecolonies-1.15.59-1.21.1.jar",
+      "sha512": "0d6f821d48826658907880bd7106b87d4fc01ef75cfb2a0f9d5153827c528c1ad0ebbc797409781d73485a2cd525e1cce08c52c7f1aa2cfc9e7818eef4f4d0cb",
+      "sha1": "6159c38d7f46226f6a40cdd4bcae91cee0c3427d",
+      "size": 31226880,
       "source": "unresolved"
     },
     {
@@ -1742,14 +1776,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/LN9BxssP/versions/qKL9jM75/supermartijn642configlib-1.1.8-neoforge-mc1.21.jar"
     },
     {
-      "filename": "supplementaries-1.21.1-3.9.7-neoforge.jar",
-      "sha512": "bb41f31f0a80be3cccd69fe6e943ac05bce422676f23376a5d855e3d46064f182128d2522fb94db2af30a1a4b1c8b84e2dc4304f055075193189bba17cb12ede",
-      "sha1": "6cde08b0d903b57a1e865b47cb069f17cf6ab7c2",
-      "size": 13545910,
+      "filename": "supplementaries-1.21.1-3.9.9-neoforge.jar",
+      "sha512": "f341d0971e644255c063f0cb363bb93e312f4f005304f8af76d7249c3cbc0c258f415cf6e7bddcdf02115ade9ba9a205ec6d062e2626b414afaef5725667f079",
+      "sha1": "06ed05381a5653d90398dc6ebf3ad1154add6374",
+      "size": 13548968,
       "source": "modrinth",
-      "modrinth_version_id": "A0lpiTgJ",
+      "modrinth_version_id": "WrZWfRjP",
       "modrinth_project_id": "fFEIiSDQ",
-      "modrinth_url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/A0lpiTgJ/supplementaries-1.21.1-3.9.7-neoforge.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/WrZWfRjP/supplementaries-1.21.1-3.9.9-neoforge.jar"
     },
     {
       "filename": "teallib-1.3.teal.jar",
@@ -1799,14 +1833,14 @@
       "modrinth_url": "https://cdn.modrinth.com/data/rI0hvYcd/versions/dhKbgdIb/visuality-0.7.7%2B1.21.jar"
     },
     {
-      "filename": "waystones-neoforge-1.21.1-21.1.42.jar",
-      "sha512": "8e925969a4d77df3c25fd1531a9b0eeb831cd0c9eee634a6353e6db4124d5b4199254946375d5d3c1dad5fa2c1813892edd0dff2c0df0c82391864932a024682",
-      "sha1": "ca21be55f7c25b0a37be70bc699ceaf91d45ca17",
-      "size": 1219457,
+      "filename": "waystones-neoforge-1.21.1-21.1.45.jar",
+      "sha512": "495dcd67f672b04a3074c0d6b63fb3d35c22c61a002e50406526bc4eb2ae85effa7fa838dda2e432a57626bfc484e95e941348d81288d912e2caf7eb97be7a25",
+      "sha1": "6ec1a176a102212db4f6391886db52ed103c830f",
+      "size": 1219809,
       "source": "modrinth",
-      "modrinth_version_id": "1gzy0HSm",
+      "modrinth_version_id": "Is55014l",
       "modrinth_project_id": "LOpKHB2A",
-      "modrinth_url": "https://cdn.modrinth.com/data/LOpKHB2A/versions/1gzy0HSm/waystones-neoforge-1.21.1-21.1.42.jar"
+      "modrinth_url": "https://cdn.modrinth.com/data/LOpKHB2A/versions/Is55014l/waystones-neoforge-1.21.1-21.1.45.jar"
     },
     {
       "filename": "yet_another_config_lib_v3-3.8.2+1.21.1-neoforge.jar",
