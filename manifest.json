@@ -42,16 +42,6 @@
       "modrinth_url": "https://cdn.modrinth.com/data/DyTvM1dv/versions/N7jam3SN/AmbientEnvironment-neoforge-1.21.1-18.0.0.2.jar"
     },
     {
-      "filename": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
-      "sha512": "292a7a61836eb6db31ec225ae4a0dc838416638618635ff60c07740bdc327df44ac0be7788c0ed44912935eb4d85b987fb6c594d11e4604f2d24fa21eabc672a",
-      "sha1": "c79ab328b2c46068effebdcb3f26e98dc4404cb0",
-      "size": 84811632,
-      "source": "modrinth",
-      "modrinth_version_id": "RZyxhsqY",
-      "modrinth_project_id": "fM515JnW",
-      "modrinth_url": "https://cdn.modrinth.com/data/fM515JnW/versions/RZyxhsqY/AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar"
-    },
-    {
       "filename": "BadOptimizations-2.4.1-1.21.1.jar",
       "sha512": "2b66428bd98bd5ec0e09f2ec6af801cefb7b9b99cc4f0993daeaffe8d0ccc5ee0c2a73e9f38d4f92540ead0181704d2c9e946837ec05cf710fc3b20fce3b0cac",
       "sha1": "1461d8e46391efd32a3085150e86094c9f6f5c9d",
@@ -1713,16 +1703,6 @@
       "sha1": "18d1b803071ffea9a78e3ba07a68a50527bba835",
       "size": 9083,
       "source": "unresolved"
-    },
-    {
-      "filename": "sounds-2.4.22+lts+1.21.1-neoforge.jar",
-      "sha512": "0dbfe1cd74be45241c5e95354e6466af10cb50ce780d87672337bd4de03fa708dc56eb013040bb2a02a941cf19b2b282385c6a5305695a4de3534627c645f053",
-      "sha1": "cbfa42a31515e1bac4bafcdd974fbba29b7d106a",
-      "size": 8732437,
-      "source": "modrinth",
-      "modrinth_version_id": "kti7i9SG",
-      "modrinth_project_id": "ZouiUX7t",
-      "modrinth_url": "https://cdn.modrinth.com/data/ZouiUX7t/versions/kti7i9SG/sounds-2.4.22%2Blts%2B1.21.1-neoforge.jar"
     },
     {
       "filename": "spawn-4.0.8-1.21.1.jar",
