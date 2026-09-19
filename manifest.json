@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.19-1854",
+  "manifest_version": "2026.09.19-1923",
   "mods": [
     {
       "filename": "AI-Improvements-1.21-0.5.3.jar",
@@ -202,16 +202,6 @@
       "modrinth_url": "https://cdn.modrinth.com/data/ohNO6lps/versions/tWlsPKJI/ForgeConfigAPIPort-v21.1.6-1.21.1-NeoForge.jar"
     },
     {
-      "filename": "GPUBooster-1.3.2-1.21.1-neo.jar",
-      "sha512": "7d6aa3e33431e52c96a928a72c7fac76f0abf17381181b38454b6a171a596c22883282f82f46c1a09e72027357436ea0bf90133a93be64072b9d13d1c41bff24",
-      "sha1": "3d16b4cb582edeff01e1e94a60092a2042b7044d",
-      "size": 84231,
-      "source": "modrinth",
-      "modrinth_version_id": "jJBnRYkf",
-      "modrinth_project_id": "5CTSrY8X",
-      "modrinth_url": "https://cdn.modrinth.com/data/5CTSrY8X/versions/jJBnRYkf/GPUBooster-1.3.2-1.21.1-neo.jar"
-    },
-    {
       "filename": "Geophilic v3.6.mod.jar",
       "sha512": "c9dd128f0e49dc4a2e1f91370576296eb78d08d8db99df1710e5fd2ba1708b75053cc4a4f1533b17d0a3ffe842bb7d08339c066586f360450d1b84373bf8281f",
       "sha1": "1eb1700a02ebeab1bf1f3004abd4a02263495d25",
@@ -260,16 +250,6 @@
       "modrinth_version_id": "OUpXxw4n",
       "modrinth_project_id": "5ZwdcRci",
       "modrinth_url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/OUpXxw4n/ImmediatelyFast-NeoForge-1.6.14%2B1.21.1.jar"
-    },
-    {
-      "filename": "InventoryProfilesNext-neoforge-1.21.1-2.2.5.jar",
-      "sha512": "521296cc7e4fa48e06eb0c00d430968c7b879946db5b02e632cc724672759ac152e11bd9d320bd09f7418edd6fe4ece521a1a2cac49d7f5687519c69a0bcbf12",
-      "sha1": "b09d7c0820c233ea34af54d0a3ab7ed510b32dcc",
-      "size": 1295466,
-      "source": "modrinth",
-      "modrinth_version_id": "vjuNnHLv",
-      "modrinth_project_id": "O7RBXm3n",
-      "modrinth_url": "https://cdn.modrinth.com/data/O7RBXm3n/versions/vjuNnHLv/InventoryProfilesNext-neoforge-1.21.1-2.2.5.jar"
     },
     {
       "filename": "ItemBorders-1.21-neoforge-1.2.5.jar",
@@ -370,16 +350,6 @@
       "modrinth_version_id": "ZV8eL55E",
       "modrinth_project_id": "qQyHxfxd",
       "modrinth_url": "https://cdn.modrinth.com/data/qQyHxfxd/versions/ZV8eL55E/NoChatReports-NEOFORGE-1.21.1-v2.9.1.jar"
-    },
-    {
-      "filename": "NumFlux-1.0.4.1-1.21.1-neo.jar",
-      "sha512": "c3172b8861e02c285732164d602161080e58d64e4091e2252df97833939c69a71d5b012ad2bf8d50ad52297d4700a68e11b70c43fbf685d0f87f9ceb5899cb9a",
-      "sha1": "43d8fa83b5d9797cf4b19c4ad918e436ffeb3b78",
-      "size": 203821,
-      "source": "modrinth",
-      "modrinth_version_id": "eEcFmmcx",
-      "modrinth_project_id": "1Bm2WDXm",
-      "modrinth_url": "https://cdn.modrinth.com/data/1Bm2WDXm/versions/eEcFmmcx/NumFlux-1.0.4.1-1.21.1-neo.jar"
     },
     {
       "filename": "Oh-The-Biomes-Weve-Gone-NeoForge-2.6.0.jar",
@@ -490,16 +460,6 @@
       "modrinth_version_id": "6e8GCrLb",
       "modrinth_project_id": "kkmrDlKT",
       "modrinth_url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/6e8GCrLb/TerraBlender-neoforge-1.21.1-4.1.0.8.jar"
-    },
-    {
-      "filename": "Toadlib-1.3.2-1.21-1.21.1.jar",
-      "sha512": "d5fe1eb3c493974cad7ac320fb6e481221d9a15ae2b7c4732989e955681cb8422eb95cc85766a84df1087914c10c14887af8ca5e6648fe316487b5fe4c149c89",
-      "sha1": "6fae32263601a99da3e60e2a04dec70bc7c37d6a",
-      "size": 472577,
-      "source": "modrinth",
-      "modrinth_version_id": "Ljldqqcx",
-      "modrinth_project_id": "CYQ7VYrM",
-      "modrinth_url": "https://cdn.modrinth.com/data/CYQ7VYrM/versions/Ljldqqcx/Toadlib-1.3.2-1.21-1.21.1.jar"
     },
     {
       "filename": "TravelersTitles-1.21.1-NeoForge-5.1.3.jar",
@@ -1157,16 +1117,6 @@
       "modrinth_url": "https://cdn.modrinth.com/data/4Rh1Mobu/versions/KmljALvq/flerovium-neoforge-1.21.1-1.1.3-all.jar"
     },
     {
-      "filename": "flowing_fluids-1.0.6-1.21-neoforge.jar",
-      "sha512": "c903f5a9d67e860ef641869e54fe6d6a6ee0ae5285e754ac465160e63b15512453d374ead3d288fa9bb67c9050a6d6b8f2db7c1b7bc06e398a9a3969e9409c29",
-      "sha1": "1453fbae5afe0d475e5149f60847a65e4d7185c9",
-      "size": 176043,
-      "source": "modrinth",
-      "modrinth_version_id": "k37oVEnG",
-      "modrinth_project_id": "s1I3BT95",
-      "modrinth_url": "https://cdn.modrinth.com/data/s1I3BT95/versions/k37oVEnG/flowing_fluids-1.0.6-1.21-neoforge.jar"
-    },
-    {
       "filename": "forgified-fabric-api-0.116.15+2.3.5+1.21.1.jar",
       "sha512": "2b44ecd839544e3668a02f8de86433d507417d068dcafeee7f698744fc2b12fd888a1bba509da57c8e2884d01dbaf344f49bbac0f22cdae599507356ed0cbe30",
       "sha1": "1a2c41d2efbe1c60159b90a165557e7c06d03a5c",
@@ -1817,13 +1767,6 @@
       "modrinth_version_id": "lZTBRemW",
       "modrinth_project_id": "rLJ1qF79",
       "modrinth_url": "https://cdn.modrinth.com/data/rLJ1qF79/versions/lZTBRemW/teallib-1.3.teal.jar"
-    },
-    {
-      "filename": "towntalk-1.2.0.jar",
-      "sha512": "2414089d190045fea8ee80779a33f569827195ebbba41df712fa2feb7226f9d23b3b9be79d74515dd4207d8ac8d6549ccb22c2f9ea6ac6780da79cf7c4eb741d",
-      "sha1": "6866d898938bdde1a17fadee16983c0c6071eac6",
-      "size": 52301863,
-      "source": "unresolved"
     },
     {
       "filename": "txnilib-neoforge-1.0.24-1.21.1.jar",
