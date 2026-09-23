@@ -1,20 +1,36 @@
 {
   "IndustrialAdventure": {
     "display_name": "Industrial Adventure",
-    "description": "Технологии, природа и исследование.",
+    "description": "Технологии, природа и исследование. NeoForge ставится автоматически.",
     "mc": "1.21.1",
     "neoforge": true,
+    "neoforge_optional": false,
+    "optional_mods": true,
     "modpack": {
-      "manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest.json",
+      "version_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/version-industrial.json",
+      "manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest-industrial.json",
+      "optional_manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/optional-industrial.json",
       "components": {
         "mods": "https://github.com/aut1st1c/WhiteMC/releases/download/0.1.1/mods.zip"
       }
     }
   },
-  "VanillaSMP": {
-    "display_name": "Vanilla SMP",
-    "description": "Чистая ванильная игра.",
+
+  "test1": {
+    "display_name": "test1",
+    "description": "test1",
     "mc": "1.21.1",
-    "neoforge": false
+    "neoforge": false,
+    "neoforge_optional": true,
+    "optional_mods": false,
+  },
+
+  "test2": {
+    "display_name": "test2",
+    "description": "test2",
+    "mc": "26.1.2",
+    "neoforge": false,
+    "neoforge_optional": false,
+    "optional_mods": false
   }
 }
