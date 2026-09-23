@@ -22,7 +22,7 @@
     "mc": "1.21.1",
     "neoforge": false,
     "neoforge_optional": true,
-    "optional_mods": false,
+    "optional_mods": false
   },
 
   "test2": {
