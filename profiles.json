@@ -10,7 +10,7 @@
       "manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/manifest-IndAdv.json",
       "optional_manifest_url": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/optional-IndAdv.json",
       "components": {
-        "mods": "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/mods-IndAdv.zip"
+        "mods": "https://github.com/aut1st1c/WhiteMC/releases/download/0.1.1/mods-IndAdv.zip"
       }
     }
   }
