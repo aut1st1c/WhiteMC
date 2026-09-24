@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.24-1923",
+  "manifest_version": "2026.09.24-2017",
   "mods": [
     {
       "filename": "alexsmobs-2.2.0-neoforge\u002B1.21.1.jar",
@@ -80,6 +80,13 @@
       "modrinth_version_id": "XavNSFnf",
       "modrinth_project_id": "sbpqhzIG",
       "modrinth_url": "https://cdn.modrinth.com/data/sbpqhzIG/versions/XavNSFnf/better_modlist-21.1.1.jar"
+    },
+    {
+      "filename": "betterfpsdist-1.21.1-6.1.jar",
+      "sha512": "10f8a202d3f8b4793153bb67113da52d9bb4ca757c62eaa7cafe9cf8e047ccae830392d6521eb81ebd4db581c6b6e9c7c2b81d517797f1d8833871a6aa0b8b10",
+      "sha1": "9c499f5133ebeed43da4ce42d48bf747cead6d24",
+      "size": 23505,
+      "source": "unresolved"
     },
     {
       "filename": "BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar",
@@ -687,6 +694,16 @@
       "modrinth_url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/DDUrRVCA/lithium-neoforge-0.15.4%2Bmc1.21.1.jar"
     },
     {
+      "filename": "lithostitched-1.8.0\u002Bbeta6-neoforge-21.1.jar",
+      "sha512": "d3654fdab95ca5b929778a21fb30c2124f6f66e3c6067af23595301800d797f584dd099ce046f8ae288a6084e92c46a161a8238d19ac793bd3bface2b3b2eef8",
+      "sha1": "b8526bb7fcfb844ce91513ab349c408dd1a8279e",
+      "size": 978169,
+      "source": "modrinth",
+      "modrinth_version_id": "xDAotknu",
+      "modrinth_project_id": "XaDC71GB",
+      "modrinth_url": "https://cdn.modrinth.com/data/XaDC71GB/versions/xDAotknu/lithostitched-1.8.0%2Bbeta6-neoforge-21.1.jar"
+    },
+    {
       "filename": "map_atlases-1.21-6.7.3-neoforge.jar",
       "sha512": "d72b065c21caef012cc015f248eb5e5223afbdc22ebeb15b447a9b8f59fbe07587ccc8819fb81d10c5bfabb41607c06f0bd39ee718f7e0ab9cd0c54e08e6a8e0",
       "sha1": "ff2463f8cac0754557d19c4f73b61b0ced088f59",
@@ -819,6 +836,16 @@
       "modrinth_version_id": "aPEcdSHb",
       "modrinth_project_id": "NTi7d3Xc",
       "modrinth_url": "https://cdn.modrinth.com/data/NTi7d3Xc/versions/aPEcdSHb/Oh-The-Biomes-Weve-Gone-NeoForge-2.6.0.jar"
+    },
+    {
+      "filename": "Oh-The-Trees-Youll-Grow-neoforge-1.21.1-5.3.2.jar",
+      "sha512": "1a1bf395c5ec7366b938f1891a6b6666ab0cac9da8f5e7fbc8c07a3518b568759772a7ce6a4326b448773a75a7b5aacb032f580baf447029f329dff3aa115789",
+      "sha1": "1867792e4e3d9fc6bb7acabb31cbec7a3d49ecad",
+      "size": 167431,
+      "source": "modrinth",
+      "modrinth_version_id": "ozzakIcu",
+      "modrinth_project_id": "g8NOG5OR",
+      "modrinth_url": "https://cdn.modrinth.com/data/g8NOG5OR/versions/ozzakIcu/Oh-The-Trees-Youll-Grow-neoforge-1.21.1-5.3.2.jar"
     },
     {
       "filename": "Ping-Wheel-1.12.2-neoforge-1.21.1.jar",

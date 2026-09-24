@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.24-1923",
+  "manifest_version": "2026.09.24-2017",
   "groups": {
     "visual": {
       "display_name": "Visual",
@@ -91,8 +91,8 @@
       "label": "",
       "description": "",
       "groups": [
-        "jei",
-        "rei"
+        "rei",
+        "jei"
       ],
       "depends_on": [],
       "sha512": "cc33e413499fa18be914993791f1c4815fae6dda740ce82be97f0fe82560d8841e419f4c1068d64e6d2ec52fba76bca6f39b9de120a6187b1408363a552abe12",
