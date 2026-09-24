@@ -1,0 +1,844 @@
+{
+  "manifest_version": "2026.09.24-1923",
+  "groups": {
+    "visual": {
+      "display_name": "Visual",
+      "description": "\u041C\u043E\u0434\u044B \u043D\u0430\u0446\u0435\u043B\u0435\u043D\u043D\u044B\u0435 \u043D\u0430 \u0443\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u0435 \u0432\u0438\u0437\u0443\u0430\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0435\u0439 \u0438\u0433\u0440\u044B",
+      "mode": "grouped",
+      "exclusive_set": null,
+      "depends_on": [],
+      "enabled_on_default": true
+    },
+    "ui": {
+      "display_name": "User Interface",
+      "description": "\u041C\u043E\u0434\u044B \u0434\u043B\u044F \u0443\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u044F \u0432\u0437\u0430\u0438\u043C\u043E\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F \u0438/\u0438\u043B\u0438 \u0432\u043D\u0435\u0448\u043D\u0435\u0433\u043E \u0432\u0438\u0434\u0430 \u0438\u043D\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430",
+      "mode": "grouped",
+      "exclusive_set": null,
+      "depends_on": [],
+      "enabled_on_default": true
+    },
+    "sound": {
+      "display_name": "Sounds",
+      "description": "\u041C\u043E\u0434\u044B \u0434\u043B\u044F \u0443\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u044F \u043F\u043E\u0433\u0440\u0443\u0436\u0435\u043D\u0438\u044F \u043F\u0440\u0438 \u043F\u043E\u043C\u043E\u0449\u0438 \u0437\u0432\u0443\u043A\u043E\u0432",
+      "mode": "grouped",
+      "exclusive_set": null,
+      "depends_on": [],
+      "enabled_on_default": true
+    },
+    "qol": {
+      "display_name": "QoL",
+      "description": "\u041C\u043E\u0434\u044B \u0434\u043B\u044F \u0443\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u044F \u0432\u0437\u0430\u0438\u043C\u043E\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F \u0441 \u0438\u0433\u0440\u043E\u0439",
+      "mode": "grouped",
+      "exclusive_set": null,
+      "depends_on": [],
+      "enabled_on_default": true
+    },
+    "dh": {
+      "display_name": "Distant Horizons",
+      "description": "\u041C\u043E\u0434 \u0434\u043B\u044F \u0443\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u044F \u0434\u0430\u043B\u044C\u043D\u043E\u0441\u0442\u0438 \u043F\u0440\u043E\u0433\u0440\u0443\u0437\u043A\u0438 \u0431\u0435\u0437 \u0437\u043D\u0430\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u0443\u0440\u043E\u043D\u0430 \u043F\u043E \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u0438",
+      "mode": "bundle",
+      "exclusive_set": "rendistance",
+      "depends_on": [],
+      "enabled_on_default": false
+    },
+    "voxy": {
+      "display_name": "Voxy",
+      "description": "\u041C\u043E\u0434 \u0434\u043B\u044F \u0443\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u044F \u0434\u0430\u043B\u044C\u043D\u043E\u0441\u0442\u0438 \u043F\u0440\u043E\u0433\u0440\u0443\u0437\u043A\u0438 \u0431\u0435\u0437 \u0437\u043D\u0430\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u0443\u0440\u043E\u043D\u0430 \u043F\u043E \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u0438 (\u041F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0438\u0442\u0435\u043B\u044C\u043D\u0435\u0435 DH, \u043D\u043E \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u044B \u0433\u0440\u0430\u0444\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0430\u0440\u0442\u0435\u0444\u0430\u043A\u0442\u044B)",
+      "mode": "bundle",
+      "exclusive_set": "rendistance",
+      "depends_on": [],
+      "enabled_on_default": false
+    },
+    "jei": {
+      "display_name": "JEI",
+      "description": "\u041C\u043E\u0434 \u0434\u043B\u044F \u043F\u043E\u043A\u0430\u0437\u0430 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u043E\u0432 \u0438 \u0438\u0445 \u0440\u0435\u0446\u0435\u043F\u0442\u043E\u0432 (\u0411\u043E\u043B\u044C\u0448\u0435 \u0441\u043E\u0432\u043C\u0435\u0441\u0442\u0438\u043C\u043E\u0441\u0442\u044C \u043F\u043E \u0441\u0440\u0430\u0432\u043D\u0435\u043D\u0438\u044E \u0441 REI)",
+      "mode": "bundle",
+      "exclusive_set": "recipe",
+      "depends_on": [],
+      "enabled_on_default": false
+    },
+    "rei": {
+      "display_name": "REI",
+      "description": "\u041C\u043E\u0434 \u0434\u043B\u044F \u043F\u043E\u043A\u0430\u0437\u0430 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u043E\u0432 \u0438 \u0438\u0445 \u0440\u0435\u0446\u0435\u043F\u0442\u043E\u0432 (\u0411\u043E\u043B\u0435\u0435 \u0443\u0434\u043E\u0431\u043D\u043E\u0435 \u0432\u0437\u0430\u0438\u043C\u043E\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u043F\u043E \u0441\u0440\u0430\u0432\u043D\u0435\u043D\u0438\u044E \u0441 JEI)",
+      "mode": "bundle",
+      "exclusive_set": "recipe",
+      "depends_on": [],
+      "enabled_on_default": false
+    }
+  },
+  "mods": [
+    {
+      "filename": "jei-1.21.1-neoforge-19.56.0.441.jar",
+      "display_name": "jei-1.21.1-neoforge-19.56.0.441.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "jei"
+      ],
+      "depends_on": [],
+      "sha512": "cee8f743819fdeb99fde9a91cd72b9200c07a7fd7e581e3b2561843fd0ee59f0b7dc7e0b619c79cee80402c7557eb4ae3b218bd05ec3e6d9e79801f01b791fa3",
+      "sha1": "e520422338d3eba053189d042fc08eb40eb22bb8",
+      "size": 2156268,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "ZWGz5dZX",
+      "modrinth_project_id": "u6dRKJwZ",
+      "modrinth_url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/ZWGz5dZX/jei-1.21.1-neoforge-19.56.0.441.jar"
+    },
+    {
+      "filename": "jeiworldgen-neoforge-1.21.1-1.4.5.jar",
+      "display_name": "jeiworldgen-neoforge-1.21.1-1.4.5.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "jei",
+        "rei"
+      ],
+      "depends_on": [],
+      "sha512": "cc33e413499fa18be914993791f1c4815fae6dda740ce82be97f0fe82560d8841e419f4c1068d64e6d2ec52fba76bca6f39b9de120a6187b1408363a552abe12",
+      "sha1": "7a0e726a9ee2882c0d80f8c2554938f84f6b2e54",
+      "size": 136508,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "oKAbbsF3",
+      "modrinth_project_id": "YYrsrQ6q",
+      "modrinth_url": "https://cdn.modrinth.com/data/YYrsrQ6q/versions/oKAbbsF3/jeiworldgen-neoforge-1.21.1-1.4.5.jar"
+    },
+    {
+      "filename": "RoughlyEnoughItems-16.0.799-neoforge.jar",
+      "display_name": "RoughlyEnoughItems-16.0.799-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "rei"
+      ],
+      "depends_on": [],
+      "sha512": "9b7fb8071813c348d07283b8651aa589ec334dc060d076422b988eae9e0f6e9598c721cbe39462daf68b93e0f88c2f70e5a655ff24bc644abfe5eb2b1099812c",
+      "sha1": "58e3de0cd7d559a6caf924c25992382677bc03f9",
+      "size": 2384445,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "b8gfS9Je",
+      "modrinth_project_id": "nfn13YXA",
+      "modrinth_url": "https://cdn.modrinth.com/data/nfn13YXA/versions/b8gfS9Je/RoughlyEnoughItems-16.0.799-neoforge.jar"
+    },
+    {
+      "filename": "a_good_place-1.21-1.2.6-neoforge.jar",
+      "display_name": "a_good_place-1.21-1.2.6-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "71fe9ea59494ddc299a3d7715ad7bff196e07a5f4eba047e749597eb761240e237be17077564ab28026ea6297125069cddb135d661ea9911863e9e0c97bfcfc8",
+      "sha1": "3b5d2739f0c2428ad5145ba89d29a2f93b9747b5",
+      "size": 103243,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "vERjAa36",
+      "modrinth_project_id": "BwPeriwJ",
+      "modrinth_url": "https://cdn.modrinth.com/data/BwPeriwJ/versions/vERjAa36/a_good_place-1.21-1.2.6-neoforge.jar"
+    },
+    {
+      "filename": "AdvancementPlaques-1.21.1-neoforge-1.6.8.jar",
+      "display_name": "AdvancementPlaques-1.21.1-neoforge-1.6.8.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "94724dd77d005f0a189c4843efcc2800cf3d3e01d1f1ac184c6f6ad7c921aec508e93fa0bfac0e641a74c1629d4e5e4d06b8c1a3e0d8e63f97db89b2f879c106",
+      "sha1": "829d33e71b30e9158d772f5963bb6020f6026d78",
+      "size": 195730,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "OWylG33I",
+      "modrinth_project_id": "9NM0dXub",
+      "modrinth_url": "https://cdn.modrinth.com/data/9NM0dXub/versions/OWylG33I/AdvancementPlaques-1.21.1-neoforge-1.6.8.jar"
+    },
+    {
+      "filename": "AmbientEnvironment-neoforge-1.21.1-18.0.0.2.jar",
+      "display_name": "AmbientEnvironment-neoforge-1.21.1-18.0.0.2.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "aad91081e677097847ad847463717fdb77abf32a1a27176b019fa919ba505a3ab01b6d06c30d63da800a0b5b490be3cf5a7cf80f2193b6a8394a4249ba2cfeaa",
+      "sha1": "3a00ec1170b38e75a502dcc46038397f8fd9b305",
+      "size": 50812,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "N7jam3SN",
+      "modrinth_project_id": "DyTvM1dv",
+      "modrinth_url": "https://cdn.modrinth.com/data/DyTvM1dv/versions/N7jam3SN/AmbientEnvironment-neoforge-1.21.1-18.0.0.2.jar"
+    },
+    {
+      "filename": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
+      "display_name": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "sound"
+      ],
+      "depends_on": [],
+      "sha512": "292a7a61836eb6db31ec225ae4a0dc838416638618635ff60c07740bdc327df44ac0be7788c0ed44912935eb4d85b987fb6c594d11e4604f2d24fa21eabc672a",
+      "sha1": "c79ab328b2c46068effebdcb3f26e98dc4404cb0",
+      "size": 84811632,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "RZyxhsqY",
+      "modrinth_project_id": "fM515JnW",
+      "modrinth_url": "https://cdn.modrinth.com/data/fM515JnW/versions/RZyxhsqY/AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar"
+    },
+    {
+      "filename": "BetterF3-11.0.3-NeoForge-1.21.1.jar",
+      "display_name": "BetterF3-11.0.3-NeoForge-1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "59c36a882669399dce2110db42df05e8fe935a2e1194c4bac49abffc3129b2e19373dfe3c4a3d2f8b22f21b1d66ad8cbd653944ce0a71ae05d3d65528d1b7514",
+      "sha1": "8fa17df26d3650416bc124be7a264bc1566a3b26",
+      "size": 481646,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "maXNB1dn",
+      "modrinth_project_id": "8shC1gFX",
+      "modrinth_url": "https://cdn.modrinth.com/data/8shC1gFX/versions/maXNB1dn/BetterF3-11.0.3-NeoForge-1.21.1.jar"
+    },
+    {
+      "filename": "BetterGrassify-1.7.0\u002Bneoforge.1.21.1.jar",
+      "display_name": "BetterGrassify-1.7.0\u002Bneoforge.1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "467629332eb09401b662294c95f2a9058146349ea9dc1147bd65cc434257c15712eae764617e8ae722a99681da97a4c3545c6df8a19cacc2862e372e95b50b42",
+      "sha1": "7cf1376b4cb66721cf4795d55eb5a88123591bae",
+      "size": 155305,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "Rt96zVC1",
+      "modrinth_project_id": "m5T5xmUy",
+      "modrinth_url": "https://cdn.modrinth.com/data/m5T5xmUy/versions/Rt96zVC1/BetterGrassify-1.7.0%2Bneoforge.1.21.1.jar"
+    },
+    {
+      "filename": "blur-neoforge-6.3.1\u002B1.21.1.jar",
+      "display_name": "blur-neoforge-6.3.1\u002B1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "c307cbd765ffb5edc55ad939553ae9fe7ca2d50d01bd1f0e71821ca51338253b5f6636028998a5af06dd4352bf10919f998fb4e38606880389b574ccd4f595f5",
+      "sha1": "5e70c05c8233e72a0a5647c72355b46b11711029",
+      "size": 211164,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "xONakKZi",
+      "modrinth_project_id": "NK39zBp2",
+      "modrinth_url": "https://cdn.modrinth.com/data/NK39zBp2/versions/xONakKZi/blur-neoforge-6.3.1%2B1.21.1.jar"
+    },
+    {
+      "filename": "chat_heads-0.15.7-neoforge-1.21.jar",
+      "display_name": "chat_heads-0.15.7-neoforge-1.21.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "97ec4a08ffe54917591e7e05ba5ed9359e591719e4f3246745de36923a8080e68332aff28be437997c40a215b7aebc3537df892c99db4de6a5348ac7b4995144",
+      "sha1": "536b2af675229d2a33eb4cf5afbe7148a62d5f3f",
+      "size": 91948,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "ZPylso9i",
+      "modrinth_project_id": "Wb5oqrBJ",
+      "modrinth_url": "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/ZPylso9i/chat_heads-0.15.7-neoforge-1.21.jar"
+    },
+    {
+      "filename": "chatanimation-neoforge-1.3.3\u002Bmc1.21.jar",
+      "display_name": "chatanimation-neoforge-1.3.3\u002Bmc1.21.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "905f040f1ec492c1f2a41dd43badb5de4df7c5c3d75913661025a86032c0820dc1b17aca17ac533b2403928536cbc268140d9281f09768a23f95c26127107bcd",
+      "sha1": "a01d93d8effc5f00aae6802e549f5a595eac02f7",
+      "size": 1066941,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "ktSRZkTk",
+      "modrinth_project_id": "DnNYdJsx",
+      "modrinth_url": "https://cdn.modrinth.com/data/DnNYdJsx/versions/ktSRZkTk/chatanimation-neoforge-1.3.3%2Bmc1.21.jar"
+    },
+    {
+      "filename": "clienttweaks-neoforge-1.21.1-21.1.15.jar",
+      "display_name": "clienttweaks-neoforge-1.21.1-21.1.15.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "bc884348f4f1a23f1e692f841f29047bcb7e78b982e8e4905a771e847ed897fe6018a0133687a0a8a98e0b2052487bb381821af5fdcdf31ac9c272e91581187f",
+      "sha1": "019ad3127fcef24220d1572f73179d642f6ee0bb",
+      "size": 178095,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "dRLEbNAr",
+      "modrinth_project_id": "vPNqo58Q",
+      "modrinth_url": "https://cdn.modrinth.com/data/vPNqo58Q/versions/dRLEbNAr/clienttweaks-neoforge-1.21.1-21.1.15.jar"
+    },
+    {
+      "filename": "continuity-3.0.0\u002B1.21.neoforge.jar",
+      "display_name": "continuity-3.0.0\u002B1.21.neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "320b6def6073ce0ffc0ce2bd7cdb66324467ea3e7cec05508f32d78f65c60ff3e155394b94c60f62e059404ec0ca3fc6112987a5764a8f85241d3026a2ee4935",
+      "sha1": "0aecd2d043ac25299254623fafdd9129ab2ba9c2",
+      "size": 1014626,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "eXGUs5sy",
+      "modrinth_project_id": "1IjD5062",
+      "modrinth_url": "https://cdn.modrinth.com/data/1IjD5062/versions/eXGUs5sy/continuity-3.0.0%2B1.21.neoforge.jar"
+    },
+    {
+      "filename": "createjeicompat-1.0.3.jar",
+      "display_name": "createjeicompat-1.0.3.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "jei"
+      ],
+      "depends_on": [],
+      "sha512": "04bac5a6f0c97776b400a0d636ff2e514706d0fdbffac48d1670588430298b138419951d3e359eed1d49a5c92b51e2b03875595ae1891e8f706fc4f60da7480b",
+      "sha1": "3435d67651913cf2105a4994d9a6af2873df37ac",
+      "size": 34183,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "H8zVoq1O",
+      "modrinth_project_id": "1fkSpqmV",
+      "modrinth_url": "https://cdn.modrinth.com/data/1fkSpqmV/versions/H8zVoq1O/createjeicompat-1.0.3.jar"
+    },
+    {
+      "filename": "DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar",
+      "display_name": "DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "dh"
+      ],
+      "depends_on": [],
+      "sha512": "758d9591bb63a7851d368b6439135ec35ceb3b22e35723fca26433c4069be87c4098a23e8fc590be61903ac92e6ae1e3e1adf5beb744e6226c1fe70dd1933011",
+      "sha1": "d18b0829416ec6948102524b6e913e5bc73ae402",
+      "size": 28224156,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "Ez3cx7Yd",
+      "modrinth_project_id": "uCdwusMi",
+      "modrinth_url": "https://cdn.modrinth.com/data/uCdwusMi/versions/Ez3cx7Yd/DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar"
+    },
+    {
+      "filename": "durabilitytooltip-1.2.0-neoforge-mc1.21.jar",
+      "display_name": "durabilitytooltip-1.2.0-neoforge-mc1.21.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "ef1bad72b1e089bada8af1c7d7d3aba89419deb74046499378e1e99c96dcf0523f14e6a0c963634ae241418713f8b7bb7a1199792344faf5f5c5a63a5236f35e",
+      "sha1": "27015a66698570f06e5fa164433e4d80e7506ac7",
+      "size": 20821,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "lVrBx0o4",
+      "modrinth_project_id": "smUP7V3r",
+      "modrinth_url": "https://cdn.modrinth.com/data/smUP7V3r/versions/lVrBx0o4/durabilitytooltip-1.2.0-neoforge-mc1.21.jar"
+    },
+    {
+      "filename": "entity_model_features-3.3.7-1.21-neoforge.jar",
+      "display_name": "entity_model_features-3.3.7-1.21-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "c7aa81383773090aa9852702e374a36d057e1e9989c3dc35775a12907301851c9eb6fe1f1f996197b1d373a7444c7ed6b2dfb9848fe5e4f0501498cc57c8dc5e",
+      "sha1": "0fe32b8a8a6eb70e4508d076cd69fe4772307d21",
+      "size": 636503,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "5AMSii6O",
+      "modrinth_project_id": "4I1XuqiY",
+      "modrinth_url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/5AMSii6O/entity_model_features-3.3.7-1.21-neoforge.jar"
+    },
+    {
+      "filename": "entity_texture_features-7.2.3-1.21-neoforge.jar",
+      "display_name": "entity_texture_features-7.2.3-1.21-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "f7866cb38159131ce8555a058f966b230ba53dc538c5240e37949f8a7ce9aadca65d069a97b14f60481d671f4b67504c4a7092175267738c8d51a0d1d57e19ab",
+      "sha1": "de9f37303e4dd8714eb6dc83cdee658752868eb0",
+      "size": 784617,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "Y1KtOkZf",
+      "modrinth_project_id": "BVzZfTc1",
+      "modrinth_url": "https://cdn.modrinth.com/data/BVzZfTc1/versions/Y1KtOkZf/entity_texture_features-7.2.3-1.21-neoforge.jar"
+    },
+    {
+      "filename": "fallingleaves-1.17.1\u002B1.21.1.jar",
+      "display_name": "fallingleaves-1.17.1\u002B1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "a2e89d23f25fc7387f68e1055325367fd8a01d4267ea5f2612edd83b09948bd74cdc670e1397dcbcb91f2b599d46ece4f51c076fd0c364920228df0862f6acab",
+      "sha1": "5210b4cb359a95c53580b1399f98e51ab0967cc5",
+      "size": 170056,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "Y0zS16Bk",
+      "modrinth_project_id": "WhbRG4iK",
+      "modrinth_url": "https://cdn.modrinth.com/data/WhbRG4iK/versions/Y0zS16Bk/fallingleaves-1.17.1%2B1.21.1.jar"
+    },
+    {
+      "filename": "highlight-neoforge-1.21-3.0.0.jar",
+      "display_name": "highlight-neoforge-1.21-3.0.0.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "d5baec16ec968c1fbd359810d76872e9398b5cf9e221a629342bf56cc1f3efb1ca3babdb8646bb818033197adcdb6a386f34e2331fa94e1a82c6e5a759aa6505",
+      "sha1": "b846195c118429ce3eb666e485d992e74dbc12ba",
+      "size": 460414,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "AhmYRg22",
+      "modrinth_project_id": "Vz96hXMh",
+      "modrinth_url": "https://cdn.modrinth.com/data/Vz96hXMh/versions/AhmYRg22/highlight-neoforge-1.21-3.0.0.jar"
+    },
+    {
+      "filename": "Highlighter-1.21-neoforge-1.1.11.jar",
+      "display_name": "Highlighter-1.21-neoforge-1.1.11.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "41e1d2b3f73cf81b94563f04877528d0076672f95a456e959ca8f72162c8803bb9cf5ad540d1fbd15642a1d974bf11362a6b161003cd0853de050a443458a13b",
+      "sha1": "22d29eba774530b40a540fdf5ce2d14d89bbe036",
+      "size": 30417,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "AsQ0Y2G9",
+      "modrinth_project_id": "cVNW5lr6",
+      "modrinth_url": "https://cdn.modrinth.com/data/cVNW5lr6/versions/AsQ0Y2G9/Highlighter-1.21-neoforge-1.1.11.jar"
+    },
+    {
+      "filename": "invtweaks-1.21.1-1.2.0.jar",
+      "display_name": "invtweaks-1.21.1-1.2.0.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "a419544da8d943ccf17ed62f359fdbff04752735d370b18de3833a74277039e0313c8032e06462125b6b9b4e15b4eec057b680d302b465191ce51c13254bdeb2",
+      "sha1": "f81426b87be821aba41da4483895760cf6248710",
+      "size": 74866,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "tcTciTmQ",
+      "modrinth_project_id": "uqnMI1kq",
+      "modrinth_url": "https://cdn.modrinth.com/data/uqnMI1kq/versions/tcTciTmQ/invtweaks-1.21.1-1.2.0.jar"
+    },
+    {
+      "filename": "iris-neoforge-1.8.14-beta.1\u002Bmc1.21.1.jar",
+      "display_name": "iris-neoforge-1.8.14-beta.1\u002Bmc1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "33fddb430e16222902eac75b8b3d57c381b0f3cc729f3b56c4628df12ca108f23a0b11e2feb167923d6d14d1fc7e8ee1a977ec421b19d1951bdca74c4092b9c5",
+      "sha1": "1bd129cf7bce65d6b1c0543045f0620c98a0f885",
+      "size": 2540723,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "KduFYu4t",
+      "modrinth_project_id": "YL57xq9U",
+      "modrinth_url": "https://cdn.modrinth.com/data/YL57xq9U/versions/KduFYu4t/iris-neoforge-1.8.14-beta.1%2Bmc1.21.1.jar"
+    },
+    {
+      "filename": "ItemBorders-1.21-neoforge-1.2.5.jar",
+      "display_name": "ItemBorders-1.21-neoforge-1.2.5.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "050917782aba18d6f5bd9cc71462e96195d2124e8a99f538ac40c45e38de69e0f95fce4efa3835b6df364ac543ede7a5ec6084b78e03fe15a072ed3cee05e4f5",
+      "sha1": "b5ae56007c0bbb86b9a05f9f12b522ed485d7884",
+      "size": 23511,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "WjErgKWV",
+      "modrinth_project_id": "b1fMg6sH",
+      "modrinth_url": "https://cdn.modrinth.com/data/b1fMg6sH/versions/WjErgKWV/ItemBorders-1.21-neoforge-1.2.5.jar"
+    },
+    {
+      "filename": "jei_integration_reborn-1.0.2.jar",
+      "display_name": "jei_integration_reborn-1.0.2.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "jei"
+      ],
+      "depends_on": [],
+      "sha512": "13c79c37fd2e1f690404a3d1cc86cbd43969ebffac7ac3afe5df0d9e9cb12d01d1b9e6174bb9f74d0354f6d92d46ddb387bc6bed4f27571f8971ebc514ab2d7b",
+      "sha1": "56b0d1304938e243a7a979983c58c3004b955c95",
+      "size": 23669,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "2CbxvXc0",
+      "modrinth_project_id": "hh0hqGM2",
+      "modrinth_url": "https://cdn.modrinth.com/data/hh0hqGM2/versions/2CbxvXc0/jei_integration_reborn-1.0.2.jar"
+    },
+    {
+      "filename": "justenoughbreeding-neoforge-1.21.1-3.2.1.jar",
+      "display_name": "justenoughbreeding-neoforge-1.21.1-3.2.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "jei"
+      ],
+      "depends_on": [],
+      "sha512": "d1e9970f615d7a0986f030259d7d16cc4ba8cbd89bb81d1a1fbf6da2d3a9c7a0376957e1b418bcd82c9e45dcbdb6eb05fde2e20cc3f5225db33d0436759baee6",
+      "sha1": "9b2bfac5e7aa0952dfb3da18936c0ece4beeae21",
+      "size": 593705,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "lVl2kVwh",
+      "modrinth_project_id": "9Pk89J3g",
+      "modrinth_url": "https://cdn.modrinth.com/data/9Pk89J3g/versions/lVl2kVwh/justenoughbreeding-neoforge-1.21.1-3.2.1.jar"
+    },
+    {
+      "filename": "lambdynamiclights-4.8.11\u002B1.21.1.jar",
+      "display_name": "lambdynamiclights-4.8.11\u002B1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "0286076e8b2922dfbe90cd4544a0d16e6d07d7249c732a37479ea4281e9cf96c86dd2e1ce5261489bd5553ceba33044bc550a04b9eb582645eb97f15c9c6a64c",
+      "sha1": "7b5afc75a094b4e8a7118f9856eec959b10f2422",
+      "size": 2023375,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "ksaGCvSu",
+      "modrinth_project_id": "yBW8D80W",
+      "modrinth_url": "https://cdn.modrinth.com/data/yBW8D80W/versions/ksaGCvSu/lambdynamiclights-4.8.11%2B1.21.1.jar"
+    },
+    {
+      "filename": "LegendaryTooltips-1.21.1-neoforge-1.5.5.jar",
+      "display_name": "LegendaryTooltips-1.21.1-neoforge-1.5.5.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "3c0de6b6597a57b0fc3a134dde03ea3aeed0a7d64db63def8eda182c8bb7717293d2e4753887dcecaa27e17051c308269039eec6e74186d5eede68f98e74feeb",
+      "sha1": "e7d3b66f3afe115c709749739f26f807ca8e827b",
+      "size": 81808,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "BabRJO04",
+      "modrinth_project_id": "atHH8NyV",
+      "modrinth_url": "https://cdn.modrinth.com/data/atHH8NyV/versions/BabRJO04/LegendaryTooltips-1.21.1-neoforge-1.5.5.jar"
+    },
+    {
+      "filename": "ModernUI-NeoForge-1.21.1-3.13.0.1-universal.jar",
+      "display_name": "ModernUI-NeoForge-1.21.1-3.13.0.1-universal.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "6a6177ba866a1d5b3b3ed41b02f024b9783ab7b80c11d449093b802b79dc38863187b53be1bcb734c682f36bad1c164d1ee58d7b02cfd5336c5bedcff9501ac4",
+      "sha1": "d6dc4131595f6b38274e5c16ef13895ab2125010",
+      "size": 25228113,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "eMf1VSQd",
+      "modrinth_project_id": "3sjzyvGR",
+      "modrinth_url": "https://cdn.modrinth.com/data/3sjzyvGR/versions/eMf1VSQd/ModernUI-NeoForge-1.21.1-3.13.0.1-universal.jar"
+    },
+    {
+      "filename": "MouseTweaks-neoforge-mc1.21-2.26.1.jar",
+      "display_name": "MouseTweaks-neoforge-mc1.21-2.26.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "f95c0cc881211ee0442434976775e07aae40b4a2ba4e3a85455bc57ca9d3c991e239cd98374a8abd442dc9c378dcd9001e2caa1bf69991d424b5652dd7f3483b",
+      "sha1": "6dae57f4f50f7808d2ed9a18f6cd1c0d4640c6bc",
+      "size": 73938,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "9I21YYxf",
+      "modrinth_project_id": "aC3cM3Vq",
+      "modrinth_url": "https://cdn.modrinth.com/data/aC3cM3Vq/versions/9I21YYxf/MouseTweaks-neoforge-mc1.21-2.26.1.jar"
+    },
+    {
+      "filename": "notenoughanimations-neoforge-1.12.4-mc1.21.1.jar",
+      "display_name": "notenoughanimations-neoforge-1.12.4-mc1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "9d929cf8e0a0ff2c806e007571b10cd9b81cd508826519f55e25f0390149109c7c12605143e4c11b5b5fac749e69de532c1ad00aa6a257e4dd0d3a3a77f2461b",
+      "sha1": "b509863deaa27890f8db600f612966a07490a6cd",
+      "size": 1939625,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "eYNogep3",
+      "modrinth_project_id": "MPCX6s5C",
+      "modrinth_url": "https://cdn.modrinth.com/data/MPCX6s5C/versions/eYNogep3/notenoughanimations-neoforge-1.12.4-mc1.21.1.jar"
+    },
+    {
+      "filename": "OverflowingBars-v21.1.1-1.21.1-NeoForge.jar",
+      "display_name": "OverflowingBars-v21.1.1-1.21.1-NeoForge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "2962a12664e24711096d9be98bfda2ae0b86c5050d0860a36b3567870d794767d308328060c6fbe4f4854b569d97ce465b8b250775f3ae7a5d0a563f342a4136",
+      "sha1": "a9dea4b9ef893fc955512ff2dee75c9c82e09a52",
+      "size": 78482,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "PYRrjTaY",
+      "modrinth_project_id": "XD7XOrAF",
+      "modrinth_url": "https://cdn.modrinth.com/data/XD7XOrAF/versions/PYRrjTaY/OverflowingBars-v21.1.1-1.21.1-NeoForge.jar"
+    },
+    {
+      "filename": "particlerain-4.0.0-beta.11\u002B1.21.1-neoforge.jar",
+      "display_name": "particlerain-4.0.0-beta.11\u002B1.21.1-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "a99355c57bc8d4e04dc42b2caa5981c0c8bb0408e5dff6789149894ebeb0f0b23c95325b5f4bc62d3f8f57890feb3dc8e888da8f155db0ccc39bdebfd7f63cc2",
+      "sha1": "1eb1ee4b949ad8ef25b01fcd5fb0ad5cc59ec92f",
+      "size": 618131,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "k32OBTlL",
+      "modrinth_project_id": "nrikgvxm",
+      "modrinth_url": "https://cdn.modrinth.com/data/nrikgvxm/versions/k32OBTlL/particlerain-4.0.0-beta.11%2B1.21.1-neoforge.jar"
+    },
+    {
+      "filename": "punchy-2.8a-neoforge-1.21.1.jar",
+      "display_name": "punchy-2.8a-neoforge-1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "c474815ecff99258fe33270062620ff1bf0cd24b262c3877fa450ed20ad773c6711a0bc1c07a101582a14a191b523d6bc83aecd67d0be57bd29578385d86553d",
+      "sha1": "5cfb447b34721c21169c79bddb53e48446a72500",
+      "size": 1813689,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "ORyRPNUY",
+      "modrinth_project_id": "8aoMKplv",
+      "modrinth_url": "https://cdn.modrinth.com/data/8aoMKplv/versions/ORyRPNUY/punchy-2.8a-neoforge-1.21.1.jar"
+    },
+    {
+      "filename": "Resourcify (1.21.1-neoforge)-1.8.6.jar",
+      "display_name": "Resourcify (1.21.1-neoforge)-1.8.6.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "qol"
+      ],
+      "depends_on": [],
+      "sha512": "ca8eca6ab89acdbd88d4c5b59a5595d98e00f3f8361c7b337aa2bf8e8cc102d9ef97792f4898170309b866013156238ae74c16df9fe3214722e86bcd14addf2f",
+      "sha1": "32dd9e379132230569519cf1ed8e1f94f7de73c5",
+      "size": 2940307,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "pifjvHYS",
+      "modrinth_project_id": "RLzHAoZe",
+      "modrinth_url": "https://cdn.modrinth.com/data/RLzHAoZe/versions/pifjvHYS/Resourcify%20%281.21.1-neoforge%29-1.8.6.jar"
+    },
+    {
+      "filename": "ShoulderSurfing-NeoForge-1.21.1-5.0.11.jar",
+      "display_name": "ShoulderSurfing-NeoForge-1.21.1-5.0.11.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "6fbe65be13213ffe180e17047a8ac80d3cca16043be9ca5b7ee711dd1f0b4ee383513e31ac1b8b87ad068412b92ee7af279da087a6d24fa27826d6de098ac37b",
+      "sha1": "f2ce168efa27d425ae1e6fdff168fb9d87a7cf0f",
+      "size": 399810,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "gtUuy6S9",
+      "modrinth_project_id": "kepjj2sy",
+      "modrinth_url": "https://cdn.modrinth.com/data/kepjj2sy/versions/gtUuy6S9/ShoulderSurfing-NeoForge-1.21.1-5.0.11.jar"
+    },
+    {
+      "filename": "skinlayers3d-neoforge-1.11.2-mc1.21.1.jar",
+      "display_name": "skinlayers3d-neoforge-1.11.2-mc1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "c017d098874697ba93a03c06cfb4fe8a8bbc619448bff55c3c821089b164677fae2c8c2059e99fc9933af6ff519759c399deae763b1ac9e34593cd6e4f427f3a",
+      "sha1": "d688d428ba72a5bd57b44d8954793c59d8576838",
+      "size": 1979027,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "xPYbAPfz",
+      "modrinth_project_id": "zV5r3pPn",
+      "modrinth_url": "https://cdn.modrinth.com/data/zV5r3pPn/versions/xPYbAPfz/skinlayers3d-neoforge-1.11.2-mc1.21.1.jar"
+    },
+    {
+      "filename": "SSRD-1.8.7-1.21.1.jar",
+      "display_name": "SSRD-1.8.7-1.21.1.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "dh",
+        "voxy"
+      ],
+      "depends_on": [],
+      "sha512": "fb09bb6799f2f9d8b051bc87920a49ee68319c358d0d23be5beaea444542be8336a52f71b57f81e8871df274fe2e1310121b90a3aded615421e84bcd6dfbae47",
+      "sha1": "7da02fc5f783bedb55a29268e4c8ba7b0c3c9e6f",
+      "size": 74407,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "iZflRKdV",
+      "modrinth_project_id": "fJ183v3D",
+      "modrinth_url": "https://cdn.modrinth.com/data/fJ183v3D/versions/iZflRKdV/SSRD-1.8.7-1.21.1.jar"
+    },
+    {
+      "filename": "TravelersTitles-1.21.1-NeoForge-5.1.3.jar",
+      "display_name": "TravelersTitles-1.21.1-NeoForge-5.1.3.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "eed7ed02277e32f374da0999bbb24410c04543ca39e6e349ca9e441c468e218cf0cad59173f8b98c3f45140b24552efa3672ff48feb311ec01b19ab2f02b2e64",
+      "sha1": "166cba4d367c6dd103d1d5dcab7a31174bec799e",
+      "size": 235345,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "2y01mBUy",
+      "modrinth_project_id": "JtifUr64",
+      "modrinth_url": "https://cdn.modrinth.com/data/JtifUr64/versions/2y01mBUy/TravelersTitles-1.21.1-NeoForge-5.1.3.jar"
+    },
+    {
+      "filename": "visuality-0.7.7\u002B1.21.jar",
+      "display_name": "visuality-0.7.7\u002B1.21.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "visual"
+      ],
+      "depends_on": [],
+      "sha512": "793f7164f9caf1b8e2b6b2f9f1327c40179b633217702bf79e16930cc5c548e44e6f0cac4628963fcc9e65cc9d63c4493678840242017c33be92a0e94c880f51",
+      "sha1": "8d239710c1c1983d780ad04686c3c3d0d1b1585e",
+      "size": 79452,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "dhKbgdIb",
+      "modrinth_project_id": "rI0hvYcd",
+      "modrinth_url": "https://cdn.modrinth.com/data/rI0hvYcd/versions/dhKbgdIb/visuality-0.7.7%2B1.21.jar"
+    },
+    {
+      "filename": "voxy-0.2.15-beta\u002B1.21.1-neoforge.jar",
+      "display_name": "voxy-0.2.15-beta\u002B1.21.1-neoforge.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "voxy"
+      ],
+      "depends_on": [],
+      "sha512": "7578e4cfe4de3bff0733199822e7b9f2ae2bf11860a206c719f44ccb8e8d20676c4e2018fe580d083dc847c341ac646abdaca37d719f8a281ffcfbcf85b70760",
+      "sha1": "3cc4f86b662ad52c477eb99dfc20855b156fef42",
+      "size": 89370577,
+      "source": "unresolved",
+      "enabled_on_default": null
+    },
+    {
+      "filename": "YungsMenuTweaks-1.21.1-NeoForge-2.1.2.jar",
+      "display_name": "YungsMenuTweaks-1.21.1-NeoForge-2.1.2.jar",
+      "label": "",
+      "description": "",
+      "groups": [
+        "ui"
+      ],
+      "depends_on": [],
+      "sha512": "509327f5f5542246e2b98811b36cf2f7e26fe81b7538f3443b958c0134029e0e1ae8483165adaf1f2c4ee5a531bf8b57a2628305f7caf6bf1301cf34ad46b5fb",
+      "sha1": "da42e597009dae71faa37290e98b7b69bca52c25",
+      "size": 157761,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "OB9hQTpQ",
+      "modrinth_project_id": "Hcy2DFKF",
+      "modrinth_url": "https://cdn.modrinth.com/data/Hcy2DFKF/versions/OB9hQTpQ/YungsMenuTweaks-1.21.1-NeoForge-2.1.2.jar"
+    }
+  ]
+}
