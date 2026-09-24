@@ -25,6 +25,8 @@ public partial class MainWindow : Window
 
     private LogsWindow? _logsWindow;
     private bool _closeConfirmed;
+    private OptionalManifest? _optionalManifest;
+    private string? _optionalManifestUrl; 
 
     public MainWindow()
     {
@@ -38,6 +40,16 @@ public partial class MainWindow : Window
 
         LblLogFile.Text    = Constants.LogFile;
         LblAppVersion.Text = $"v{AppVersion.Current}";
+        LblAppVersion.Cursor = new Cursor(StandardCursorType.Hand);
+        LblAppVersion.PointerPressed += (_, e) =>
+        {
+            if (e.GetCurrentPoint(LblAppVersion).Properties.IsLeftButtonPressed
+                && e.ClickCount == 2)
+            {
+                try { OpenDevWindow(); } catch { }
+                e.Handled = true;
+            }
+        };
 
         BtnInstall.Click += (_, _) => _ = DoFullInstallAsync(force: false);
         BtnRepair.Click  += (_, _) => _ = DoFullInstallAsync(force: true);
@@ -45,8 +57,21 @@ public partial class MainWindow : Window
         BtnLaunch.Click  += (_, _) => DoLaunch();
         BtnKill.Click    += (_, _) => DoKill();
 
-        Loaded += (_, _) => _ = CheckLauncherUpdateAsync();
+        Loaded += (_, _) =>
+        {
+            _ = CheckLauncherUpdateAsync();
+            _ = InitOptionalAsync();
 
+            // Auto-open dev mode: env var или dev.flag рядом с .exe.
+            var flagFile = System.IO.Path.Combine(Constants.LauncherDir, "dev.flag");
+            if (Environment.GetEnvironmentVariable("WHITEMC_DEV") == "1"
+                || System.IO.File.Exists(flagFile))
+            {
+                try { OpenDevWindow(); } catch { }
+            }
+        };
+
+        AddHandler(KeyDownEvent, OnDevKeyDown, RoutingStrategies.Tunnel);
         LogService.Log($"[WhiteMC] Старт лаунчера v{AppVersion.Current}. Логи: {Constants.LogFile}");
         LogService.Log($"[WhiteMC] Лаунчер-папка: {Constants.LauncherDir}");
         LogService.Log($"[WhiteMC] ОС: {Constants.OsName}, {Constants.OsArchBits}-bit");
@@ -118,6 +143,48 @@ public partial class MainWindow : Window
     }
 
     // -------------------------------------------------------------------- //
+    //  Опциональные моды
+    // -------------------------------------------------------------------- //
+
+    private async Task InitOptionalAsync()
+    {
+        var profile = CurrentProfileKey;
+        if (profile == null) return;
+
+        var url = Profiles.OptionalManifestUrl(profile);
+        if (string.IsNullOrWhiteSpace(url)) return;
+
+        var m = await OptionalModsService.LoadAsync(url, LogService.Log);
+        if (m == null || m.Mods.Count == 0) return;
+
+        // ↓↓↓ Добавить эту строку ↓↓↓
+        OptionalModsService.EnsureInitialized(profile, m);
+        // ↑↑↑
+
+        _optionalManifest = m;
+        _optionalManifestUrl = url;
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateInfo();
+            RefreshState();
+            _ = CheckModsInBackgroundAsync();
+        });
+    }
+    private async void BtnOptional_Click(object? sender, RoutedEventArgs e)
+    {
+        var profile = CurrentProfileKey;
+        if (profile == null || _optionalManifest == null) return;
+
+        var w = new OptionalModsWindow(profile, _optionalManifest);
+        await w.ShowDialog(this);
+
+        UpdateInfo();
+        RefreshState();
+        _ = CheckModsInBackgroundAsync();
+    }
+
+    // -------------------------------------------------------------------- //
     //  Утилиты
     // -------------------------------------------------------------------- //
 
@@ -128,7 +195,9 @@ public partial class MainWindow : Window
         var v = Profiles.Version(profile);
         var vdir = Path.Combine(Constants.VersionsDir, v, $"{v}.json");
         if (!File.Exists(vdir)) return false;
-        if (Profiles.UsesNeoForge(profile))
+
+        // Обязательный NeoForge должен стоять; опциональный — на усмотрение юзера.
+        if (Profiles.RequiresNeoForge(profile))
             return NeoForgeService.Installed(v) != null;
         return true;
     }
@@ -151,7 +220,9 @@ public partial class MainWindow : Window
         bool running = GameRunning();
 
         BtnInstall.IsVisible = false;
+        BtnNeoForge.IsVisible = false;
         BtnUpdate.IsVisible  = false;
+        BtnOptional.IsVisible = false;
         BtnRepair.IsVisible  = false;
         BtnLaunch.IsVisible  = false;
         BtnKill.IsVisible    = false;
@@ -176,9 +247,24 @@ public partial class MainWindow : Window
             }
         }
 
+        // Опциональный NeoForge: предлагаем установку отдельной кнопкой.
+        if (profile.Length > 0 && Profiles.NeoForgeOptional(profile)
+            && !Profiles.RequiresNeoForge(profile)
+            && NeoForgeService.Installed(Profiles.Version(profile)) == null)
+        {
+            BtnNeoForge.IsVisible = !_busy;
+        }
+
+        // Вкладка опциональных модов: есть манифест и профиль это разрешает.
+        BtnOptional.IsVisible = !_busy
+            && _optionalManifest != null && _optionalManifest.Mods.Count > 0
+            && Profiles.OptionalModsAllowed(profile);
+
         BtnInstall.IsEnabled  = !_busy;
+        BtnNeoForge.IsEnabled = !_busy && !running;
         BtnUpdate.IsEnabled   = !_busy && !running;
         BtnRepair.IsEnabled   = !_busy && !running;
+        BtnOptional.IsEnabled = !_busy && !running;
         BtnLaunch.IsEnabled   = !_busy && !running;
         BtnKill.IsEnabled     = !_busy && running;
         BtnSettings.IsEnabled = !_busy;
@@ -191,7 +277,21 @@ public partial class MainWindow : Window
 
         var (_, v, nf) = Profiles.Resolve(profile);
 
-        LblVersion.Text = $"MC {v}" + (nf ? "  •  NeoForge" : "  •  vanilla");
+        bool nfOptional = Profiles.NeoForgeOptional(profile)
+                          && !Profiles.RequiresNeoForge(profile);
+        LblVersion.Text = $"MC {v}" + (nf ? "  •  NeoForge" : "  •  vanilla")
+                                + (nfOptional ? " (опц.)" : "");
+
+        if (Profiles.All.TryGetValue(profile, out var prof)
+            && !string.IsNullOrWhiteSpace(prof.Description))
+        {
+            LblDesc.Text = prof.Description;
+            LblDesc.IsVisible = true;
+        }
+        else
+        {
+            LblDesc.IsVisible = false;
+        }
 
         var vjsonPath = Path.Combine(Constants.VersionsDir, v, $"{v}.json");
         int? major = null;
@@ -215,18 +315,27 @@ public partial class MainWindow : Window
             var local = JavaService.InstalledJavaPath(major.Value);
             if (local != null)
             {
-                LblJava.Text = $"Java {major}:  локальная сборка";
+                LblJava.Text = $"Java {major}:  локальная сборка лаунчера";
                 LblJava.Foreground = Brush("Green");
-            }
-            else if (HasJavaInPath())
-            {
-                LblJava.Text = $"Java {major}:  системная (из PATH)";
-                LblJava.Foreground = Brush("Yellow");
             }
             else
             {
-                LblJava.Text = $"Java {major}:  будет скачана при установке";
-                LblJava.Foreground = Brush("Red");
+                var system = JavaService.SystemJavaPath(major.Value);
+                if (system != null)
+                {
+                    LblJava.Text = $"Java {major}:  найдена на ПК";
+                    LblJava.Foreground = Brush("Green");
+                }
+                else if (JavaService.FindOnPath() != null)
+                {
+                    LblJava.Text = $"Java {major}:  в PATH Java другой версии — нужная будет скачана";
+                    LblJava.Foreground = Brush("Yellow");
+                }
+                else
+                {
+                    LblJava.Text = $"Java {major}:  будет скачана при установке";
+                    LblJava.Foreground = Brush("Red");
+                }
             }
         }
 
@@ -235,7 +344,9 @@ public partial class MainWindow : Window
             var nfId = NeoForgeService.Installed(v);
             if (nfId != null)
             {
-                LblNeoForge.Text = $"NeoForge:  установлен ({nfId})";
+                LblNeoForge.Text = nfOptional
+                    ? $"NeoForge:  установлен ({nfId}) — опционально"
+                    : $"NeoForge:  установлен ({nfId})";
                 LblNeoForge.Foreground = Brush("Green");
             }
             else
@@ -243,6 +354,11 @@ public partial class MainWindow : Window
                 LblNeoForge.Text = "NeoForge:  будет установлен автоматически";
                 LblNeoForge.Foreground = Brush("Yellow");
             }
+        }
+        else if (Profiles.NeoForgeOptional(profile))
+        {
+            LblNeoForge.Text = "NeoForge:  опционально — можно установить кнопкой выше";
+            LblNeoForge.Foreground = Brush("Subtext");
         }
         else
         {
@@ -296,6 +412,13 @@ public partial class MainWindow : Window
             LblMods.Text = "Моды: проверка…";
             LblMods.Foreground = Brush("Subtext");
         }
+        else if (_optionalManifest != null && Profiles.OptionalModsAllowed(profile))
+        {
+            var st = OptionalModsService.LoadState(profile);
+            int off = _optionalManifest.Mods.Count(m => !OptionalModsService.IsEnabled(st, m.Filename));
+            LblMods.Text = $"Моды: опциональные ({_optionalManifest.Mods.Count}), выключено: {off}";
+            LblMods.Foreground = Brush("Subtext");
+        }
         else
         {
             LblMods.Text = "";
@@ -306,32 +429,22 @@ public partial class MainWindow : Window
         LblStatus.Text = $"Профиль «{profile}»: {(ProfileReady(profile) ? "установлен" : "не установлен")}";
     }
 
-    private static bool HasJavaInPath()
-    {
-        var pathEnv = Environment.GetEnvironmentVariable("PATH") ?? "";
-        foreach (var dir in pathEnv.Split(Path.PathSeparator))
-        {
-            try
-            {
-                if (File.Exists(Path.Combine(dir, Constants.JavaBinaryName)))
-                    return true;
-            }
-            catch { }
-        }
-        return false;
-    }
-
     // -------------------------------------------------------------------- //
     //  Handlers
     // -------------------------------------------------------------------- //
 
     private void CmbProfile_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        // Сбрасываем манифест от предыдущего профиля, иначе вкладка будет
+        // показывать моды чужой сборки.
+        _optionalManifest = null;
+        _optionalManifestUrl = null;
+
         UpdateInfo();
         RefreshState();
+        _ = InitOptionalAsync();
         _ = CheckModsInBackgroundAsync();
     }
-
     private void BtnSettings_Click(object? sender, RoutedEventArgs e)
     {
         var profile = CurrentProfileKey;
@@ -380,7 +493,18 @@ public partial class MainWindow : Window
 
         if (!Profiles.HasModsManifest(entry.Key))
         {
-            LblMods.Text = "";
+            // Опциональные моды (без серверного манифеста) — просто считаем состояние.
+            if (_optionalManifest != null && Profiles.OptionalModsAllowed(entry.Key))
+            {
+                var st = OptionalModsService.LoadState(entry.Key);
+                int off = _optionalManifest.Mods.Count(m => !OptionalModsService.IsEnabled(st, m.Filename));
+                LblMods.Text = $"Моды: опциональные ({_optionalManifest.Mods.Count}), выключено: {off}";
+                LblMods.Foreground = Brush("Subtext");
+            }
+            else
+            {
+                LblMods.Text = "";
+            }
             return;
         }
 
@@ -397,7 +521,9 @@ public partial class MainWindow : Window
 
             if (result.IsUpToDate)
             {
-                LblMods.Text = $"Моды: актуальны ({result.TotalLocal})";
+                LblMods.Text = result.Disabled.Count > 0
+                    ? $"Моды: актуальны ({result.TotalLocal}, выключено опц.: {result.Disabled.Count})"
+                    : $"Моды: актуальны ({result.TotalLocal})";
                 LblMods.Foreground = Brush("Green");
             }
             else
@@ -448,11 +574,17 @@ public partial class MainWindow : Window
             });
         }
 
+        // NeoForge ставим, только если он обязателен — или уже стоит
+        // (опциональный профиль, юзер решил его доустановить).
+        bool withNeoForge = Profiles.RequiresNeoForge(profile)
+                            || NeoForgeService.Installed(v) != null;
+
         try
         {
             await Task.Run(async () =>
             {
-                await VersionInstaller.InstallAsync(v, Progress, LogService.Log, checkUpdates: force);
+                await VersionInstaller.InstallAsync(v, Progress, LogService.Log,
+                    checkUpdates: force, installNeoForge: withNeoForge);
 
                 if (Profiles.HasComponents(profile))
                 {
@@ -460,7 +592,10 @@ public partial class MainWindow : Window
                     await ModpackService.InstallAsync(profile, Progress, LogService.Log, checkUpdates: force);
                 }
 
-                if (Profiles.HasModsManifest(profile))
+                // Синхронизируем моды, если профиль модовый (обязательный или
+                // опциональный NeoForge уже установлен).
+                if (Profiles.HasModsManifest(profile)
+                    && (withNeoForge || Profiles.HasComponents(profile)))
                 {
                     var url = Profiles.Modpack(profile)!.ManifestUrl!;
                     LogService.Log($"[WhiteMC] Синхронизация модов по манифесту для {profile}…");
@@ -490,6 +625,54 @@ public partial class MainWindow : Window
     }
 
     // -------------------------------------------------------------------- //
+    //  ОПЦИОНАЛЬНЫЙ NEOFORGE
+    // -------------------------------------------------------------------- //
+
+    private async void BtnNeoForge_Click(object? sender, RoutedEventArgs e)
+    {
+        var profile = CurrentProfileKey;
+        if (profile == null || _busy) return;
+
+        var v = Profiles.Version(profile);
+        SetBusy(true);
+        Prog.Value = 0;
+        Prog.IsVisible = true;
+        LblStatus.Text = "Установка NeoForge…";
+        LblStatus.Foreground = Brush("Accent");
+
+        try
+        {
+            await Task.Run(() => NeoForgeService.InstallAsync(
+                v,
+                (i, t, m) => Dispatcher.UIThread.Post(() =>
+                {
+                    Prog.Value = 100.0 * i / Math.Max(t, 1);
+                    LblStatus.Text = m;
+                }),
+                logger: LogService.Log));
+
+            LogService.Log($"[OK] NeoForge для {v} установлен");
+            LblStatus.Text = "NeoForge установлен";
+            LblStatus.Foreground = Brush("Green");
+        }
+        catch (Exception ex)
+        {
+            LogService.Log($"[ОШИБКА] {ex}");
+            LblStatus.Text = "Ошибка установки NeoForge";
+            LblStatus.Foreground = Brush("Red");
+            await Dialogs.ErrorAsync(this, "WhiteMC", ex.Message);
+        }
+        finally
+        {
+            SetBusy(false);
+            Prog.IsVisible = false;
+            UpdateInfo();
+            RefreshState();
+            _ = CheckModsInBackgroundAsync();
+        }
+    }
+
+    // -------------------------------------------------------------------- //
     //  ТОЛЬКО ОБНОВЛЕНИЕ МОДОВ
     // -------------------------------------------------------------------- //
 
@@ -498,13 +681,15 @@ public partial class MainWindow : Window
         var profile = CurrentProfileKey;
         if (profile == null || _busy) return;
 
-        if (!Profiles.HasModsManifest(profile))
+        bool hasManifest = Profiles.HasModsManifest(profile);
+        bool hasOptional = _optionalManifest != null
+                           && Profiles.OptionalModsAllowed(profile);
+
+        if (!hasManifest && !hasOptional)
         {
-            await Dialogs.InfoAsync(this, "WhiteMC", "Для этого профиля не задан манифест модов.");
+            await Dialogs.InfoAsync(this, "WhiteMC", "Для этого профиля не заданы моды.");
             return;
         }
-
-        var url = Profiles.Modpack(profile)!.ManifestUrl!;
 
         SetBusy(true);
         Prog.Value = 0;
@@ -525,7 +710,17 @@ public partial class MainWindow : Window
 
         try
         {
-            await Task.Run(() => ModSyncService.SyncAsync(profile, url, Progress, LogService.Log));
+            if (hasManifest)
+            {
+                var url = Profiles.Modpack(profile)!.ManifestUrl!;
+                await Task.Run(() => ModSyncService.SyncAsync(profile, url, Progress, LogService.Log));
+            }
+            else
+            {
+                // Только опциональные: приводим диск к выбору юзера.
+                await Task.Run(() => ModSyncService.SyncOptionalOnlyAsync(
+                    profile, Progress, LogService.Log));
+            }
 
             LogService.Log($"[OK] {profile}: моды синхронизированы");
             LblStatus.Text = "Моды обновлены";
@@ -570,6 +765,23 @@ public partial class MainWindow : Window
             return;
         }
 
+        // Стандартный ник — предлагаем сменить перед запуском.
+        if (string.IsNullOrWhiteSpace(_settings.Username)
+            || _settings.Username.Trim().Equals("Player", StringComparison.OrdinalIgnoreCase))
+        {
+            bool change = await Dialogs.ConfirmAsync(this, "WhiteMC — ник",
+                "У вас стоит стандартный ник «Player».\n" +
+                "Прогресс и настройки привязываются к нику — со «Player» они не сохраняются.\n\n" +
+                "Изменить ник сейчас?");
+
+            if (change)
+            {
+                var w = new SettingsWindow(_settings, CurrentProfileKey);
+                await w.ShowDialog(this);
+                return; // после сохранения настроек юзер запустит игру сам
+            }
+        }
+
         bool canLaunch = await VerifyModsBeforeLaunchAsync(profile);
         if (!canLaunch) return;
 
@@ -592,7 +804,9 @@ public partial class MainWindow : Window
 
             if (result.IsUpToDate)
             {
-                LblStatus.Text = $"Моды в порядке ({result.TotalLocal})";
+                LblStatus.Text = result.Disabled.Count > 0
+                    ? $"Моды в порядке ({result.TotalLocal}, выключено опц.: {result.Disabled.Count})"
+                    : $"Моды в порядке ({result.TotalLocal})";
                 LblStatus.Foreground = Brush("Green");
                 return true;
             }
@@ -722,4 +936,60 @@ public partial class MainWindow : Window
         _closeConfirmed = true;
         Close();
     }
+    // -------------------------------------------------------------------- //
+    //  Dev mode
+    // -------------------------------------------------------------------- //
+
+    private WhiteMC.Dev.DevWindow? _devWindow;
+
+    private void OnDevKeyDown(object? sender, KeyEventArgs e)
+    {
+        // F12 — самый простой хоткей. Плюс Ctrl+Shift+Alt+D как альтернатива.
+        bool isF12 = e.Key == Key.F12;
+
+        bool isCtrlShiftAltD =
+            e.Key == Key.D
+            && e.KeyModifiers.HasFlag(KeyModifiers.Control)
+            && e.KeyModifiers.HasFlag(KeyModifiers.Shift)
+            && e.KeyModifiers.HasFlag(KeyModifiers.Alt);
+
+        if (isF12 || isCtrlShiftAltD)
+        {
+            try { OpenDevWindow(); } catch { }
+            e.Handled = true;
+        }
+    }
+
+    private void OpenDevWindow()
+    {
+        if (_devWindow != null && _devWindow.IsVisible)
+        {
+            _devWindow.Activate();
+            return;
+        }
+
+        try
+        {
+            LogService.Log("[DEV] создаю DevWindow…");
+            _devWindow = new WhiteMC.Dev.DevWindow();
+            _devWindow.Closed += (_, _) => _devWindow = null;
+            _devWindow.Show(this);
+            LogService.Log("[DEV] DevWindow открыт.");
+        }
+        catch (Exception ex)
+        {
+            LogService.Log($"[DEV] ОШИБКА при открытии dev-редактора:\n{ex}");
+            // Показываем максимально заметно.
+            try
+            {
+                _ = Dialogs.ErrorAsync(this, "Dev — ошибка",
+                    "Не удалось открыть dev-редактор:\n\n" + ex);
+            }
+            catch
+            {
+                Console.Error.WriteLine(ex);
+            }
+        }
+    }
 }
+

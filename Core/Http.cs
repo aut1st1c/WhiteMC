@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -25,6 +27,20 @@ public static class Http
 
     public static async Task<byte[]> GetBytesAsync(string url, CancellationToken ct = default)
     {
+        // DEV: локальный файл из output_dir вместо сети.
+        if (DevLocalSource.TryGetLocalFile(url, out var local))
+        {
+            try
+            {
+                LogService.Log($"[DEV] локальный файл: {url} → {local}");
+                return await File.ReadAllBytesAsync(local, ct);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log($"[DEV] не удалось прочитать {local}: {ex.Message}; иду в сеть");
+            }
+        }
+
         using var resp = await Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
         resp.EnsureSuccessStatusCode();
         return await resp.Content.ReadAsByteArrayAsync(ct);

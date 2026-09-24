@@ -17,27 +17,44 @@ public static class VersionInstaller
     public static async Task<VersionManifest> GetManifestAsync(bool force = false, CancellationToken ct = default)
     {
         var cacheFile = Path.Combine(Constants.LauncherDir, "version_manifest.json");
-        if (!force && _manifestCache != null) return _manifestCache;
 
+        // Возвращаем кэш в памяти только если он НЕ пустой.
+        if (!force && _manifestCache != null && _manifestCache.Versions.Count > 0)
+            return _manifestCache;
+
+        // Дисковый кэш — тоже только если не пустой.
         if (!force && File.Exists(cacheFile))
         {
             try
             {
                 var json = await File.ReadAllTextAsync(cacheFile, ct);
-                var m = JsonSerializer.Deserialize<VersionManifest>(json);
-                if (m != null) { _manifestCache = m; return m; }
+                var m = JsonSerializer.Deserialize<VersionManifest>(json, Json.CaseInsensitive);
+                if (m != null && m.Versions.Count > 0)
+                {
+                    _manifestCache = m;
+                    return m;
+                }
             }
-            catch { }
+            catch
+            {
+                // Битый кэш — пойдём в сеть.
+            }
         }
 
+        // Скачиваем свежий манифест.
         var data = await Http.GetBytesAsync(Constants.VersionManifestUrl, ct);
-        Directory.CreateDirectory(Constants.LauncherDir);
-        await File.WriteAllBytesAsync(cacheFile, data, ct);
-
         var manifest = JsonSerializer.Deserialize<VersionManifest>(
             System.Text.Encoding.UTF8.GetString(data),
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            Json.CaseInsensitive)
             ?? throw new Exception("Пустой version_manifest_v2.json");
+
+        if (manifest.Versions.Count == 0)
+            throw new Exception(
+                "version_manifest_v2.json не содержит версий. " +
+                "Проверьте доступ к launchermeta.mojang.com.");
+
+        Directory.CreateDirectory(Constants.LauncherDir);
+        await File.WriteAllBytesAsync(cacheFile, data, ct);
 
         _manifestCache = manifest;
         return manifest;
@@ -48,7 +65,8 @@ public static class VersionInstaller
         Action<int, int, string>? onProgress = null,
         Action<string>? logger = null,
         bool checkUpdates = false,
-        CancellationToken ct = default)
+        CancellationToken ct = default,
+        bool installNeoForge = true)
     {
         void P(int i, int t, string m)
         {
@@ -74,14 +92,23 @@ public static class VersionInstaller
         var vjson = JsonNode.Parse(vjsonText)!.AsObject();
 
         int requiredMajor = RequiredJavaMajor(vjson);
-        if (JavaService.InstalledJavaPath(requiredMajor) == null)
+
+        // Сначала управляемая JRE лаунчера, затем системная (PATH/реестр/стандартные папки).
+        var managedJava = JavaService.InstalledJavaPath(requiredMajor);
+        var systemJava  = managedJava == null ? JavaService.SystemJavaPath(requiredMajor) : null;
+
+        if (managedJava != null)
         {
-            P(0, 1, $"Установка Java {requiredMajor}…");
-            await JavaService.EnsureJavaAsync(requiredMajor, onProgress, ct);
+            P(1, 1, $"Java {requiredMajor}: уже установлена локально");
+        }
+        else if (systemJava != null)
+        {
+            P(1, 1, $"Java {requiredMajor}: найдена на ПК — скачивание не требуется");
         }
         else
         {
-            P(1, 1, $"Java {requiredMajor}: уже установлена локально");
+            P(0, 1, $"Подходящая Java {requiredMajor} на ПК не найдена — устанавливаю…");
+            await JavaService.EnsureJavaAsync(requiredMajor, onProgress, ct);
         }
 
         // Collect library downloads
@@ -166,8 +193,8 @@ public static class VersionInstaller
         try { if (Directory.Exists(Constants.NativesTmpDir)) Directory.Delete(Constants.NativesTmpDir, true); }
         catch { }
 
-        // NeoForge
-        if (Constants.NeoForgeForMc.ContainsKey(versionId))
+        // NeoForge (может быть опциональным для профиля — тогда не ставим автоматически)
+        if (installNeoForge && Constants.NeoForgeForMc.ContainsKey(versionId))
         {
             P(0, 1, $"NeoForge: проверка/установка для MC {versionId}…");
             await NeoForgeService.InstallAsync(versionId, onProgress, logger: logger, ct: ct);

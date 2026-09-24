@@ -57,6 +57,8 @@
                 CornerRadius="8" Padding="20,16"
                 Margin="0,0,0,18">
             <StackPanel>
+                <TextBlock x:Name="LblDesc" TextWrapping="Wrap"
+                           Margin="0,0,0,8" IsVisible="False"/>
                 <TextBlock x:Name="LblJava"/>
                 <TextBlock x:Name="LblNeoForge" Margin="0,6,0,0"/>
                 <TextBlock x:Name="LblModpack"   Margin="0,6,0,0" TextWrapping="Wrap"/>
@@ -68,8 +70,14 @@
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,18">
             <Button x:Name="BtnInstall" Content="⬇  Установить" Classes="primary"/>
+            <Button x:Name="BtnNeoForge" Content="➕  Установить NeoForge"
+                    Classes="primary" Margin="8,0,0,0" IsVisible="False"
+                    Click="BtnNeoForge_Click"/>
             <Button x:Name="BtnUpdate"  Content="🔄  Проверить обновления"
                     Classes="base" Margin="8,0,0,0" IsVisible="False"/>
+            <Button x:Name="BtnOptional" Content="🧩  Опциональные моды"
+                    Classes="base" Margin="8,0,0,0" IsVisible="False"
+                    Click="BtnOptional_Click"/>
             <Button x:Name="BtnRepair"  Content="🛠  Починить установку"
                     Classes="base" Margin="8,0,0,0" IsVisible="False"/>
             <Button x:Name="BtnLaunch"  Content="▶  Запустить" Classes="success"

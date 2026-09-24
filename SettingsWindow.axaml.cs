@@ -16,7 +16,6 @@ public partial class SettingsWindow : Window
     private bool _suppressThemeChange;
 
     // Конструктор без параметров — только для Avalonia XAML loader / дизайнера.
-    // В рантайме вызывается перегрузка с параметрами.
     public SettingsWindow() : this(new LauncherSettings(), null) { }
 
     public SettingsWindow(LauncherSettings settings, string? currentProfile)
@@ -50,12 +49,41 @@ public partial class SettingsWindow : Window
         LblLogPath.Text = $"Лог:  {Constants.LogFile}";
         LblCache.Text   = $"Кэш модпаков:  {Constants.ModpackCacheDir}";
 
+        // Подсказка по памяти: физическая ОЗУ и рекомендованный Xmx.
+        try
+        {
+            var ramGb = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024;
+            LblRamHint.Text = $"ОЗУ: {ramGb:F1} ГБ • рекомендуется Xmx {RecommendedXmx()}";
+        }
+        catch { LblRamHint.Text = ""; }
+
         BtnOpenLauncher.Click += (_, _) => OpenFolder(Constants.LauncherDir);
         BtnOpenInstance.Click += (_, _) =>
         {
             if (_currentProfile != null) OpenFolder(InstanceManager.GetDir(_currentProfile));
         };
         BtnOpenLogs.Click += (_, _) => OpenFolder(Constants.LogDir);
+    }
+
+    /// <summary>Рекомендованный Xmx: половина ОЗУ, но не меньше 2G и не больше 12G.</summary>
+    private static string RecommendedXmx()
+    {
+        try
+        {
+            var ramGb = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024;
+            var xmx = (int)Math.Clamp(Math.Floor(ramGb / 2), 2, 12);
+            return $"{xmx}G";
+        }
+        catch
+        {
+            return "4G";
+        }
+    }
+
+    private void BtnAutoMemory_Click(object? sender, RoutedEventArgs e)
+    {
+        TxtXmx.Text = RecommendedXmx();
+        LogService.Log($"[WhiteMC] Xmx подобран автоматически: {TxtXmx.Text}");
     }
 
     private static void OpenFolder(string path)
@@ -89,9 +117,7 @@ public partial class SettingsWindow : Window
         if (_suppressThemeChange) return;
         if (CmbTheme.SelectedItem is not ThemeEntry te) return;
 
-        // Закрываем дропдаун: Popup может не перекраситься во время смены темы.
         CmbTheme.IsDropDownOpen = false;
-
         ThemeService.Apply(te.Id);
     }
 

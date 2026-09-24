@@ -692,27 +692,14 @@ public static class LauncherService
     public static string PickJava(JsonObject vanillaJson)
     {
         int major = VersionInstaller.RequiredJavaMajor(vanillaJson);
-        var local = JavaService.InstalledJavaPath(major);
+
+        // Управляемая лаунчером → системная с проверкой версии (PATH, реестр,
+        // стандартные папки установки). Java из PATH другой версии НЕ берём —
+        // иначе игра падает с UnsupportedClassVersionError.
+        var local = JavaService.FindLocalJava(major);
         if (local != null)
         {
             return local;
-        }
-
-        var pathEnv = Environment.GetEnvironmentVariable("PATH") ?? "";
-        foreach (var dir in pathEnv.Split(Path.PathSeparator))
-        {
-            try
-            {
-                var p = Path.Combine(dir, Constants.JavaBinaryName);
-                if (File.Exists(p))
-                {
-                    return p;
-                }
-            }
-            catch
-            {
-                // ignore bad PATH entries
-            }
         }
 
         throw new Exception(

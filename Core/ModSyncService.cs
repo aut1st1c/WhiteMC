@@ -16,7 +16,7 @@ public static class ModSyncService
     private const int    MaxParallelModDownloads = 4;
 
     // ------------------------------------------------------------------- //
-    //  CHECK (только хэши, ничего не качает и не удаляет)
+    //  CHECK
     // ------------------------------------------------------------------- //
 
     public static async Task<ModCheckResult> CheckAsync(
@@ -33,13 +33,24 @@ public static class ModSyncService
         logger?.Invoke($"[Проверка] Получение манифеста: {manifestUrl}");
         var remote = await FetchManifestAsync(manifestUrl, ct);
 
+        var optionalUrl = Profiles.OptionalManifestUrl(profileName);
+        var optional = string.IsNullOrWhiteSpace(optionalUrl)
+            ? null
+            : await OptionalModsService.LoadAsync(optionalUrl, logger, ct);
+
+        if (optional != null)
+            OptionalModsService.EnsureInitialized(profileName, optional);
+
+        var optionalNames = OptionalNameSet(optional);
+
         logger?.Invoke($"[Проверка] Хеширование локальных модов в {modsDir}…");
-        var result = await CheckInternalAsync(modsDir, remote, ct);
+        var result = await CheckInternalAsync(modsDir, remote, optionalNames, ct);
 
         logger?.Invoke(
             $"[Проверка] Итого: {result.TotalLocal} локальных / {result.TotalRemote} серверных. " +
             $"Нет: {result.Missing.Count}, повреждено: {result.Mismatched.Count}, " +
-            $"unresolved: {result.Unresolved.Count}, лишних: {result.Extra.Count}");
+            $"unresolved: {result.Unresolved.Count}, лишних: {result.Extra.Count}, " +
+            $"выключено (опц.): {result.Disabled.Count}");
 
         return result;
     }
@@ -51,8 +62,43 @@ public static class ModSyncService
             ?? throw new Exception("Пустой манифест");
     }
 
+    private static HashSet<string> OptionalNameSet(OptionalManifest? optional)
+        => optional == null
+            ? new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            : new HashSet<string>(optional.Mods.Select(m => m.Filename),
+                                  StringComparer.OrdinalIgnoreCase);
+
+    private static async Task<(Dictionary<string, string> hashes, List<string> disabled)>
+        EnumerateLocalAsync(string modsDir, CancellationToken ct)
+    {
+        var hashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var disabled = new List<string>();
+
+        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar", SearchOption.TopDirectoryOnly))
+        {
+            ct.ThrowIfCancellationRequested();
+            hashes[Path.GetFileName(path)] = await HashUtil.ComputeAsync(path, "sha512", ct);
+        }
+
+        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar.disabled",
+                                                      SearchOption.TopDirectoryOnly))
+        {
+            ct.ThrowIfCancellationRequested();
+            var fileName = Path.GetFileName(path);
+            var stripped = fileName.EndsWith(OptionalModsService.DisabledSuffix,
+                                             StringComparison.OrdinalIgnoreCase)
+                ? fileName[..^OptionalModsService.DisabledSuffix.Length]
+                : fileName;
+            hashes[stripped] = await HashUtil.ComputeAsync(path, "sha512", ct);
+            disabled.Add(stripped);
+        }
+
+        return (hashes, disabled);
+    }
+
     private static async Task<ModCheckResult> CheckInternalAsync(
-        string modsDir, RemoteManifest remote, CancellationToken ct)
+        string modsDir, RemoteManifest remote, HashSet<string> optionalNames,
+        CancellationToken ct)
     {
         var remoteByName = remote.Mods.ToDictionary(m => m.Filename, StringComparer.OrdinalIgnoreCase);
 
@@ -62,35 +108,64 @@ public static class ModSyncService
             TotalRemote     = remote.Mods.Count
         };
 
-        var localHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar", SearchOption.TopDirectoryOnly))
-        {
-            ct.ThrowIfCancellationRequested();
-            var hash = await HashUtil.ComputeAsync(path, "sha512", ct);
-            localHashes[Path.GetFileName(path)] = hash;
-        }
+        var (localHashes, disabled) = await EnumerateLocalAsync(modsDir, ct);
         result.TotalLocal = localHashes.Count;
 
-        foreach (var name in localHashes.Keys)
-            if (!remoteByName.ContainsKey(name))
-                result.Extra.Add(name);
+        var disabledSet = new HashSet<string>(disabled, StringComparer.OrdinalIgnoreCase);
 
+        // --- extra ---
+        foreach (var name in localHashes.Keys)
+        {
+            if (remoteByName.ContainsKey(name) || optionalNames.Contains(name)) continue;
+
+            if (DevFlags.SkipIntegrityCheck)
+            {
+                if (DevFlags.VerboseLog)
+                    LogService.Log($"[DEV] extra пропущен: {name}");
+                continue;
+            }
+            result.Extra.Add(name);
+        }
+
+        // --- required ---
         foreach (var rm in remote.Mods)
         {
-            bool have  = localHashes.TryGetValue(rm.Filename, out var localHash);
-            bool match = have && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase);
+            if (optionalNames.Contains(rm.Filename)) continue;
+
+            bool present = localHashes.TryGetValue(rm.Filename, out var localHash)
+                           && !disabledSet.Contains(rm.Filename);
+            bool match   = present
+                           && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase);
             if (match) continue;
+
+            if (present && DevFlags.SkipIntegrityCheck)
+            {
+                if (DevFlags.VerboseLog)
+                    LogService.Log($"[DEV] mismatch пропущен: {rm.Filename}");
+                continue;
+            }
+
+            if (!present && DevFlags.SkipMissing)
+            {
+                if (DevFlags.VerboseLog)
+                    LogService.Log($"[DEV] missing пропущен: {rm.Filename}");
+                continue;
+            }
 
             if (rm.Source == "modrinth" && !string.IsNullOrEmpty(rm.ModrinthUrl))
             {
-                if (have) result.Mismatched.Add(rm);
-                else      result.Missing.Add(rm);
+                if (present) result.Mismatched.Add(rm);
+                else         result.Missing.Add(rm);
             }
             else
             {
                 result.Unresolved.Add(rm);
             }
         }
+
+        foreach (var d in disabled)
+            if (optionalNames.Contains(d))
+                result.Disabled.Add(d);
 
         return result;
     }
@@ -99,14 +174,6 @@ public static class ModSyncService
     //  SYNC
     // ------------------------------------------------------------------- //
 
-    /// <summary>
-    /// Синхронизирует моды:
-    ///  1. Докачивает Modrinth-моды (missing/mismatch).
-    ///  2. Если среди unresolved-модов есть отсутствующие или с несовпавшим хэшем —
-    ///     дополнительно скачивает архив из profiles.json (modpack.components["mods"])
-    ///     и распаковывает из него нужные файлы.
-    ///  3. Удаляет лишние jar'ы, которых нет в манифесте.
-    /// </summary>
     public static async Task SyncAsync(
         string profileName, string manifestUrl,
         Action<int, int, string>? onProgress = null,
@@ -123,28 +190,47 @@ public static class ModSyncService
         var modsDir = Path.Combine(instDir, ModsDirName);
         Directory.CreateDirectory(modsDir);
 
-        // 1) Манифест
+        // 0) optional
+        var optionalUrl = Profiles.OptionalManifestUrl(profileName);
+        var optional = string.IsNullOrWhiteSpace(optionalUrl)
+            ? null
+            : await OptionalModsService.LoadAsync(optionalUrl, logger, ct);
+
+        if (optional != null)
+            OptionalModsService.EnsureInitialized(profileName, optional);
+
+        var optionalByName = optional?.Mods
+            .ToDictionary(m => m.Filename, StringComparer.OrdinalIgnoreCase)
+            ?? new Dictionary<string, OptionalMod>(StringComparer.OrdinalIgnoreCase);
+
+        // 1) remote
         P(0, 1, "Проверка обновлений: получение манифеста…");
         var remote = await FetchManifestAsync(manifestUrl, ct);
         var remoteByName = remote.Mods.ToDictionary(m => m.Filename, StringComparer.OrdinalIgnoreCase);
 
-        // 2) Хэширование локальных модов
+        // 2) hashes
         P(0, 1, "Проверка обновлений: хеширование локальных модов…");
-        var localHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var path in Directory.EnumerateFiles(modsDir, "*.jar", SearchOption.TopDirectoryOnly))
-        {
-            ct.ThrowIfCancellationRequested();
-            var hash = await HashUtil.ComputeAsync(path, "sha512", ct);
-            localHashes[Path.GetFileName(path)] = hash;
-        }
+        var (localHashes, disabledList) = await EnumerateLocalAsync(modsDir, ct);
+        var disabledSet = new HashSet<string>(disabledList, StringComparer.OrdinalIgnoreCase);
 
-        // 3) Удаляем лишние (нет в манифесте)
+        // 3) удаление лишних
         foreach (var name in localHashes.Keys.ToList())
         {
-            if (remoteByName.ContainsKey(name)) continue;
+            if (remoteByName.ContainsKey(name) || optionalByName.ContainsKey(name)) continue;
+
+            if (DevFlags.SkipIntegrityCheck)
+            {
+                if (DevFlags.VerboseLog)
+                    logger?.Invoke($"[DEV] extra пропущен: {name}");
+                continue;
+            }
+
             try
             {
-                File.Delete(Path.Combine(modsDir, name));
+                var jarPath = Path.Combine(modsDir, name);
+                var disPath = jarPath + OptionalModsService.DisabledSuffix;
+                if (File.Exists(jarPath)) File.Delete(jarPath);
+                if (File.Exists(disPath)) File.Delete(disPath);
                 localHashes.Remove(name);
                 logger?.Invoke($"[Sync] − удалён {name}");
             }
@@ -154,23 +240,41 @@ public static class ModSyncService
             }
         }
 
-        // 4) Раскладываем по источникам
+        // 4) раскладываем по источникам
         var toDownload         = new List<RemoteMod>();
         var unresolvedOnServer = new List<RemoteMod>();
 
         foreach (var rm in remote.Mods)
         {
-            if (localHashes.TryGetValue(rm.Filename, out var localHash)
-                && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase))
-                continue;   // файл на месте и хэш совпал
+            if (optionalByName.ContainsKey(rm.Filename)) continue;
+
+            bool present = localHashes.TryGetValue(rm.Filename, out var localHash)
+                           && !disabledSet.Contains(rm.Filename);
+            bool match   = present
+                           && string.Equals(localHash, rm.Sha512, StringComparison.OrdinalIgnoreCase);
+            if (match) continue;
+
+            if (present && DevFlags.SkipIntegrityCheck)
+            {
+                if (DevFlags.VerboseLog)
+                    logger?.Invoke($"[DEV] mismatch пропущен: {rm.Filename}");
+                continue;
+            }
+
+            if (!present && DevFlags.SkipMissing)
+            {
+                if (DevFlags.VerboseLog)
+                    logger?.Invoke($"[DEV] missing пропущен: {rm.Filename}");
+                continue;
+            }
 
             if (rm.Source == "modrinth" && !string.IsNullOrEmpty(rm.ModrinthUrl))
-                toDownload.Add(rm);        // докачаем с Modrinth
+                toDownload.Add(rm);
             else
-                unresolvedOnServer.Add(rm); // должен лежать в архиве
+                unresolvedOnServer.Add(rm);
         }
 
-        // 5) Качаем Modrinth-моды параллельно
+        // 5) параллельная загрузка
         int total = toDownload.Count;
         int done  = 0;
 
@@ -192,7 +296,18 @@ public static class ModSyncService
 
                         var actual = await HashUtil.ComputeAsync(dest, "sha512", ct);
                         if (!string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase))
-                            throw new Exception("хеш не совпал после скачивания");
+                        {
+                            if (DevFlags.SkipIntegrityCheck)
+                            {
+                                logger?.Invoke($"[DEV] {rm.Filename}: хеш не совпал, но пропущено");
+                            }
+                            else
+                            {
+                                throw new Exception("хеш не совпал после скачивания");
+                            }
+                        }
+
+                        try { File.Delete(dest + OptionalModsService.DisabledSuffix); } catch { }
 
                         lock (localHashes) { localHashes[rm.Filename] = actual; }
                         logger?.Invoke($"[Sync] + {rm.Filename}");
@@ -215,8 +330,7 @@ public static class ModSyncService
             await Task.WhenAll(tasks);
         }
 
-        // 6) Архив — если среди unresolved-модов есть отсутствующие или повреждённые.
-        //    Источник архива — только profiles.json → modpack.components["mods"].
+        // 6) архив
         if (unresolvedOnServer.Count > 0)
         {
             var archiveUrl = Profiles.ModsArchiveUrl(profileName);
@@ -224,15 +338,13 @@ public static class ModSyncService
             if (string.IsNullOrEmpty(archiveUrl))
             {
                 logger?.Invoke($"[Sync] ВНИМАНИЕ: {unresolvedOnServer.Count} unresolved мод(ов), " +
-                               $"но в profiles.json не задан компонент 'mods' " +
-                               $"(modpack.components[\"mods\"]). Файлы не восстановить:");
+                               $"но в profiles.json не задан компонент 'mods'.");
                 foreach (var u in unresolvedOnServer)
                     logger?.Invoke($"  - {u.Filename} ({Shorten(u.Sha512)}…)");
             }
             else
             {
-                logger?.Invoke($"[Sync] Unresolved мод(ов) для восстановления: {unresolvedOnServer.Count}. " +
-                               $"Качаю архив из profiles.json: {archiveUrl}");
+                logger?.Invoke($"[Sync] Unresolved: {unresolvedOnServer.Count}. Качаю архив: {archiveUrl}");
                 try
                 {
                     await ApplyArchiveAsync(archiveUrl, modsDir, unresolvedOnServer, localHashes, logger, ct);
@@ -245,12 +357,76 @@ public static class ModSyncService
             }
         }
 
-        // 7) Финальная верификация: всё ли на месте?
+        // 7) optional
+        if (optional != null && optional.Mods.Count > 0)
+        {
+            var optionalState = OptionalModsService.LoadState(profileName);
+            foreach (var om in optional.Mods)
+            {
+                ct.ThrowIfCancellationRequested();
+                var jarPath = Path.Combine(modsDir, om.Filename);
+                var disPath = jarPath + OptionalModsService.DisabledSuffix;
+                bool enabled = OptionalModsService.IsEnabled(optionalState, om.Filename);
+
+                if (!enabled)
+                {
+                    if (File.Exists(jarPath))
+                    {
+                        File.Move(jarPath, disPath, overwrite: true);
+                        localHashes.Remove(om.Filename);
+                        logger?.Invoke($"[Sync] опциональный выключен: {om.Filename} → .disabled");
+                    }
+                    continue;
+                }
+
+                if (File.Exists(disPath) && !File.Exists(jarPath))
+                    File.Move(disPath, jarPath);
+
+                if (File.Exists(jarPath)
+                    && localHashes.TryGetValue(om.Filename, out var existingHash)
+                    && string.Equals(existingHash, om.Sha512, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (string.IsNullOrEmpty(om.ModrinthUrl))
+                {
+                    logger?.Invoke($"[Sync] опциональный {om.Filename}: нет URL, пропуск");
+                    continue;
+                }
+
+                logger?.Invoke($"[Sync] опциональный: скачивание {om.Filename}…");
+                await Downloader.DownloadAsync(om.ModrinthUrl, jarPath, ct: ct);
+                var dlHash = await HashUtil.ComputeAsync(jarPath, "sha512", ct);
+                if (!string.Equals(dlHash, om.Sha512, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (DevFlags.SkipIntegrityCheck)
+                    {
+                        logger?.Invoke($"[DEV] {om.Filename}: хеш не совпал, но пропущено");
+                    }
+                    else
+                    {
+                        try { File.Delete(jarPath); } catch { }
+                        throw new Exception($"Опциональный мод {om.Filename}: хеш не совпал после скачивания");
+                    }
+                }
+                try { File.Delete(disPath); } catch { }
+                lock (localHashes) { localHashes[om.Filename] = dlHash; }
+                logger?.Invoke($"[Sync] + опциональный {om.Filename}");
+            }
+        }
+
+        // 8) финальная верификация
         var stillMissing = new List<string>();
         foreach (var rm in remote.Mods)
         {
-            if (!localHashes.TryGetValue(rm.Filename, out var actual)
-                || !string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase))
+            if (optionalByName.ContainsKey(rm.Filename)) continue;
+            if (!localHashes.TryGetValue(rm.Filename, out var actual))
+            {
+                if (DevFlags.SkipMissing) continue;
+                stillMissing.Add(rm.Filename);
+                continue;
+            }
+            if (!string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase)
+                && !DevFlags.SkipIntegrityCheck)
             {
                 stillMissing.Add(rm.Filename);
             }
@@ -258,12 +434,12 @@ public static class ModSyncService
 
         if (stillMissing.Count > 0)
         {
-            logger?.Invoke($"[Sync] ВНИМАНИЕ: {stillMissing.Count} мод(ов) всё ещё не на месте после синхронизации:");
+            logger?.Invoke($"[Sync] ВНИМАНИЕ: {stillMissing.Count} мод(ов) всё ещё не на месте:");
             foreach (var n in stillMissing.Take(20))
                 logger?.Invoke($"  - {n}");
         }
 
-        // 8) Сохраняем локальное состояние
+        // 9) state
         var statePath = Path.Combine(instDir, LocalStateFile);
         var state = new LocalModsState
         {
@@ -272,7 +448,7 @@ public static class ModSyncService
         };
         await File.WriteAllTextAsync(statePath, JsonSerializer.Serialize(state, Json.Indented), ct);
 
-        // 9) Итог
+        // 10) итог
         if (total == 0 && unresolvedOnServer.Count == 0 && stillMissing.Count == 0)
             P(1, 1, "Обновления не требуются");
         else
@@ -282,13 +458,118 @@ public static class ModSyncService
     }
 
     // ------------------------------------------------------------------- //
-    //  Архив
+    //  OPTIONAL ONLY
     // ------------------------------------------------------------------- //
 
-    /// <summary>
-    /// Скачивает архив и распаковывает из него ТОЛЬКО те jar-файлы, что значатся
-    /// в unresolved и сейчас отсутствуют или повреждены. Ничего лишнего не трогает.
-    /// </summary>
+    public static async Task SyncOptionalOnlyAsync(
+        string profileName,
+        Action<int, int, string>? onProgress = null,
+        Action<string>? logger = null,
+        CancellationToken ct = default)
+    {
+        var optionalUrl = Profiles.OptionalManifestUrl(profileName);
+        var optional = string.IsNullOrWhiteSpace(optionalUrl)
+            ? null
+            : await OptionalModsService.LoadAsync(optionalUrl, logger, ct);
+
+        if (optional == null || optional.Mods.Count == 0)
+        {
+            onProgress?.Invoke(1, 1, "Опциональные моды: манифест не задан");
+            return;
+        }
+
+        OptionalModsService.EnsureInitialized(profileName, optional);
+
+        var instDir = InstanceManager.GetDir(profileName);
+        var modsDir = Path.Combine(instDir, ModsDirName);
+        Directory.CreateDirectory(modsDir);
+
+        var state  = OptionalModsService.LoadState(profileName);
+        int done   = 0;
+        int total  = optional.Mods.Count;
+
+        foreach (var om in optional.Mods)
+        {
+            ct.ThrowIfCancellationRequested();
+            var jarPath = Path.Combine(modsDir, om.Filename);
+            var disPath = jarPath + OptionalModsService.DisabledSuffix;
+            bool enabled = OptionalModsService.IsEnabled(state, om.Filename);
+
+            if (!enabled)
+            {
+                if (File.Exists(jarPath))
+                {
+                    File.Move(jarPath, disPath, overwrite: true);
+                    logger?.Invoke($"[Sync] опциональный выключен: {om.Filename} → .disabled");
+                }
+            }
+            else
+            {
+                if (File.Exists(disPath) && !File.Exists(jarPath))
+                    File.Move(disPath, jarPath);
+
+                var actual = File.Exists(jarPath)
+                    ? await HashUtil.ComputeAsync(jarPath, "sha512", ct)
+                    : null;
+
+                bool needDownload = actual == null
+                    || !string.Equals(actual, om.Sha512, StringComparison.OrdinalIgnoreCase);
+
+                if (!needDownload) { done++; onProgress?.Invoke(done, total, $"Опциональные моды {done}/{total}"); continue; }
+
+                if (actual != null && DevFlags.SkipIntegrityCheck)
+                {
+                    if (DevFlags.VerboseLog)
+                        logger?.Invoke($"[DEV] mismatch пропущен: {om.Filename}");
+                    done++;
+                    onProgress?.Invoke(done, total, $"Опциональные моды {done}/{total}");
+                    continue;
+                }
+
+                if (actual == null && DevFlags.SkipMissing)
+                {
+                    if (DevFlags.VerboseLog)
+                        logger?.Invoke($"[DEV] missing пропущен: {om.Filename}");
+                    done++;
+                    onProgress?.Invoke(done, total, $"Опциональные моды {done}/{total}");
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(om.ModrinthUrl))
+                {
+                    logger?.Invoke($"[Sync] опциональный {om.Filename}: нет URL, пропуск");
+                    done++;
+                    onProgress?.Invoke(done, total, $"Опциональные моды {done}/{total}");
+                    continue;
+                }
+
+                logger?.Invoke($"[Sync] опциональный: скачивание {om.Filename}…");
+                await Downloader.DownloadAsync(om.ModrinthUrl, jarPath, ct: ct);
+                var dlHash = await HashUtil.ComputeAsync(jarPath, "sha512", ct);
+                if (!string.Equals(dlHash, om.Sha512, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (DevFlags.SkipIntegrityCheck)
+                    {
+                        logger?.Invoke($"[DEV] {om.Filename}: хеш не совпал, но пропущено");
+                    }
+                    else
+                    {
+                        try { File.Delete(jarPath); } catch { }
+                        throw new Exception($"Опциональный мод {om.Filename}: хеш не совпал после скачивания");
+                    }
+                }
+                logger?.Invoke($"[Sync] + опциональный {om.Filename}");
+            }
+
+            done++;
+            onProgress?.Invoke(done, total, $"Опциональные моды {done}/{total}");
+        }
+    }
+
+    // ------------------------------------------------------------------- //
+    //  ARCHIVE
+    // ------------------------------------------------------------------- //
+
     private static async Task ApplyArchiveAsync(
         string archiveUrl, string modsDir,
         List<RemoteMod> unresolved,
@@ -312,9 +593,6 @@ public static class ModSyncService
 
             using var zip = ZipFile.OpenRead(tmp);
 
-            // Собираем имена файлов, реально присутствующих в архиве (в нижнем регистре
-            // и без пути) — чтобы устойчиво матчить по имени, если архивист положил
-            // их в подпапку.
             var archiveFiles = new Dictionary<string, ZipArchiveEntry>(StringComparer.OrdinalIgnoreCase);
             foreach (var entry in zip.Entries)
             {
@@ -324,8 +602,10 @@ public static class ModSyncService
                     archiveFiles[name] = entry;
             }
 
-            foreach (var (fileName, rm) in wanted)
+            foreach (var kv in wanted)
             {
+                var fileName = kv.Key;
+                var rm = kv.Value;
                 ct.ThrowIfCancellationRequested();
 
                 if (!archiveFiles.TryGetValue(fileName, out var entry))
@@ -347,12 +627,21 @@ public static class ModSyncService
                 if (!string.Equals(actual, rm.Sha512, StringComparison.OrdinalIgnoreCase))
                 {
                     hashMismatch++;
+                    if (DevFlags.SkipIntegrityCheck)
+                    {
+                        logger?.Invoke($"[DEV] {fileName}: хеш не совпал, но пропущено");
+                        lock (localHashes) { localHashes[fileName] = actual; }
+                        extracted++;
+                        continue;
+                    }
                     logger?.Invoke($"[Архив] {fileName}: хэш не совпал, файл удалён");
                     try { File.Delete(dest); } catch { }
                     continue;
                 }
 
-                localHashes[fileName] = actual;
+                try { File.Delete(dest + OptionalModsService.DisabledSuffix); } catch { }
+
+                lock (localHashes) { localHashes[fileName] = actual; }
                 extracted++;
                 logger?.Invoke($"[Архив] + {fileName}");
             }

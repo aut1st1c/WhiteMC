@@ -16,6 +16,23 @@ public static class Downloader
         var dir = Path.GetDirectoryName(destPath);
         if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
 
+        // DEV: локальная копия из output_dir вместо сети.
+        if (DevLocalSource.TryGetLocalFile(url, out var local))
+        {
+            try
+            {
+                LogService.Log($"[DEV] локальная копия: {url} → {local}");
+                File.Copy(local, destPath, overwrite: true);
+                var len = new FileInfo(destPath).Length;
+                onBytes?.Invoke(len, len);
+                return;
+            }
+            catch (Exception ex)
+            {
+                LogService.Log($"[DEV] не удалось скопировать {local}: {ex.Message}; иду в сеть");
+            }
+        }
+
         var tmp = destPath + $".{Environment.ProcessId}.{Thread.CurrentThread.ManagedThreadId}.tmp";
 
         try

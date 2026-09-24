@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace WhiteMC.Core;
 
@@ -27,11 +28,12 @@ public class LinksConfig
     [JsonPropertyName("profiles_url")]
     public string? ProfilesUrl { get; set; }
 
-    /// <summary>Последняя версия лаунчера на сервере.</summary>
+    [JsonPropertyName("optional_manifest_url")]
+    public string? OptionalManifestUrl { get; set; }
+
     [JsonPropertyName("launcher_version")]
     public string? LauncherVersion { get; set; }
 
-    /// <summary>Страница загрузки новой версии.</summary>
     [JsonPropertyName("launcher_download_url")]
     public string? LauncherDownloadUrl { get; set; }
 }
@@ -48,6 +50,9 @@ public class ModpackProfile
     [JsonPropertyName("manifest_url")]
     public string? ManifestUrl { get; set; }
 
+    [JsonPropertyName("optional_manifest_url")]
+    public string? OptionalManifestUrl { get; set; }
+
     [JsonPropertyName("components")]
     public Dictionary<string, string> Components { get; set; } = new();
 }
@@ -60,6 +65,12 @@ public class GameProfile
     [JsonPropertyName("neoforge")]
     public bool NeoForge { get; set; }
 
+    [JsonPropertyName("neoforge_optional")]
+    public bool NeoForgeOptional { get; set; }
+
+    [JsonPropertyName("optional_mods")]
+    public bool OptionalMods { get; set; }
+
     [JsonPropertyName("display_name")]
     public string? DisplayName { get; set; }
 
@@ -70,7 +81,6 @@ public class GameProfile
     public ModpackProfile? Modpack { get; set; }
 }
 
-/// <summary>Элемент ComboBox: хранит ключ профиля и его отображаемое имя.</summary>
 public sealed class ProfileEntry
 {
     public string Key     { get; }
@@ -130,12 +140,25 @@ public static class Profiles
     public static (string name, string version, bool neoforge) Resolve(string name)
     {
         if (All.TryGetValue(name, out var p))
-            return (name, p.Mc, p.NeoForge);
+        {
+            var nf = p.NeoForge
+                     || (p.NeoForgeOptional && NeoForgeService.Installed(p.Mc) != null);
+            return (name, p.Mc, nf);
+        }
         return (name, name, Constants.NeoForgeForMc.ContainsKey(name));
     }
 
     public static string Version(string name)      => Resolve(name).version;
     public static bool   UsesNeoForge(string name) => Resolve(name).neoforge;
+
+    public static bool RequiresNeoForge(string name)
+        => All.TryGetValue(name, out var p) && p.NeoForge;
+
+    public static bool NeoForgeOptional(string name)
+        => All.TryGetValue(name, out var p) && p.NeoForgeOptional;
+
+    public static bool OptionalModsAllowed(string name)
+        => All.TryGetValue(name, out var p) && p.OptionalMods;
 
     public static ModpackProfile? Modpack(string name)
         => All.TryGetValue(name, out var p) ? p.Modpack : null;
@@ -158,10 +181,6 @@ public static class Profiles
         return m != null && !string.IsNullOrEmpty(m.ManifestUrl);
     }
 
-    /// <summary>
-    /// Возвращает URL архива mods из profiles.json (modpack.components["mods"]).
-    /// null — если компонент "mods" не задан.
-    /// </summary>
     public static string? ModsArchiveUrl(string name)
     {
         var m = Modpack(name);
@@ -169,6 +188,16 @@ public static class Profiles
         if (m.Components.TryGetValue("mods", out var url) && !string.IsNullOrWhiteSpace(url))
             return url;
         return null;
+    }
+
+    public static string? OptionalManifestUrl(string name)
+    {
+        if (All.TryGetValue(name, out var p) && p.Modpack != null
+            && !string.IsNullOrWhiteSpace(p.Modpack.OptionalManifestUrl))
+            return p.Modpack.OptionalManifestUrl;
+
+        try { return LinksService.Current.OptionalManifestUrl; }
+        catch { return null; }
     }
 }
 
@@ -178,13 +207,38 @@ public static class Profiles
 
 public class VersionManifest
 {
+    [JsonPropertyName("latest")]
+    public VersionLatest? Latest { get; set; }
+
+    [JsonPropertyName("versions")]
     public List<VersionInfo> Versions { get; set; } = new();
+}
+
+public class VersionLatest
+{
+    [JsonPropertyName("release")]
+    public string? Release { get; set; }
+
+    [JsonPropertyName("snapshot")]
+    public string? Snapshot { get; set; }
 }
 
 public class VersionInfo
 {
-    public string Id  { get; set; } = "";
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = "";
+
+    [JsonPropertyName("type")]
+    public string Type { get; set; } = "";
+
+    [JsonPropertyName("url")]
     public string Url { get; set; } = "";
+
+    [JsonPropertyName("time")]
+    public string? Time { get; set; }
+
+    [JsonPropertyName("releaseTime")]
+    public string? ReleaseTime { get; set; }
 }
 
 // ---------------------------------------------------------------------- //
@@ -214,7 +268,6 @@ public class RemoteMod
     [JsonPropertyName("size")]
     public long Size { get; set; }
 
-    /// <summary>"modrinth" или "unresolved".</summary>
     [JsonPropertyName("source")]
     public string Source { get; set; } = "";
 
@@ -237,25 +290,109 @@ public class LocalModsState
     public Dictionary<string, string> Mods { get; set; } = new();
 }
 
-/// <summary>Результат проверки локальных модов против серверного манифеста.</summary>
 public class ModCheckResult
 {
     public string ManifestVersion { get; set; } = "";
     public int    TotalRemote { get; set; }
     public int    TotalLocal  { get; set; }
 
-    /// <summary>Есть на сервере, нет локально (можно скачать с Modrinth).</summary>
     public List<RemoteMod> Missing    { get; set; } = new();
-
-    /// <summary>Есть локально, но хэш не совпал (можно перекачать с Modrinth).</summary>
     public List<RemoteMod> Mismatched { get; set; } = new();
-
-    /// <summary>Есть на сервере, но без прямого URL — тянуть из архива.</summary>
     public List<RemoteMod> Unresolved { get; set; } = new();
-
-    /// <summary>Есть локально, но нет в манифесте — на удаление.</summary>
     public List<string> Extra { get; set; } = new();
+    public List<string> Disabled { get; set; } = new();
 
     public int  Issues     => Missing.Count + Mismatched.Count + Unresolved.Count + Extra.Count;
     public bool IsUpToDate => Issues == 0;
+}
+
+// ---------------------------------------------------------------------- //
+//  Optional mods (optional.json)
+// ---------------------------------------------------------------------- //
+
+public class OptionalManifest
+{
+    [JsonPropertyName("manifest_version")]
+    public string ManifestVersion { get; set; } = "";
+
+    [JsonPropertyName("groups")]
+    public Dictionary<string, OptionalGroup> Groups { get; set; } = new();
+
+    [JsonPropertyName("mods")]
+    public List<OptionalMod> Mods { get; set; } = new();
+}
+
+public class OptionalGroup
+{
+    [JsonPropertyName("display_name")]
+    public string? DisplayName { get; set; }
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    /// <summary>grouped | bundle | exclusive</summary>
+    [JsonPropertyName("mode")]
+    public string Mode { get; set; } = "grouped";
+
+    /// <summary>Группы с одинаковым exclusive_set взаимоисключающие.</summary>
+    [JsonPropertyName("exclusive_set")]
+    public string? ExclusiveSet { get; set; }
+
+    /// <summary>ID групп, которые должны быть включены, если что-то из этой группы включено.</summary>
+    [JsonPropertyName("depends_on")]
+    public List<string> DependsOn { get; set; } = new();
+
+    /// <summary>
+    /// Дефолтное состояние модов этой группы при первом запуске.
+    /// Мод может переопределить это через собственный EnabledOnDefault.
+    /// </summary>
+    [JsonPropertyName("enabled_on_default")]
+    public bool EnabledOnDefault { get; set; } = false;
+}
+
+public class OptionalMod : RemoteMod
+{
+    [JsonPropertyName("display_name")]
+    public string? DisplayName { get; set; }
+
+    [JsonPropertyName("label")]
+    public string? Label { get; set; }
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    [JsonPropertyName("groups")]
+    public List<string> Groups { get; set; } = new();
+
+    /// <summary>
+    /// Дефолтное состояние при первом запуске. Tri-state:
+    ///   null  — наследовать от группы (если хоть одна группа = true, то true);
+    ///   true  — включён;
+    ///   false — выключен.
+    /// </summary>
+    [JsonPropertyName("enabled_on_default")]
+    public bool? EnabledOnDefault { get; set; }
+
+    /// <summary>
+    /// Зависимости: filename'ы других опциональных модов и/или ID групп.
+    /// Что именно — определяется по манифесту.
+    /// </summary>
+    [JsonPropertyName("depends_on")]
+    public List<string> DependsOn { get; set; } = new();
+}
+
+/// <summary>
+/// Состояние выбора пользователя. После первого заполнения (Initialized=true)
+/// является единственным источником правды.
+/// </summary>
+public class OptionalState
+{
+    [JsonPropertyName("disabled")]
+    public List<string> Disabled { get; set; } = new();
+
+    [JsonPropertyName("enabled")]
+    public List<string> Enabled { get; set; } = new();
+
+    [JsonPropertyName("initialized")]
+    public bool Initialized { get; set; } = false;
 }

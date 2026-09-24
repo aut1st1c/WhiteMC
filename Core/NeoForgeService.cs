@@ -14,25 +14,124 @@ public static class NeoForgeService
     public static string InstallDir(string mcVersion) =>
         Path.Combine(Constants.NeoForgeDir, mcVersion);
 
+    /// <summary>
+    /// Возвращает последнюю версию NeoForge, начинающуюся с prefix (например "21.1.").
+    ///
+    /// Порядок источников:
+    ///   1. JSON API Reposilite — работает даже когда XML блокируется ISP.
+    ///   2. XML maven-metadata.xml — классический путь.
+    ///   3. Зеркало neoforged.forgecdn.net.
+    /// </summary>
     public static async Task<string> LatestReleaseAsync(string prefix, CancellationToken ct = default)
     {
-        var xml = await Http.GetStringAsync(Constants.NeoForgeMetadataUrl, ct);
-        var m = Regex.Match(xml, @"<release>([^<]+)</release>");
-        if (!m.Success)
-            throw new Exception("Не удалось найти <release> в maven-metadata.xml NeoForge");
-
-        var release = m.Groups[1].Value.Trim();
-        if (!string.IsNullOrEmpty(prefix) && !release.StartsWith(prefix, StringComparison.Ordinal))
+        // ---------- 1) JSON API ----------
+        try
         {
-            var versions = Regex.Matches(xml, @"<version>([^<]+)</version>")
-                                .Select(x => x.Groups[1].Value)
-                                .Where(v => v.StartsWith(prefix, StringComparison.Ordinal))
-                                .ToList();
-            if (versions.Count == 0)
-                throw new Exception($"NeoForge: не найдено версий с префиксом '{prefix}'");
-            release = versions.OrderBy(v => v, Comparer<string>.Create(CompareVersions)).Last();
+            LogService.Log($"[NeoForge] запрашиваю список версий: {Constants.NeoForgeVersionsApi}");
+            var json = await Http.GetStringAsync(Constants.NeoForgeVersionsApi, ct);
+
+            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            if (doc.RootElement.TryGetProperty("versions", out var arr))
+            {
+                var versions = new List<string>();
+                foreach (var item in arr.EnumerateArray())
+                {
+                    var v = item.GetString();
+                    if (!string.IsNullOrEmpty(v)
+                        && v.StartsWith(prefix, StringComparison.Ordinal))
+                    {
+                        versions.Add(v);
+                    }
+                }
+
+                if (versions.Count > 0)
+                {
+                    var latest = versions
+                        .OrderBy(v => v, Comparer<string>.Create(CompareVersions))
+                        .Last();
+                    LogService.Log($"[NeoForge] JSON API: последняя {prefix}x → {latest}");
+                    return latest;
+                }
+
+                LogService.Log($"[NeoForge] JSON API: нет версий с префиксом '{prefix}'");
+            }
         }
-        return release;
+        catch (Exception ex)
+        {
+            LogService.Log($"[NeoForge] JSON API недоступен: {ex.Message}");
+        }
+
+        // ---------- 2) XML metadata ----------
+        try
+        {
+            LogService.Log($"[NeoForge] пробую XML: {Constants.NeoForgeMetadataUrl}");
+            var xml = await Http.GetStringAsync(Constants.NeoForgeMetadataUrl, ct);
+
+            var m = System.Text.RegularExpressions.Regex.Match(xml, @"<release>([^<]+)</release>");
+            if (m.Success)
+            {
+                var release = m.Groups[1].Value.Trim();
+                if (release.StartsWith(prefix, StringComparison.Ordinal))
+                {
+                    LogService.Log($"[NeoForge] XML: release → {release}");
+                    return release;
+                }
+            }
+
+            var versions = System.Text.RegularExpressions.Regex
+                .Matches(xml, @"<version>([^<]+)</version>")
+                .Select(x => x.Groups[1].Value)
+                .Where(v => v.StartsWith(prefix, StringComparison.Ordinal))
+                .ToList();
+
+            if (versions.Count > 0)
+            {
+                var latest = versions
+                    .OrderBy(v => v, Comparer<string>.Create(CompareVersions))
+                    .Last();
+                LogService.Log($"[NeoForge] XML: последняя {prefix}x → {latest}");
+                return latest;
+            }
+        }
+        catch (Exception ex)
+        {
+            LogService.Log($"[NeoForge] XML недоступен: {ex.Message}");
+        }
+
+        // ---------- 3) Зеркало forgecdn.net ----------
+        try
+        {
+            var mirrorUrl = Constants.NeoForgeMavenMirror + "/maven-metadata.xml";
+            LogService.Log($"[NeoForge] пробую зеркало: {mirrorUrl}");
+            var xml = await Http.GetStringAsync(mirrorUrl, ct);
+
+            var versions = System.Text.RegularExpressions.Regex
+                .Matches(xml, @"<version>([^<]+)</version>")
+                .Select(x => x.Groups[1].Value)
+                .Where(v => v.StartsWith(prefix, StringComparison.Ordinal))
+                .ToList();
+
+            if (versions.Count > 0)
+            {
+                var latest = versions
+                    .OrderBy(v => v, Comparer<string>.Create(CompareVersions))
+                    .Last();
+                LogService.Log($"[NeoForge] зеркало: последняя {prefix}x → {latest}");
+                return latest;
+            }
+        }
+        catch (Exception ex)
+        {
+            LogService.Log($"[NeoForge] зеркало недоступно: {ex.Message}");
+        }
+
+        throw new Exception(
+            $"NeoForge: не удалось получить список версий с префиксом '{prefix}'.\n" +
+            $"Все источники недоступны:\n" +
+            $"  • {Constants.NeoForgeVersionsApi}\n" +
+            $"  • {Constants.NeoForgeMetadataUrl}\n" +
+            $"  • {Constants.NeoForgeMavenMirror}/maven-metadata.xml\n\n" +
+            $"Проверьте соединение или VPN.");
     }
 
     private static int CompareVersions(string a, string b)
@@ -155,13 +254,24 @@ public static class NeoForgeService
         var installer = Path.Combine(Constants.NeoForgeDir, installerName);
         await Downloader.DownloadAsync(installerUrl, installer, ct: ct);
 
-        var java = JavaService.InstalledJavaPath(Constants.NeoForgeInstallerJava);
+        // ИСПРАВЛЕНО: сначала пробуем любую локальную Java (управляемую ЛИБО системную).
+        // EnsureJavaAsync возвращает готовый путь — не нужно перепроверять
+        // InstalledJavaPath(), который видит только управляемую JRE.
+        var java = JavaService.FindLocalJava(Constants.NeoForgeInstallerJava);
         if (java == null)
         {
             P($"NeoForge: установка Java {Constants.NeoForgeInstallerJava} для установщика…");
-            await JavaService.EnsureJavaAsync(Constants.NeoForgeInstallerJava, onProgress, ct);
-            java = JavaService.InstalledJavaPath(Constants.NeoForgeInstallerJava)!;
+            java = await JavaService.EnsureJavaAsync(Constants.NeoForgeInstallerJava, onProgress, ct);
         }
+        else
+        {
+            P($"NeoForge: используется Java {Constants.NeoForgeInstallerJava} ({java})");
+        }
+
+        if (string.IsNullOrWhiteSpace(java) || !File.Exists(java))
+            throw new Exception(
+                $"NeoForge: не удалось получить путь к Java {Constants.NeoForgeInstallerJava}. " +
+                "Установите JDK/JRE вручную или очистите папку java и попробуйте снова.");
 
         P($"NeoForge {latest}: запуск установщика…");
         var psi = new ProcessStartInfo

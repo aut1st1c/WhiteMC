@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.24-2017",
+  "manifest_version": "2026.09.24-2211",
   "mods": [
     {
       "filename": "alexsmobs-2.2.0-neoforge\u002B1.21.1.jar",
@@ -184,6 +184,16 @@
       "modrinth_version_id": "jo7lDoK4",
       "modrinth_project_id": "Wnxd13zP",
       "modrinth_url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/jo7lDoK4/Clumps-neoforge-1.21.1-19.0.0.1.jar"
+    },
+    {
+      "filename": "codxlib-1.6.1-neoforge\u002B1.21.1.jar",
+      "sha512": "11e1404f14eefd5483fcc17e681c619a1f5c7e45f11f2ea5bb53b672917511add06cfdf5ad97869769d3db3124a3fdc88e7883fa30bfe88304e56d75f2fabcbd",
+      "sha1": "d11c51c10d86420c4ba9a18ce42b5b7bbc1fd3ca",
+      "size": 193045,
+      "source": "modrinth",
+      "modrinth_version_id": "MMcDASmX",
+      "modrinth_project_id": "6oyMM4yX",
+      "modrinth_url": "https://cdn.modrinth.com/data/6oyMM4yX/versions/MMcDASmX/codxlib-1.6.1-neoforge%2B1.21.1.jar"
     },
     {
       "filename": "collective-1.21.1-8.39.jar",
@@ -562,6 +572,16 @@
       "modrinth_version_id": "gBrfZy6S",
       "modrinth_project_id": "r4Knci2k",
       "modrinth_url": "https://cdn.modrinth.com/data/r4Knci2k/versions/gBrfZy6S/interiors-1.21.1-neoforge-0.6.1.jar"
+    },
+    {
+      "filename": "invtweaks-1.21.1-1.2.0.jar",
+      "sha512": "a419544da8d943ccf17ed62f359fdbff04752735d370b18de3833a74277039e0313c8032e06462125b6b9b4e15b4eec057b680d302b465191ce51c13254bdeb2",
+      "sha1": "f81426b87be821aba41da4483895760cf6248710",
+      "size": 74866,
+      "source": "modrinth",
+      "modrinth_version_id": "tcTciTmQ",
+      "modrinth_project_id": "uqnMI1kq",
+      "modrinth_url": "https://cdn.modrinth.com/data/uqnMI1kq/versions/tcTciTmQ/invtweaks-1.21.1-1.2.0.jar"
     },
     {
       "filename": "Jade-1.21.1-NeoForge-15.10.6.jar",

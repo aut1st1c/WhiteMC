@@ -1,0 +1,67 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="WhiteMC.OptionalModsWindow"
+        Title="WhiteMC — опциональные моды" Width="720" Height="580"
+        WindowStartupLocation="CenterOwner"
+        SystemDecorations="None"
+        CanResize="False"
+        Background="{DynamicResource Bg}"
+        Foreground="{DynamicResource Text}"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="Transparent"
+              PointerPressed="TitleBar_PointerPressed">
+            <TextBlock Text="WhiteMC — опциональные моды"
+                       VerticalAlignment="Center" Margin="20,0,0,0"
+                       Foreground="{DynamicResource Subtext}" FontSize="12"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Margin="0,0,10,0">
+                <Button Content="−" Classes="titlebar" Click="BtnMinimize_Click"/>
+                <Button Content="✕" Classes="titlebar-close"
+                        Margin="4,0,0,0" Click="BtnClose_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="16,4,16,14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="Опциональные моды" Classes="h2"/>
+                <TextBlock Classes="subtext" Margin="0,2,0,0" TextWrapping="Wrap"
+                           Text="Выключенные моды не удаляются — они переименовываются в .jar.disabled и не мешают обновлениям."/>
+            </StackPanel>
+
+            <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Border}"
+                       Margin="0,10,0,12"/>
+
+            <Border Grid.Row="2" Background="{DynamicResource Mantle}" CornerRadius="6">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="8,4">
+                    <StackPanel x:Name="LstMods"/>
+                </ScrollViewer>
+            </Border>
+
+            <Grid Grid.Row="3" Margin="0,12,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="📂  Папка модов" Classes="ghost"
+                            Click="BtnOpenFolder_Click"/>
+                    <TextBlock x:Name="LblStatus" Classes="subtext"
+                               VerticalAlignment="Center" Margin="12,0,0,0"/>
+                </StackPanel>
+                <Button Content="Закрыть" Classes="base"
+                        HorizontalAlignment="Right" Click="BtnClose_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

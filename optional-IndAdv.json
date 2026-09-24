@@ -1,5 +1,5 @@
 {
-  "manifest_version": "2026.09.24-2017",
+  "manifest_version": "2026.09.24-2211",
   "groups": {
     "visual": {
       "display_name": "Visual",
@@ -55,7 +55,7 @@
       "mode": "bundle",
       "exclusive_set": "recipe",
       "depends_on": [],
-      "enabled_on_default": false
+      "enabled_on_default": true
     },
     "rei": {
       "display_name": "REI",
@@ -69,8 +69,8 @@
   "mods": [
     {
       "filename": "jei-1.21.1-neoforge-19.56.0.441.jar",
-      "display_name": "jei-1.21.1-neoforge-19.56.0.441.jar",
-      "label": "",
+      "display_name": "Just Enough Items (JEI)",
+      "label": "Just Enough Items (JEI)",
       "description": "",
       "groups": [
         "jei"
@@ -87,8 +87,8 @@
     },
     {
       "filename": "jeiworldgen-neoforge-1.21.1-1.4.5.jar",
-      "display_name": "jeiworldgen-neoforge-1.21.1-1.4.5.jar",
-      "label": "",
+      "display_name": "JEI / REI / EMI WorldGen",
+      "label": "JEI / REI / EMI WorldGen",
       "description": "",
       "groups": [
         "rei",
@@ -106,8 +106,8 @@
     },
     {
       "filename": "RoughlyEnoughItems-16.0.799-neoforge.jar",
-      "display_name": "RoughlyEnoughItems-16.0.799-neoforge.jar",
-      "label": "",
+      "display_name": "Roughly Enough Items (REI)",
+      "label": "Roughly Enough Items (REI)",
       "description": "",
       "groups": [
         "rei"
@@ -124,8 +124,8 @@
     },
     {
       "filename": "a_good_place-1.21-1.2.6-neoforge.jar",
-      "display_name": "a_good_place-1.21-1.2.6-neoforge.jar",
-      "label": "",
+      "display_name": "A Good Place",
+      "label": "A Good Place",
       "description": "",
       "groups": [
         "visual"
@@ -142,8 +142,8 @@
     },
     {
       "filename": "AdvancementPlaques-1.21.1-neoforge-1.6.8.jar",
-      "display_name": "AdvancementPlaques-1.21.1-neoforge-1.6.8.jar",
-      "label": "",
+      "display_name": "Advancement Plaques",
+      "label": "Advancement Plaques",
       "description": "",
       "groups": [
         "ui"
@@ -160,8 +160,8 @@
     },
     {
       "filename": "AmbientEnvironment-neoforge-1.21.1-18.0.0.2.jar",
-      "display_name": "AmbientEnvironment-neoforge-1.21.1-18.0.0.2.jar",
-      "label": "",
+      "display_name": "Ambient Environment",
+      "label": "Ambient Environment",
       "description": "",
       "groups": [
         "visual"
@@ -178,8 +178,8 @@
     },
     {
       "filename": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
-      "display_name": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
-      "label": "",
+      "display_name": "AmbientSounds",
+      "label": "AmbientSounds",
       "description": "",
       "groups": [
         "sound"
@@ -196,8 +196,8 @@
     },
     {
       "filename": "BetterF3-11.0.3-NeoForge-1.21.1.jar",
-      "display_name": "BetterF3-11.0.3-NeoForge-1.21.1.jar",
-      "label": "",
+      "display_name": "BetterF3",
+      "label": "BetterF3",
       "description": "",
       "groups": [
         "ui"
@@ -214,8 +214,8 @@
     },
     {
       "filename": "BetterGrassify-1.7.0\u002Bneoforge.1.21.1.jar",
-      "display_name": "BetterGrassify-1.7.0\u002Bneoforge.1.21.1.jar",
-      "label": "",
+      "display_name": "BetterGrassify",
+      "label": "BetterGrassify",
       "description": "",
       "groups": [
         "visual"
@@ -232,8 +232,8 @@
     },
     {
       "filename": "blur-neoforge-6.3.1\u002B1.21.1.jar",
-      "display_name": "blur-neoforge-6.3.1\u002B1.21.1.jar",
-      "label": "",
+      "display_name": "Blur\u002B",
+      "label": "Blur\u002B",
       "description": "",
       "groups": [
         "ui"
@@ -250,8 +250,8 @@
     },
     {
       "filename": "chat_heads-0.15.7-neoforge-1.21.jar",
-      "display_name": "chat_heads-0.15.7-neoforge-1.21.jar",
-      "label": "",
+      "display_name": "Chat Heads",
+      "label": "Chat Heads",
       "description": "",
       "groups": [
         "ui"
@@ -268,8 +268,8 @@
     },
     {
       "filename": "chatanimation-neoforge-1.3.3\u002Bmc1.21.jar",
-      "display_name": "chatanimation-neoforge-1.3.3\u002Bmc1.21.jar",
-      "label": "",
+      "display_name": "Chat Animation [Smooth Chat]",
+      "label": "Chat Animation [Smooth Chat]",
       "description": "",
       "groups": [
         "ui"
@@ -286,8 +286,8 @@
     },
     {
       "filename": "clienttweaks-neoforge-1.21.1-21.1.15.jar",
-      "display_name": "clienttweaks-neoforge-1.21.1-21.1.15.jar",
-      "label": "",
+      "display_name": "Client Tweaks",
+      "label": "Client Tweaks",
       "description": "",
       "groups": [
         "ui"
@@ -304,8 +304,8 @@
     },
     {
       "filename": "continuity-3.0.0\u002B1.21.neoforge.jar",
-      "display_name": "continuity-3.0.0\u002B1.21.neoforge.jar",
-      "label": "",
+      "display_name": "Continuity",
+      "label": "Continuity",
       "description": "",
       "groups": [
         "visual"
@@ -322,8 +322,8 @@
     },
     {
       "filename": "createjeicompat-1.0.3.jar",
-      "display_name": "createjeicompat-1.0.3.jar",
-      "label": "",
+      "display_name": "Create JEI Compat",
+      "label": "Create JEI Compat",
       "description": "",
       "groups": [
         "jei"
@@ -340,8 +340,8 @@
     },
     {
       "filename": "DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar",
-      "display_name": "DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar",
-      "label": "",
+      "display_name": "Distant Horizons",
+      "label": "Distant Horizons",
       "description": "",
       "groups": [
         "dh"
@@ -358,8 +358,8 @@
     },
     {
       "filename": "durabilitytooltip-1.2.0-neoforge-mc1.21.jar",
-      "display_name": "durabilitytooltip-1.2.0-neoforge-mc1.21.jar",
-      "label": "",
+      "display_name": "Durability Tooltip",
+      "label": "Durability Tooltip",
       "description": "",
       "groups": [
         "ui"
@@ -376,8 +376,8 @@
     },
     {
       "filename": "entity_model_features-3.3.7-1.21-neoforge.jar",
-      "display_name": "entity_model_features-3.3.7-1.21-neoforge.jar",
-      "label": "",
+      "display_name": "[EMF] Entity Model Features",
+      "label": "[EMF] Entity Model Features",
       "description": "",
       "groups": [
         "visual"
@@ -394,8 +394,8 @@
     },
     {
       "filename": "entity_texture_features-7.2.3-1.21-neoforge.jar",
-      "display_name": "entity_texture_features-7.2.3-1.21-neoforge.jar",
-      "label": "",
+      "display_name": "[ETF] Entity Texture Features",
+      "label": "[ETF] Entity Texture Features",
       "description": "",
       "groups": [
         "visual"
@@ -412,8 +412,8 @@
     },
     {
       "filename": "fallingleaves-1.17.1\u002B1.21.1.jar",
-      "display_name": "fallingleaves-1.17.1\u002B1.21.1.jar",
-      "label": "",
+      "display_name": "Falling Leaves",
+      "label": "Falling Leaves",
       "description": "",
       "groups": [
         "visual"
@@ -430,8 +430,8 @@
     },
     {
       "filename": "highlight-neoforge-1.21-3.0.0.jar",
-      "display_name": "highlight-neoforge-1.21-3.0.0.jar",
-      "label": "",
+      "display_name": "Highlight",
+      "label": "Highlight",
       "description": "",
       "groups": [
         "ui"
@@ -448,8 +448,8 @@
     },
     {
       "filename": "Highlighter-1.21-neoforge-1.1.11.jar",
-      "display_name": "Highlighter-1.21-neoforge-1.1.11.jar",
-      "label": "",
+      "display_name": "Item Highlighter",
+      "label": "Item Highlighter",
       "description": "",
       "groups": [
         "ui"
@@ -465,27 +465,9 @@
       "modrinth_url": "https://cdn.modrinth.com/data/cVNW5lr6/versions/AsQ0Y2G9/Highlighter-1.21-neoforge-1.1.11.jar"
     },
     {
-      "filename": "invtweaks-1.21.1-1.2.0.jar",
-      "display_name": "invtweaks-1.21.1-1.2.0.jar",
-      "label": "",
-      "description": "",
-      "groups": [
-        "ui"
-      ],
-      "depends_on": [],
-      "sha512": "a419544da8d943ccf17ed62f359fdbff04752735d370b18de3833a74277039e0313c8032e06462125b6b9b4e15b4eec057b680d302b465191ce51c13254bdeb2",
-      "sha1": "f81426b87be821aba41da4483895760cf6248710",
-      "size": 74866,
-      "source": "modrinth",
-      "enabled_on_default": null,
-      "modrinth_version_id": "tcTciTmQ",
-      "modrinth_project_id": "uqnMI1kq",
-      "modrinth_url": "https://cdn.modrinth.com/data/uqnMI1kq/versions/tcTciTmQ/invtweaks-1.21.1-1.2.0.jar"
-    },
-    {
       "filename": "iris-neoforge-1.8.14-beta.1\u002Bmc1.21.1.jar",
-      "display_name": "iris-neoforge-1.8.14-beta.1\u002Bmc1.21.1.jar",
-      "label": "",
+      "display_name": "Iris Shaders",
+      "label": "Iris Shaders",
       "description": "",
       "groups": [
         "visual"
@@ -502,8 +484,8 @@
     },
     {
       "filename": "ItemBorders-1.21-neoforge-1.2.5.jar",
-      "display_name": "ItemBorders-1.21-neoforge-1.2.5.jar",
-      "label": "",
+      "display_name": "Item Borders",
+      "label": "Item Borders",
       "description": "",
       "groups": [
         "ui"
@@ -520,8 +502,8 @@
     },
     {
       "filename": "jei_integration_reborn-1.0.2.jar",
-      "display_name": "jei_integration_reborn-1.0.2.jar",
-      "label": "",
+      "display_name": "JEI Integration: Reborn",
+      "label": "JEI Integration: Reborn",
       "description": "",
       "groups": [
         "jei"
@@ -538,8 +520,8 @@
     },
     {
       "filename": "justenoughbreeding-neoforge-1.21.1-3.2.1.jar",
-      "display_name": "justenoughbreeding-neoforge-1.21.1-3.2.1.jar",
-      "label": "",
+      "display_name": "Just Enough Breeding (JEBr)",
+      "label": "Just Enough Breeding (JEBr)",
       "description": "",
       "groups": [
         "jei"
@@ -556,8 +538,8 @@
     },
     {
       "filename": "lambdynamiclights-4.8.11\u002B1.21.1.jar",
-      "display_name": "lambdynamiclights-4.8.11\u002B1.21.1.jar",
-      "label": "",
+      "display_name": "LambDynamicLights - Dynamic Lights",
+      "label": "LambDynamicLights - Dynamic Lights",
       "description": "",
       "groups": [
         "visual"
@@ -574,8 +556,8 @@
     },
     {
       "filename": "LegendaryTooltips-1.21.1-neoforge-1.5.5.jar",
-      "display_name": "LegendaryTooltips-1.21.1-neoforge-1.5.5.jar",
-      "label": "",
+      "display_name": "Legendary Tooltips",
+      "label": "Legendary Tooltips",
       "description": "",
       "groups": [
         "ui"
@@ -592,8 +574,8 @@
     },
     {
       "filename": "ModernUI-NeoForge-1.21.1-3.13.0.1-universal.jar",
-      "display_name": "ModernUI-NeoForge-1.21.1-3.13.0.1-universal.jar",
-      "label": "",
+      "display_name": "Modern UI",
+      "label": "Modern UI",
       "description": "",
       "groups": [
         "ui"
@@ -610,8 +592,8 @@
     },
     {
       "filename": "MouseTweaks-neoforge-mc1.21-2.26.1.jar",
-      "display_name": "MouseTweaks-neoforge-mc1.21-2.26.1.jar",
-      "label": "",
+      "display_name": "Mouse Tweaks",
+      "label": "Mouse Tweaks",
       "description": "",
       "groups": [
         "ui"
@@ -628,8 +610,8 @@
     },
     {
       "filename": "notenoughanimations-neoforge-1.12.4-mc1.21.1.jar",
-      "display_name": "notenoughanimations-neoforge-1.12.4-mc1.21.1.jar",
-      "label": "",
+      "display_name": "Not Enough Animations",
+      "label": "Not Enough Animations",
       "description": "",
       "groups": [
         "visual"
@@ -646,8 +628,8 @@
     },
     {
       "filename": "OverflowingBars-v21.1.1-1.21.1-NeoForge.jar",
-      "display_name": "OverflowingBars-v21.1.1-1.21.1-NeoForge.jar",
-      "label": "",
+      "display_name": "Overflowing Bars",
+      "label": "Overflowing Bars",
       "description": "",
       "groups": [
         "ui"
@@ -664,8 +646,8 @@
     },
     {
       "filename": "particlerain-4.0.0-beta.11\u002B1.21.1-neoforge.jar",
-      "display_name": "particlerain-4.0.0-beta.11\u002B1.21.1-neoforge.jar",
-      "label": "",
+      "display_name": "Particle Rain",
+      "label": "Particle Rain",
       "description": "",
       "groups": [
         "visual"
@@ -682,8 +664,8 @@
     },
     {
       "filename": "punchy-2.8a-neoforge-1.21.1.jar",
-      "display_name": "punchy-2.8a-neoforge-1.21.1.jar",
-      "label": "",
+      "display_name": "Punchy!",
+      "label": "Punchy!",
       "description": "",
       "groups": [
         "visual"
@@ -700,8 +682,8 @@
     },
     {
       "filename": "Resourcify (1.21.1-neoforge)-1.8.6.jar",
-      "display_name": "Resourcify (1.21.1-neoforge)-1.8.6.jar",
-      "label": "",
+      "display_name": "Resourcify",
+      "label": "Resourcify",
       "description": "",
       "groups": [
         "qol"
@@ -718,8 +700,8 @@
     },
     {
       "filename": "ShoulderSurfing-NeoForge-1.21.1-5.0.11.jar",
-      "display_name": "ShoulderSurfing-NeoForge-1.21.1-5.0.11.jar",
-      "label": "",
+      "display_name": "Shoulder Surfing Reloaded",
+      "label": "Shoulder Surfing Reloaded",
       "description": "",
       "groups": [
         "visual"
@@ -736,8 +718,8 @@
     },
     {
       "filename": "skinlayers3d-neoforge-1.11.2-mc1.21.1.jar",
-      "display_name": "skinlayers3d-neoforge-1.11.2-mc1.21.1.jar",
-      "label": "",
+      "display_name": "3D Skin Layers",
+      "label": "3D Skin Layers",
       "description": "",
       "groups": [
         "visual"
@@ -754,8 +736,8 @@
     },
     {
       "filename": "SSRD-1.8.7-1.21.1.jar",
-      "display_name": "SSRD-1.8.7-1.21.1.jar",
-      "label": "",
+      "display_name": "Separate Sable Render Distance (Create Aeronautics Addon)",
+      "label": "Separate Sable Render Distance (Create Aeronautics Addon)",
       "description": "",
       "groups": [
         "dh",
@@ -773,8 +755,8 @@
     },
     {
       "filename": "TravelersTitles-1.21.1-NeoForge-5.1.3.jar",
-      "display_name": "TravelersTitles-1.21.1-NeoForge-5.1.3.jar",
-      "label": "",
+      "display_name": "Traveler\u0027s Titles",
+      "label": "Traveler\u0027s Titles",
       "description": "",
       "groups": [
         "ui"
@@ -791,8 +773,8 @@
     },
     {
       "filename": "visuality-0.7.7\u002B1.21.jar",
-      "display_name": "visuality-0.7.7\u002B1.21.jar",
-      "label": "",
+      "display_name": "Visuality",
+      "label": "Visuality",
       "description": "",
       "groups": [
         "visual"
@@ -808,24 +790,42 @@
       "modrinth_url": "https://cdn.modrinth.com/data/rI0hvYcd/versions/dhKbgdIb/visuality-0.7.7%2B1.21.jar"
     },
     {
-      "filename": "voxy-0.2.15-beta\u002B1.21.1-neoforge.jar",
-      "display_name": "voxy-0.2.15-beta\u002B1.21.1-neoforge.jar",
+      "filename": "voxy-server-side-neoforge.jar",
+      "display_name": "Voxy Server Side",
+      "label": "Voxy Server Side",
+      "description": "",
+      "groups": [
+        "voxy"
+      ],
+      "depends_on": [],
+      "sha512": "5a43cef07dfb4a475af91a191d38da7ff4025b3921cf1031679d96e955ed8b6425ecb2c4fd4388d9bd3c327f011b263bbed0471d27d777f2ba07e760a434d957",
+      "sha1": "ab9738f39df913e1d533f1ba32d9452d8311a216",
+      "size": 17505821,
+      "source": "modrinth",
+      "enabled_on_default": null,
+      "modrinth_version_id": "Vm3P8eng",
+      "modrinth_project_id": "84zcagOb",
+      "modrinth_url": "https://cdn.modrinth.com/data/84zcagOb/versions/Vm3P8eng/voxy-server-side-neoforge.jar"
+    },
+    {
+      "filename": "voxyremapped.jar",
+      "display_name": "voxyremapped.jar",
       "label": "",
       "description": "",
       "groups": [
         "voxy"
       ],
       "depends_on": [],
-      "sha512": "7578e4cfe4de3bff0733199822e7b9f2ae2bf11860a206c719f44ccb8e8d20676c4e2018fe580d083dc847c341ac646abdaca37d719f8a281ffcfbcf85b70760",
-      "sha1": "3cc4f86b662ad52c477eb99dfc20855b156fef42",
-      "size": 89370577,
+      "sha512": "8b4b7c5ecb744b542347b1f93a1e4b875efc71b187e736f55379f98898fd72f3febc843c820e8c77a55c06374b68facb5f92b8cde9074295e7e0b256fc2d7943",
+      "sha1": "134689bbd1d296c5999f48f582ba39654f34e3c1",
+      "size": 89435156,
       "source": "unresolved",
       "enabled_on_default": null
     },
     {
       "filename": "YungsMenuTweaks-1.21.1-NeoForge-2.1.2.jar",
-      "display_name": "YungsMenuTweaks-1.21.1-NeoForge-2.1.2.jar",
-      "label": "",
+      "display_name": "YUNG\u0027s Menu Tweaks",
+      "label": "YUNG\u0027s Menu Tweaks",
       "description": "",
       "groups": [
         "ui"

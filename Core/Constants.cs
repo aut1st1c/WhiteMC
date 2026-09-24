@@ -15,10 +15,19 @@ public static class Constants
         "https://raw.githubusercontent.com/aut1st1c/WhiteMC/refs/heads/main/links.json";
 
     // Разрешено оставить в коде: Mojang / Adoptium / NeoForge / Modrinth.
-    public const string VersionManifestUrl  = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
+    public const string VersionManifestUrl  = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
     public const string AdoptiumApi         = "https://api.adoptium.net/v3/assets/latest/{0}/hotspot";
-    public const string NeoForgeMaven       = "https://maven.neoforged.net/releases/net/neoforged/neoforge";
-    public const string NeoForgeMetadataUrl = NeoForgeMaven + "/maven-metadata.xml";
+    public const string NeoForgeMaven        = "https://maven.neoforged.net/releases/net/neoforged/neoforge";
+
+    /// <summary>XML-метаданные. Может возвращать 404 из-за блокировок ISP (особенно РФ).</summary>
+    public const string NeoForgeMetadataUrl  = NeoForgeMaven + "/maven-metadata.xml";
+
+    /// <summary>JSON API Reposilite. Работает там, где XML блокируется.</summary>
+    public const string NeoForgeVersionsApi  =
+        "https://maven.neoforged.net/api/maven/versions/releases/net%2Fneoforged%2Fneoforge";
+
+    /// <summary>Зеркало через CurseForge CDN — на случай полной блокировки основного домена.</summary>
+    public const string NeoForgeMavenMirror  = "https://neoforged.forgecdn.net/releases/net/neoforged/neoforge";
 
     public const string UserAgent             = "WhiteMC/1.0 (github.com/aut1st1c/White)";
     public const int    MaxParallelDownloads  = 8;

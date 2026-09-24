@@ -52,12 +52,18 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Ник" FontWeight="Bold"
                            Foreground="{DynamicResource Subtext}" VerticalAlignment="Center"/>
-                <TextBox x:Name="TxtUser" Grid.Row="0" Grid.Column="1"
-                         Margin="14,0,0,10" Width="260" HorizontalAlignment="Left"/>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"
+                            Margin="14,0,0,10">
+                    <TextBox x:Name="TxtUser" Width="260" HorizontalAlignment="Left"/>
+                    <TextBlock Classes="subtext" VerticalAlignment="Center"
+                               Margin="12,0,0,0"
+                               Text="Прогресс в игре привязывается к нику"/>
+                </StackPanel>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Память" FontWeight="Bold"
                            Foreground="{DynamicResource Subtext}" VerticalAlignment="Center"/>
@@ -66,7 +72,11 @@
                     <TextBlock Text="Xms" Classes="subtext" VerticalAlignment="Center"/>
                     <TextBox x:Name="TxtXms" Width="80" Margin="6,0,16,0"/>
                     <TextBlock Text="Xmx" Classes="subtext" VerticalAlignment="Center"/>
-                    <TextBox x:Name="TxtXmx" Width="80" Margin="6,0,0,0"/>
+                    <TextBox x:Name="TxtXmx" Width="80" Margin="6,0,8,0"/>
+                    <Button Content="Авто" Classes="ghost"
+                            Click="BtnAutoMemory_Click"/>
+                    <TextBlock x:Name="LblRamHint" Classes="subtext"
+                               VerticalAlignment="Center" Margin="12,0,0,0"/>
                 </StackPanel>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="JVM-аргументы" FontWeight="Bold"
@@ -94,6 +104,9 @@
                 <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                            x:Name="LblCache" Classes="subtext"
                            Margin="0,2,0,0"/>
+                <TextBlock Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                           Classes="subtext" Margin="0,2,0,0"
+                           Text="Опциональные моды переключаются кнопкой «🧩 Опциональные моды» в главном окне."/>
             </Grid>
 
             <Grid Grid.Row="3" Margin="0,18,0,0">
